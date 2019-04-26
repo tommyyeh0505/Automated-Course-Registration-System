@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http'
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-upload',
@@ -9,7 +10,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/c
 export class UploadComponent implements OnInit {
   public progress: number;
   public message: string;
-  
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
@@ -23,8 +24,8 @@ export class UploadComponent implements OnInit {
     for (let file of files) {
       formData.append(file.name, file);
     }
-    
-    const request = new HttpRequest('POST', 'https://localhost:44327/api/upload', formData, {
+
+    const request = new HttpRequest('POST', environment.apiEndpoint + 'upload', formData, {
       reportProgress: true,
     });
 

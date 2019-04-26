@@ -33,15 +33,21 @@ namespace ACRS.Controllers
             {
                 if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
-                    ParseCsv(file);
+                    Trace.WriteLine($"Parsing: {file.Name}");
+                    List<dynamic> data = ParseCsv(file);
+                } else
+                {
+                    Trace.WriteLine($"File has 0 bytes or is not a .csv file - Skipping: {file.Name}");
                 }
             }
 
             return Ok();
         }
 
-        private bool ParseCsv(IFormFile file)
+        private List<dynamic> ParseCsv(IFormFile file)
         {
+            List<dynamic> data = new List<dynamic>();
+
             using (var stream = file.OpenReadStream())
             {
                 using (var reader = new StreamReader(stream))
@@ -55,12 +61,21 @@ namespace ACRS.Controllers
                         var id = csv[15];
                         var grade = csv[33];
 
-                        Debug.WriteLine($"CRN: {crn} Course No: {courseNo} Name: {name} ID: {id} Grade: {grade}");
+                        Trace.WriteLine($"CRN: {crn} Course No: {courseNo} Name: {name} ID: {id} Grade: {grade}");
+
+                        data.Add(new
+                        {
+                            Crn = crn,
+                            CourseNo = courseNo,
+                            FullName = name,
+                            StudentId = id,
+                            Grade = grade
+                        });
                     }
                 }
             }
 
-            return true;
+            return data;
         }
     }
 }

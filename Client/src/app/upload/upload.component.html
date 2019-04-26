@@ -1,3 +1,4 @@
-<p>
-  upload works!
-</p>
+<input #file type="file" multiple (change)="upload(file.files)" />
+<br/>
+<span *ngIf="progress > 0 && progress < 100">{{progress}}%</span>
+<span  *ngIf="message">{{message}}</span>

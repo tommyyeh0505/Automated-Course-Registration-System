@@ -24,16 +24,19 @@ export class UploadComponent implements OnInit {
       formData.append(file.name, file);
     }
     
-    const uploadReq = new HttpRequest('POST', `https://localhost:44327/api/upload`, formData, {
+    const request = new HttpRequest('POST', 'https://localhost:44327/api/upload', formData, {
       reportProgress: true,
     });
 
-    this.http.request(uploadReq).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress = Math.round(100 * event.loaded / event.total);
-      }  else if (event.type === HttpEventType.Response) {
-        this.message = event.body.toString();
-      }
-    });
+    this.http.request(request)
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * event.loaded / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          console.log(event.body);
+        }
+      }, error => {
+        this.message = error.toString();
+      });
   }
 }

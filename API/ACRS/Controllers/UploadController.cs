@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using CsvHelper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,13 +31,36 @@ namespace ACRS.Controllers
 
             foreach (var file in files)
             {
-                if (file.Length > 0)
+                if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
-                    // Parse
+                    ParseCsv(file);
                 }
             }
 
             return Ok();
+        }
+
+        private bool ParseCsv(IFormFile file)
+        {
+            using (var stream = file.OpenReadStream())
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    var csv = new CsvReader(reader);
+                    while (csv.Read())
+                    {
+                        var crn = csv[1];
+                        var courseNo = csv[4];
+                        var name = csv[14];
+                        var id = csv[15];
+                        var grade = csv[33];
+
+                        Debug.WriteLine($"CRN: {crn} Course No: {courseNo} Name: {name} ID: {id} Grade: {grade}");
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

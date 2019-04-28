@@ -14,3 +14,7 @@ td, th {
 .grid-container {
   margin: 30px;
 }
+
+.mat-tab-group {
+  margin-bottom: 48px;
+}

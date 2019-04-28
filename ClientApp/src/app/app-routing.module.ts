@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UploadComponent } from './upload/upload.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { GradeComponent } from './grade/grade.component';
+import { UploadComponent } from './components/upload/upload.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { GradeComponent } from './components/grade/grade.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -10,8 +10,6 @@ const routes: Routes = [
   { path: 'grade', component: GradeComponent },
   { path: 'course', component: UploadComponent },
   { path: '**', component: UploadComponent }
-
-
 ];
 
 @NgModule({

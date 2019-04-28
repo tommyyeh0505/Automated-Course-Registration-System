@@ -3,7 +3,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/c
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-upload',
+  selector: 'upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css']
 })

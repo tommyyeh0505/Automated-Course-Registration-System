@@ -11,7 +11,9 @@ export class UploadComponent implements OnInit {
   public progress: number;
   public message: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    console.log(123);
+  }
 
   ngOnInit() {
   }

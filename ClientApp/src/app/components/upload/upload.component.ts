@@ -3,7 +3,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/c
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-upload',
+  selector: 'upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css']
 })
@@ -11,7 +11,9 @@ export class UploadComponent implements OnInit {
   public progress: number;
   public message: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    console.log(123);
+  }
 
   ngOnInit() {
   }

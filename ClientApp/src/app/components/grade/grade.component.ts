@@ -1,5 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { NgModule } from '@angular/core';
+
+
 
 export interface UserData {
   id: string;
@@ -21,6 +25,12 @@ const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
   selector: 'grade',
   styleUrls: ['grade.component.css'],
   templateUrl: 'grade.component.html',
+})
+
+@NgModule({
+  imports: [SidebarComponent],
+  declarations: [SidebarComponent],
+  exports: [SidebarComponent]
 })
 export class GradeComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'progress'];

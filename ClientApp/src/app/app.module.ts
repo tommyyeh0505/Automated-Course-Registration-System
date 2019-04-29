@@ -11,6 +11,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GradeComponent } from './components/grade/grade.component';
 import { LoginComponent } from './components/login/login.component';
+import { DropFileDirective } from './directives/drop-file.directive';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { LayoutComponent } from './components/layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +22,9 @@ import { LoginComponent } from './components/login/login.component';
     DashboardComponent,
     GradeComponent,
     LoginComponent,
+    DropFileDirective,
+    SidebarComponent,
+    LayoutComponent
   ],
   imports: [
     MatTabsModule,

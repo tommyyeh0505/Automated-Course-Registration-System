@@ -1,4 +1,5 @@
 table {
+  
   width: 100%;
 }
 
@@ -16,5 +17,6 @@ td, th {
 }
 
 .mat-tab-group {
-  margin-bottom: 48px;
+  margin-bottom: 40px;
 }
+

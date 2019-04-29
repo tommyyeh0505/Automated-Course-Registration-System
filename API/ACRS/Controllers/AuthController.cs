@@ -17,10 +17,10 @@ namespace ACRS.Controllers
 
         private readonly ApplicationDbContext _context;
 
-        public UserAPIController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        // public UserAPIController(ApplicationDbContext context)
+        // {
+        //     _context = context;
+        // }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAll()

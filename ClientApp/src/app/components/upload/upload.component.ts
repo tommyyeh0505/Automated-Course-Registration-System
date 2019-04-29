@@ -36,7 +36,7 @@ export class UploadComponent implements OnInit {
         if (event.type === HttpEventType.UploadProgress) {
           this.progress = Math.round(100 * event.loaded / event.total);
         } else if (event.type === HttpEventType.Response) {
-          // console.log(event.body);
+          console.log(event.body);
         }
       }, error => {
         console.log(error);

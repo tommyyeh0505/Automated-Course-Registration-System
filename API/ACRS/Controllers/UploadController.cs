@@ -22,6 +22,8 @@ namespace ACRS.Controllers
         [HttpPost, DisableRequestSizeLimit]
         public ActionResult Upload()
         {
+            List<TestModel> data = null;
+
             var files = Request.Form.Files;
 
             if (files.Count == 0)
@@ -34,19 +36,25 @@ namespace ACRS.Controllers
                 if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
                     Trace.WriteLine($"Parsing: {file.Name}");
-                    List<dynamic> data = ParseCsv(file);
-                } else
+                    data = ParseCsv(file);
+                }
+                else
                 {
                     Trace.WriteLine($"File has 0 bytes or is not a .csv file - Skipping: {file.Name}");
                 }
             }
 
-            return Ok();
+            if (data == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(data);
         }
 
-        private List<dynamic> ParseCsv(IFormFile file)
+        private List<TestModel> ParseCsv(IFormFile file)
         {
-            List<dynamic> data = new List<dynamic>();
+            List<TestModel> data = new List<TestModel>();
 
             using (var stream = file.OpenReadStream())
             {
@@ -55,21 +63,36 @@ namespace ACRS.Controllers
                     var csv = new CsvReader(reader);
                     while (csv.Read())
                     {
+
+                        var term = csv[0];
                         var crn = csv[1];
+                        var subject = csv[3];
                         var courseNo = csv[4];
+                        var courseTitle = csv[6];
+                        var startDate = csv[9];
+
                         var name = csv[14];
+
+                        string firstName = csv[14].Split(",").ElementAtOrDefault(0);
+                        string lastName = csv[14].Split(",").ElementAtOrDefault(1);
+
                         var id = csv[15];
                         var grade = csv[33];
+                        var passingGrade = csv[40];
 
-                        Trace.WriteLine($"CRN: {crn} Course No: {courseNo} Name: {name} ID: {id} Grade: {grade}");
-
-                        data.Add(new
+                        data.Add(new TestModel
                         {
-                            Crn = crn,
-                            CourseNo = courseNo,
-                            FullName = name,
+                            Term = term,
+                            CRN = crn,
+                            Subject = subject,
+                            CourseId = courseNo,
+                            CourseName = courseTitle,
+                            StartDate = startDate,
+                            FirstName = firstName,
+                            LastName = lastName,
                             StudentId = id,
-                            Grade = grade
+                            Grade = grade,
+                            PassingGrade = passingGrade
                         });
                     }
                 }
@@ -77,5 +100,21 @@ namespace ACRS.Controllers
 
             return data;
         }
+
+        public class TestModel
+        {
+            public string Term { get; set; }
+            public string CRN { get; set; }
+            public string Subject { get; set; }
+            public string CourseId { get; set; }
+            public string CourseName { get; set; }
+            public string StartDate { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string StudentId { get; set; }
+            public string Grade { get; set; }
+            public string PassingGrade { get; set; }
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-import { Directive, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Directive, HostListener, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { UploadService } from '../services/upload.service'
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 
@@ -10,6 +10,12 @@ export class DropFileDirective {
   @Output()
   public progressEvent: EventEmitter<any>;
 
+  @Input()
+  public defaultColor: string;
+
+  @Input()
+  public hoverColor: string;
+
   constructor(private element: ElementRef, private uploadService: UploadService) {
     this.progressEvent = new EventEmitter();
   }
@@ -18,14 +24,14 @@ export class DropFileDirective {
   onDragOver(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.element.nativeElement.style.backgroundColor = '#e2e2e2';
+    this.setBackgroundColor(this.hoverColor);
   }
 
   @HostListener('dragleave', ['$event'])
   onDragLeave(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.element.nativeElement.style.backgroundColor = '#ffffff';
+    this.setBackgroundColor(this.defaultColor);
   }
 
   @HostListener('drop', ['$event'])
@@ -39,7 +45,6 @@ export class DropFileDirective {
       .subscribe((event: HttpEvent<any>) => {
         if (event.type === HttpEventType.UploadProgress) {
           this.progressEvent.emit(Math.round(100 * event.loaded / event.total));
-          
         } else if (event.type === HttpEventType.Response) {
           console.log(event.body);
         }
@@ -47,6 +52,10 @@ export class DropFileDirective {
         console.log(error);
       });
 
-    this.element.nativeElement.style.backgroundColor = '#ffffff';
+    this.setBackgroundColor(this.defaultColor);
+  }
+
+  private setBackgroundColor(color: string) {
+    this.element.nativeElement.style.backgroundColor = color;
   }
 }

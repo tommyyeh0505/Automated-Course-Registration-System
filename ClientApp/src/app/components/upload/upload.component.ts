@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpEvent, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { UploadService } from '../../services/upload.service'
+import { DropFileDirective } from 'src/app/directives/drop-file.directive';
 
 @Component({
   selector: 'upload',
@@ -9,25 +10,16 @@ import { UploadService } from '../../services/upload.service'
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
-  public progress: number;
+  public progress: number = 0;
 
-  constructor(private http: HttpClient, private uploadService: UploadService) {
-  }
-
-  ngOnInit() {
+  constructor(private http: HttpClientModule) {
 
   }
 
-  upload(files) {
-    this.uploadService.upload(files)
-      .subscribe((event: HttpEvent<any>) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round(100 * event.loaded / event.total);
-        } else if (event.type === HttpEventType.Response) {
-          console.log(event.body);
-        }
-      }, error => {
-        console.log(error);
-      });
+  ngOnInit() {}
+
+  onProgress(event) {
+    this.progress = event;
+    // console.log(event);
   }
 }

@@ -1,36 +1,52 @@
-import { Directive, HostListener, HostBinding } from '@angular/core';
+import { Directive, HostListener, HostBinding, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { UploadService } from '../services/upload.service'
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { UploadComponent } from '../components/upload/upload.component';
 
 @Directive({
   selector: '[appDropFile]'
 })
 export class DropFileDirective {
 
-  constructor(private uploadService: UploadService) { }
+  @Output()
+  public progressEvent: EventEmitter<any>;
 
-  @HostBinding('style.background')
-  private background = '#ffffff';
+  constructor(private element: ElementRef, private uploadService: UploadService) { 
+    this.progressEvent = new EventEmitter();
+  }
 
   @HostListener('dragover', ['$event'])
   onDragOver(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.background = '#00ff00';
+    this.element.nativeElement.style.backgroundColor= '#e2e2e2';
   }
 
   @HostListener('dragleave', ['$event'])
   onDragLeave(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.background = '#ffffff';
+    this.element.nativeElement.style.backgroundColor = '#ffffff';
   }
 
   @HostListener('drop', ['$event'])
   onDrop(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
     let files = event.dataTransfer.files;
 
-    this.uploadService.upload(files);
+    this.uploadService.upload(files)
+      .subscribe((event: HttpEvent<any>) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progressEvent.emit(Math.round(100 * event.loaded / event.total));
+        } else if (event.type === HttpEventType.Response) {
+          console.log(event.body);
+        }
+      }, error => {
+        console.log(error);
+      });
 
-    this.background = '#ffffff';
+      this.element.nativeElement.style.backgroundColor = '#ffffff';
   }
 }

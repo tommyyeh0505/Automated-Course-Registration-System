@@ -7,11 +7,10 @@ using ACRS.Models;
 using ACRS.Data;
 using Microsoft.EntityFrameworkCore;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ACRS.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/courses")]
     public class CourseAPIController : Controller
     {
 
@@ -37,7 +36,7 @@ namespace ACRS.Controllers
             return "value";
         }
 
-        // POST api/values
+        // POST api/
         [HttpPost]
         public void Post([FromBody]string value)
         {

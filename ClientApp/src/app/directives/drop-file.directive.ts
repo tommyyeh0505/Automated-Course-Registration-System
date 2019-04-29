@@ -38,11 +38,8 @@ export class DropFileDirective {
     this.uploadService.upload(files)
       .subscribe((event: HttpEvent<any>) => {
         if (event.type === HttpEventType.UploadProgress) {
-          let percent = Math.round(100 * event.loaded / event.total);
-          if (percent > 99) {
-            percent = 99;
-          }
-          this.progressEvent.emit(percent);
+          this.progressEvent.emit(Math.round(100 * event.loaded / event.total));
+          
         } else if (event.type === HttpEventType.Response) {
           console.log(event.body);
         }

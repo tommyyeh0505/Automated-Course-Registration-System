@@ -9,11 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 export class UploadComponent implements OnInit {
   public progress: number = 0;
 
-  constructor(private http: HttpClientModule) {
+  constructor(private http: HttpClientModule) { }
 
-  }
-
-  ngOnInit() {}
+  ngOnInit() { }
 
   onProgress(event) {
     this.progress = event;

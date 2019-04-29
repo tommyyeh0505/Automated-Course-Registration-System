@@ -1,4 +1,8 @@
-<input #file type="file" multiple (change)="upload(file.files)" />
+<div style="width: 100%; height: 100%" appDropFile>
+    <span *ngIf="progress > 0">{{progress}}%</span>
+</div>
+
+<!-- <input #file type="file" multiple (change)="upload(file.files)" appDropFile />
 <br/>
-<span *ngIf="progress > 0">{{progress}}%</span>
-<span  *ngIf="message">{{message}}</span>   
+
+<span  *ngIf="message">{{message}}</span> -->

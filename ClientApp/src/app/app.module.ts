@@ -10,6 +10,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GradeComponent } from './components/grade/grade.component';
+import { DropFileDirective } from './directives/drop-file.directive';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { GradeComponent } from './components/grade/grade.component';
     UploadComponent,
     DashboardComponent,
     GradeComponent,
+    DropFileDirective
   ],
   imports: [
     MatTabsModule,

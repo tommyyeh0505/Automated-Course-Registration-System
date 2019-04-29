@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpEvent, HttpClientModule } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { UploadService } from '../../services/upload.service'
-import { DropFileDirective } from 'src/app/directives/drop-file.directive';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'upload',
@@ -20,6 +17,5 @@ export class UploadComponent implements OnInit {
 
   onProgress(event) {
     this.progress = event;
-    // console.log(event);
   }
 }

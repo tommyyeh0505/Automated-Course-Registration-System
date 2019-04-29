@@ -1,7 +1,6 @@
-import { Directive, HostListener, HostBinding, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Directive, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
 import { UploadService } from '../services/upload.service'
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { UploadComponent } from '../components/upload/upload.component';
 
 @Directive({
   selector: '[appDropFile]'
@@ -11,7 +10,7 @@ export class DropFileDirective {
   @Output()
   public progressEvent: EventEmitter<any>;
 
-  constructor(private element: ElementRef, private uploadService: UploadService) { 
+  constructor(private element: ElementRef, private uploadService: UploadService) {
     this.progressEvent = new EventEmitter();
   }
 
@@ -19,7 +18,7 @@ export class DropFileDirective {
   onDragOver(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.element.nativeElement.style.backgroundColor= '#e2e2e2';
+    this.element.nativeElement.style.backgroundColor = '#e2e2e2';
   }
 
   @HostListener('dragleave', ['$event'])
@@ -39,7 +38,11 @@ export class DropFileDirective {
     this.uploadService.upload(files)
       .subscribe((event: HttpEvent<any>) => {
         if (event.type === HttpEventType.UploadProgress) {
-          this.progressEvent.emit(Math.round(100 * event.loaded / event.total));
+          let percent = Math.round(100 * event.loaded / event.total);
+          if (percent > 99) {
+            percent = 99;
+          }
+          this.progressEvent.emit(percent);
         } else if (event.type === HttpEventType.Response) {
           console.log(event.body);
         }
@@ -47,6 +50,6 @@ export class DropFileDirective {
         console.log(error);
       });
 
-      this.element.nativeElement.style.backgroundColor = '#ffffff';
+    this.element.nativeElement.style.backgroundColor = '#ffffff';
   }
 }

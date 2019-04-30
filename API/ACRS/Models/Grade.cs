@@ -6,28 +6,32 @@ namespace ACRS.Models
 {
     public class Grade
 
-    {   [Key]
-        [Column(Order = 0)]
-        [Required]
-        public String stdID { get; set; }
-
-        [Key]
-        [Column(Order = 1)]
-        [Required]
-        public String CRNs { get; set; }
+        // String start with lowercase 
+        //other public variable start with Capital 
+    {
 
         [Required]
-        public String courseID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int GradeID { get; set; }
 
         [Required]
-        public String term { get; set; }
+        public string StdID { get; set; }
 
         [Required]
-        public DateTime date { get; set; }
+        public string CRNs { get; set; }
 
         [Required]
-        [Range(0, 100)]
-        public double finalGrade { get; set; }
+        public string CourseID { get; set; }
+
+        [Required]
+        public string Term { get; set; }
+
+        [Required]
+        public DateTime Date { get; set; }
+
+        [Required]
+        [Range(0,500, ErrorMessage ="final garde cannot be negative")]
+        public double FinalGrade { get; set; }
 
     }
 }

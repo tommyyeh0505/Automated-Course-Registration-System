@@ -9,16 +9,15 @@ namespace ACRS.Models
     {
         [Required]
         //[DisplayName("Student Name")]
-        public String stdname { get; set; }
+        public string Stdname { get; set; }
 
         [Required]
         [Key]
         //[DisplayName("Student Number")]
-        public String stdnumber { get; set; }
+        public string Stdnumber { get; set; }
 
-        [Required]
         [EmailAddress]
-        public String email { get; set; }
+        public string Email { get; set; }
 
     }
 }

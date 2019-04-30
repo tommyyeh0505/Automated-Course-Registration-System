@@ -26,7 +26,7 @@ namespace ACRS.Models
         public DateTime date { get; set; }
 
         [Required]
-        [Range(0, 100)]
+        [Range(0,500, ErrorMessage ="final garde cannot be negative")]
         public double finalGrade { get; set; }
 
     }

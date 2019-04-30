@@ -38,6 +38,16 @@ namespace ACRS
         [HttpPost]
         public async Task<ActionResult> InsertUser([FromBody] User model)
         {
+
+            //check do they have same username for Identity User
+            //if yes reject it 
+            var CheckUser = await _userManager.FindByNameAsync(model.username);
+
+            if (CheckUser != null)
+            {
+                return Unauthorized();
+            }
+
             var user = new IdentityUser
             {
                 UserName = model.username,
@@ -56,7 +66,7 @@ namespace ACRS
         [HttpPost]
         public async Task<ActionResult> LoginAsync([FromBody] User model)
         {
-            var user = await _userManager.FindByNameAsync(model.password);
+            var user = await _userManager.FindByNameAsync(model.username);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
             {
             var claim = new[] {
@@ -66,7 +76,8 @@ namespace ACRS
               Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
 
             int expiryInMinutes = Convert.ToInt32(_config["Jwt:ExpiryInMinutes"]);
-
+            
+                //set expires time in 8 hours
             var token = new JwtSecurityToken(
               issuer: _config["Jwt:Site"],
               audience: _config["Jwt:Site"],

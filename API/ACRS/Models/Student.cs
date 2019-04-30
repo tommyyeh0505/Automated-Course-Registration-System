@@ -16,7 +16,6 @@ namespace ACRS.Models
         //[DisplayName("Student Number")]
         public string Stdnumber { get; set; }
 
-        [Required]
         [EmailAddress]
         public string Email { get; set; }
 

@@ -41,7 +41,7 @@ namespace ACRS
 
             //check do they have same username for Identity User
             //if yes reject it 
-            var CheckUser = await _userManager.FindByNameAsync(model.username);
+            var CheckUser = await _userManager.FindByNameAsync(model.Username);
 
             if (CheckUser != null)
             {
@@ -50,10 +50,10 @@ namespace ACRS
 
             var user = new IdentityUser
             {
-                UserName = model.username,
+                UserName = model.Username,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
-            var result = await _userManager.CreateAsync(user, model.password);
+            var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "ADMIN");
@@ -66,8 +66,8 @@ namespace ACRS
         [HttpPost]
         public async Task<ActionResult> LoginAsync([FromBody] User model)
         {
-            var user = await _userManager.FindByNameAsync(model.username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
             var claim = new[] {
         new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
@@ -112,7 +112,7 @@ namespace ACRS
                 }
 
                 var user = await _context.User
-                    .FirstOrDefaultAsync(m => m.username == id);
+                    .FirstOrDefaultAsync(m => m.Username == id);
                 if (user == null)
                 {
                     return NotFound();
@@ -161,7 +161,7 @@ namespace ACRS
             [ValidateAntiForgeryToken]
             public async Task<IActionResult> Edit(string id, [Bind("username,password")] User user)
             {
-                if (id != user.username)
+                if (id != user.Username)
                 {
                     return NotFound();
                 }
@@ -175,7 +175,7 @@ namespace ACRS
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        if (!UserExists(user.username))
+                        if (!UserExists(user.Username))
                         {
                             return NotFound();
                         }
@@ -220,7 +220,7 @@ namespace ACRS
 
             private bool UserExists(string id)
             {
-                return _context.User.Any(e => e.username == id);
+                return _context.User.Any(e => e.Username == id);
             }
         }
     }

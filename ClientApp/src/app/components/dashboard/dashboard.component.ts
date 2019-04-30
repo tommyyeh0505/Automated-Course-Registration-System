@@ -1,13 +1,23 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { BrowserModule } from '@angular/platform-browser';
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+  single: any[];
+  multi: any[];
+
+  view: any[] = [700, 400];
+
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C']
+  };
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
@@ -29,5 +39,15 @@ export class DashboardComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver) {
+    this.single = [
+      {
+        "name": "Germany",
+        "value": 8940000
+      }
+    ]
+      ;
+  }
+
+
 }

@@ -64,7 +64,6 @@ namespace ACRS.Controllers
                     var csv = new CsvReader(reader);
                     while (csv.Read())
                     {
-
                         var term = csv[0];
                         var crn = csv[1];
                         var subject = csv[3];
@@ -82,34 +81,54 @@ namespace ACRS.Controllers
 
                         Student student = CreateStudent(name, id, null);
                         Grade grade = CreateGrade(id, crn, courseId, term, startDate, endDate, finalGrade);
+
+                        UpdateStudents(student);
+                        UpdateGrades(grade);
                     }
                 }
             }
+        }
+
+        private void UpdateStudents(Student student)
+        {
+            if (_context.Student.Any(s => s.StudentId == student.StudentId))
+            {
+                return;
+            }
+
+            _context.Student.Add(student);
+            _context.SaveChanges();
+        }
+
+        private void UpdateGrades(Grade grade)
+        {
+            // courseid
+            // studentid
+            //Grade g = _context.Grade.Select(g => g.CourseID == grade.CourseID && g.StudentId == grade.StudentId).SingleOrDefault();
         }
 
         private Student CreateStudent(string name, string id, string email)
         {
             return new Student()
             {
-                Stdname = name,
-                Stdnumber = id,
+                SudentName = name,
+                StudentId = id,
                 Email = email
             };
         }
 
         private Grade CreateGrade(string id, string crn, string courseId, string term, DateTime startDate, DateTime endDate, int grade)
         {
-            //return new Grade()
-            //{
-            //    StdID = id,
-            //    CRNs = crn,
-            //    CourseID = courseId,
-            //    Term = term,
-            //    Date = date,
-            //    FinalGrade = grade
-            //};
-
-            return null;
+            return new Grade()
+            {
+                StudentId = id,
+                CRN = crn,
+                CourseID = courseId,
+                Term = term,
+                StartDate = startDate,
+                EndDate = endDate,
+                FinalGrade = grade
+            };
         }
     }
 }

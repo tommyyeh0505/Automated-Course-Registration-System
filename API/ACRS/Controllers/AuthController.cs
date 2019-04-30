@@ -92,6 +92,7 @@ namespace ACRS
         }
 
         // GET: Auth
+        [Route("api/[controller]/All")]
         public async Task<IActionResult> Index()
             {
                 return View(await _context.User.ToListAsync());

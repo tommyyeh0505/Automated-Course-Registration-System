@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using ACRS.Data;
+using ACRS.Models;
 using CsvHelper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
@@ -19,11 +21,16 @@ namespace ACRS.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
+        ApplicationDbContext _context;
+
+        public UploadController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpPost, DisableRequestSizeLimit]
         public ActionResult Upload()
         {
-            List<TestModel> data = null;
-
             var files = Request.Form.Files;
 
             if (files.Count == 0)
@@ -36,7 +43,7 @@ namespace ACRS.Controllers
                 if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
                     Trace.WriteLine($"Parsing: {file.Name}");
-                    data = ParseCsv(file);
+                    ParseCsv(file);
                 }
                 else
                 {
@@ -44,22 +51,16 @@ namespace ACRS.Controllers
                 }
             }
 
-            if (data == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(data);
+            return Ok();
         }
 
-        private List<TestModel> ParseCsv(IFormFile file)
+        private void ParseCsv(IFormFile file)
         {
-            List<TestModel> data = new List<TestModel>();
-
             using (var stream = file.OpenReadStream())
             {
                 using (var reader = new StreamReader(stream))
                 {
+
                     var csv = new CsvReader(reader);
                     while (csv.Read())
                     {
@@ -68,53 +69,47 @@ namespace ACRS.Controllers
                         var crn = csv[1];
                         var subject = csv[3];
                         var courseNo = csv[4];
+                        var courseId = subject + courseNo;
                         var courseTitle = csv[6];
-                        var startDate = csv[9];
+                        var startDate = DateTime.ParseExact(csv[9], "MM/dd/yyyy HH::mm", null);
+                        var endDate = DateTime.ParseExact(csv[10], "MM/dd/yyyy HH::mm", null);
 
                         var name = csv[14];
 
-                        string firstName = csv[14].Split(",").ElementAtOrDefault(0);
-                        string lastName = csv[14].Split(",").ElementAtOrDefault(1);
-
                         var id = csv[15];
-                        var grade = csv[33];
+                        var finalGrade = int.Parse(csv[33]);
                         var passingGrade = csv[40];
 
-                        data.Add(new TestModel
-                        {
-                            Term = term,
-                            CRN = crn,
-                            Subject = subject,
-                            CourseId = courseNo,
-                            CourseName = courseTitle,
-                            StartDate = startDate,
-                            FirstName = firstName,
-                            LastName = lastName,
-                            StudentId = id,
-                            Grade = grade,
-                            PassingGrade = passingGrade
-                        });
+                        Student student = CreateStudent(name, id, null);
+                        Grade grade = CreateGrade(id, crn, courseId, term, startDate, endDate, finalGrade);
                     }
                 }
             }
-
-            return data;
         }
 
-        public class TestModel
+        private Student CreateStudent(string name, string id, string email)
         {
-            public string Term { get; set; }
-            public string CRN { get; set; }
-            public string Subject { get; set; }
-            public string CourseId { get; set; }
-            public string CourseName { get; set; }
-            public string StartDate { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string StudentId { get; set; }
-            public string Grade { get; set; }
-            public string PassingGrade { get; set; }
+            return new Student()
+            {
+                Stdname = name,
+                Stdnumber = id,
+                Email = email
+            };
         }
 
+        private Grade CreateGrade(string id, string crn, string courseId, string term, DateTime startDate, DateTime endDate, int grade)
+        {
+            //return new Grade()
+            //{
+            //    StdID = id,
+            //    CRNs = crn,
+            //    CourseID = courseId,
+            //    Term = term,
+            //    Date = date,
+            //    FinalGrade = grade
+            //};
+
+            return null;
+        }
     }
 }

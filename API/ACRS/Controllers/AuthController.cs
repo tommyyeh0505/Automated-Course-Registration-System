@@ -1,77 +1,225 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ACRS.Data;
 using ACRS.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace ACRS.Controllers
+namespace ACRS
 {
+    [Authorize]
     [Route("api/[controller]")]
-    public class UserController : Controller
+    public class AuthController : Controller
     {
-
         private readonly ApplicationDbContext _context;
+        private IConfiguration _config;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        // public UserAPIController(ApplicationDbContext context)
-        // {
-        //     _context = context;
-        // }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAll()
+        public AuthController(UserManager<IdentityUser> userManager, ApplicationDbContext context, IConfiguration config)
         {
-
-            var applicationDbContext = _context.Users.Include(c => c.UserName).Include(c => c.PasswordHash);
-            return View(await applicationDbContext.ToListAsync());
+            _userManager = userManager;
+            _context = context;
+            _config = config;
         }
 
 
+        [Route("api/[controller]/register")]
+        [HttpPost]
+        public async Task<ActionResult> InsertUser([FromBody] User model)
+        {
+            var user = new IdentityUser
+            {
+                UserName = model.username,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+            var result = await _userManager.CreateAsync(user, model.password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "ADMIN");
+            }
+            return Ok(new { Username = user.UserName });
+        }
 
-        // GET: api/values
+
+        [Route("api/[controller]/login")]
+        [HttpPost]
+        public async Task<ActionResult> Login([FromBody] User model)
+        {
+            var user = await _userManager.FindByNameAsync(model.password);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
+            {
+                var claim = new[] {
+        new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
+      };
+                var signinKey = new SymmetricSecurityKey(
+                  Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
+
+                int expiryInMinutes = Convert.ToInt32(_config["Jwt:ExpiryInMinutes"]);
+
+                var token = new JwtSecurityToken(
+                  issuer: _config["Jwt:Site"],
+                  audience: _config["Jwt:Site"],
+                  expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
+                  signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
+                );
+
+                return Ok(
+                  new
+                  {
+                      token = new JwtSecurityTokenHandler().WriteToken(token),
+                      expiration = token.ValidTo
+                  });
+            }
+            return Unauthorized();
+        }
+
+        // GET: api/Auth
+        //Test return value
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(String id)
-        {
-            if (id == null)
+        // GET: Auth
+        public async Task<IActionResult> Index()
             {
-                return NotFound();
+                return View(await _context.User.ToListAsync());
             }
 
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
+            // GET: Auth/Details/5
+            public async Task<IActionResult> Details(string id)
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var user = await _context.User
+                    .FirstOrDefaultAsync(m => m.username == id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return View(user);
             }
-        }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
+            // GET: Auth/Create
+            public IActionResult Create()
+            {
+                return View();
+            }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+            // POST: Auth/Create
+            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+            // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> Create([Bind("username,password")] User user)
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(user);
+            }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            // GET: Auth/Edit/5
+            public async Task<IActionResult> Edit(string id)
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var user = await _context.User.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return View(user);
+            }
+
+            // POST: api/Auth/Edit/5
+            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+            // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> Edit(string id, [Bind("username,password")] User user)
+            {
+                if (id != user.username)
+                {
+                    return NotFound();
+                }
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Update(user);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!UserExists(user.username))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(user);
+            }
+
+            // GET: api/Auth/Delete/5
+            public async Task<IActionResult> Delete(string id)
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var user = await _context.User
+                    .FirstOrDefaultAsync(m => m.username == id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return View(user);
+            }
+
+            // POST: api/Auth/Delete/5
+            [HttpPost, ActionName("Delete")]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> DeleteConfirmed(string id)
+            {
+                var user = await _context.User.FindAsync(id);
+                _context.User.Remove(user);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            private bool UserExists(string id)
+            {
+                return _context.User.Any(e => e.username == id);
+            }
         }
     }
-}

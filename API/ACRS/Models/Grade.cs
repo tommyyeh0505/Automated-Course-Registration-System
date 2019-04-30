@@ -6,6 +6,8 @@ namespace ACRS.Models
 {
     public class Grade
 
+        // String start with lowercase 
+        //other public variable start with Capital 
     {   [Key]
         [Column(Order = 0)]
         [Required]
@@ -14,7 +16,7 @@ namespace ACRS.Models
         [Key]
         [Column(Order = 1)]
         [Required]
-        public String CRNs { get; set; }
+        public String cRNs { get; set; }
 
         [Required]
         public String courseID { get; set; }
@@ -23,11 +25,11 @@ namespace ACRS.Models
         public String term { get; set; }
 
         [Required]
-        public DateTime date { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
-        [Range(0, 100)]
-        public double finalGrade { get; set; }
+        [Range(0,500, ErrorMessage ="final garde cannot be negative")]
+        public double FinalGrade { get; set; }
 
     }
 }

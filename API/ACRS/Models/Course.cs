@@ -10,7 +10,7 @@ namespace ACRS.Models
     {
         [Required]
         [Key]
-        public string CourseName { get; set; }
+        public string courseName { get; set; }
         public int PassingGrade { get; set; }
         public List<Prerequisite> Prerequisites { get; set; }
 

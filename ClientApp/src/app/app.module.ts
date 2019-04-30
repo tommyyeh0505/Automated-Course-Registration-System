@@ -17,6 +17,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { CourseComponent } from './components/course/course.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { StudentComponent } from './components/student/student.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     DropFileDirective,
     LayoutComponent,
     ErrorComponent,
-    CourseComponent
+    CourseComponent,
+    StudentComponent
   ],
   imports: [
     MatTabsModule,

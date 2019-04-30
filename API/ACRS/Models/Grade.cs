@@ -18,22 +18,16 @@ namespace ACRS.Models
         [Required]
         public string StudentId { get; set; }
 
-        [Required]
         public string CRN { get; set; }
 
-        [Required]
         public string CourseID { get; set; }
 
-        [Required]
         public string Term { get; set; }
 
-        [Required]
         public DateTime StartDate { get; set; }
 
-        [Required]
         public DateTime EndDate { get; set; }
 
-        [Required]
         [Range(0,500, ErrorMessage ="final garde cannot be negative")]
         public double FinalGrade { get; set; }
 

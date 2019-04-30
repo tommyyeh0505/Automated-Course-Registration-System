@@ -67,7 +67,7 @@ namespace ACRS
                        .AllowAnyHeader();
             }));
 
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=EFGetStarted.AspNetCore.NewDb;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=ACRS;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<ApplicationDbContext>
                 (options => options.UseSqlServer(connection));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -82,14 +82,13 @@ namespace ACRS
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseCors("CORSPolicy");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+            DummyData.Initialize(app).Wait();
         }
     }
 }

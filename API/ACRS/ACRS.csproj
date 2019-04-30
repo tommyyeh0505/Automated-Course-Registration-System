@@ -17,6 +17,7 @@
   <ItemGroup>
        <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
    </ItemGroup>
+<<<<<<< HEAD
 
   
 
@@ -38,4 +39,6 @@
     <Content Remove="Views\Student\Delete.cshtml" />
     <Content Remove="Views\Grade\Create.cshtml" />
   </ItemGroup>
+=======
+>>>>>>> 1ba0d06167c06f2e88c83269e4cc22e112a17d19
 </Project>

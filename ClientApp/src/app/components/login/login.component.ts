@@ -1,83 +1,65 @@
-import { Input, Component, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { AuthenticationService } from '../../services/authentication.service';
+import { first, isEmpty } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'my-login-form',
-  template: `
-      <mat-card>
-            <mat-card-title>Login</mat-card-title>
-      <mat-card-content>
-        <form  (ngSubmit)="submit()">
-          <p>
-            <mat-form-field>
-              <input type="text" matInput placeholder="Username" formControlName="username">
-            </mat-form-field>
-          </p>
-
-          <p>
-            <mat-form-field>
-              <input type="password" matInput placeholder="Password" formControlName="password">
-            </mat-form-field>
-          </p>
-
-          <p *ngIf="error" class="error">
-            {{ error }}
-          </p>
-
-          <div class="button">
-            <button type="submit" mat-button>Login</button>
-          </div>
-
-        </form>
-      </mat-card-content>
-    </mat-card>
-  `,
-  styles: [
-    `
-      :host {
-        display: flex;
-        justify-content: center;
-        margin: 100px 0px;
-      }
-
-      .mat-form-field {
-        width: 100%;
-        min-width: 300px;
-      }
-
-      mat-card-title,
-      mat-card-content {
-        display: flex;
-        justify-content: center;
-      }
-
-      .error {
-        padding: 16px;
-        width: 300px;
-        color: white;
-        background-color: red;
-      }
-
-      .button {
-        display: flex;
-        justify-content: flex-end;
-      }
-    `,
-  ],
-
+  selector: 'login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  form: FormGroup = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl(''),
+  form = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
   });
+  isLoading: boolean = false;
+  authFailed: boolean = false;
+  fromExpiration: boolean = false;
 
-  submit() {
-    if (this.form.valid) {
-      this.submitEM.emit(this.form.value);
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService) {
+
+  }
+  ngOnInit() {
+
+    this.authenticationService.logout();
+
+    if (this.route.snapshot.paramMap.get('expired')) {
+      this.fromExpiration = true;
     }
   }
-  @Input() error: string | null;
 
-  @Output() submitEM = new EventEmitter();
+  submit() {
+    let username = this.form.value.username;
+    let password = this.form.value.password;
+    this.isLoading = true;
+    this.authenticationService.login(username, password)
+      .pipe(first())
+      .subscribe(
+        data => {
+          console.log(data);
+          this.isLoading = false;
+          this.authFailed = false;
+          this.router.navigate(['/']); //navigate to home
+        },
+        error => {
+          this.authFailed = true;
+          this.isLoading = false;
+        }
+      );
+  }
+
+  hasError() {
+    return this.authFailed;
+  }
+  getErrorMessage() {
+
+    return this.hasError() ? "Invalid Username or Password" : "";
+  }
+
 }

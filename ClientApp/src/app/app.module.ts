@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from  '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadComponent } from './components/upload/upload.component';
@@ -14,7 +14,8 @@ import { LoginComponent } from './components/login/login.component';
 import { DropFileDirective } from './directives/drop-file.directive';
 import { LayoutComponent } from './components/layout/layout.component';
 import { ErrorComponent } from './components/error/error.component';
-
+import { CourseComponent } from './components/course/course.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +25,8 @@ import { ErrorComponent } from './components/error/error.component';
     LoginComponent,
     DropFileDirective,
     LayoutComponent,
-    ErrorComponent
+    ErrorComponent,
+    CourseComponent
   ],
   imports: [
     MatTabsModule,
@@ -46,7 +48,9 @@ import { ErrorComponent } from './components/error/error.component';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

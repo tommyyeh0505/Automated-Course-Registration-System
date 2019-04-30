@@ -8,13 +8,15 @@ namespace ACRS.Models
 
         // String start with lowercase 
         //other public variable start with Capital 
-    {   [Key]
-        [Column(Order = 0)]
+    {
+
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int GradeID { get; set; }
+
         [Required]
         public string StdID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
         [Required]
         public string CRNs { get; set; }
 

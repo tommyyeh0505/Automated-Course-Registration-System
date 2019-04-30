@@ -17,22 +17,4 @@
   <ItemGroup>
        <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
    </ItemGroup>
-
-  
-
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Data\DummyData.cs" />
-    <Compile Remove="Migrations\20190430070020_FirstMigration.cs" />
-    <Compile Remove="Migrations\20190430070020_FirstMigration.Designer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="Views\Grade\Create.cshtml" />
-    <Content Remove="Views\Grade\Delete.cshtml" />
-    <Content Remove="Views\Student\Create.cshtml" />
-    <Content Remove="Views\Student\Delete.cshtml" />
-  </ItemGroup>
 </Project>

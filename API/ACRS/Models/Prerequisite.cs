@@ -11,8 +11,9 @@ namespace ACRS.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string PrerequisiteId { get; set; }
-        public string CourseName { get; set; }
-        public string PrerequisiteCourseName { get; set; }
+        public int PrerequisiteId { get; set; }
+
+        public string CourseID { get; set; }
+        public string PrerequisiteCourseID { get; set; }
     }
 }

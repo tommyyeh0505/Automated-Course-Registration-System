@@ -32,8 +32,14 @@ namespace ACRS.Data
         }
 
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Student> Students { get; set; }
 
         public DbSet<ACRS.Models.User> User { get; set; }
+
+        public DbSet<ACRS.Models.Grade> Grade { get; set; }
+
+        public DbSet<ACRS.Models.Student> Student { get; set; }
+
 
     }
 }

@@ -33,8 +33,9 @@ namespace ACRS
         }
 
 
-        [Route("api/[controller]/register")]
+        [Route("register")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> InsertUser([FromBody] User model)
         {
             var user = new IdentityUser
@@ -51,7 +52,7 @@ namespace ACRS
         }
 
 
-        [Route("api/[controller]/login")]
+        [Route("login")]
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] User model)
         {

@@ -26,11 +26,10 @@ namespace ACRS.Data
                 new { Id = "2", Name = "User", NormalizedName = "USER" }
             );
 
+
             #endregion
 
         }
-
-
 
         public DbSet<Course> Courses { get; set; }
 

@@ -11,18 +11,18 @@ namespace ACRS.Models
     {   [Key]
         [Column(Order = 0)]
         [Required]
-        public String stdID { get; set; }
+        public string StdID { get; set; }
 
         [Key]
         [Column(Order = 1)]
         [Required]
-        public String cRNs { get; set; }
+        public string CRNs { get; set; }
 
         [Required]
-        public String courseID { get; set; }
+        public string CourseID { get; set; }
 
         [Required]
-        public String term { get; set; }
+        public string Term { get; set; }
 
         [Required]
         public DateTime Date { get; set; }

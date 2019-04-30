@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ACRS.Migrations
 {
-    public partial class first : Migration
+    public partial class _5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,12 +51,37 @@ namespace ACRS.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    CourseName = table.Column<string>(nullable: false),
+                    CourseID = table.Column<string>(nullable: false),
                     PassingGrade = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.CourseName);
+                    table.PrimaryKey("PK_Courses", x => x.CourseID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    stdnumber = table.Column<string>(nullable: false),
+                    stdname = table.Column<string>(nullable: false),
+                    email = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.stdnumber);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    username = table.Column<string>(maxLength: 20, nullable: false),
+                    password = table.Column<string>(maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.username);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,20 +194,31 @@ namespace ACRS.Migrations
                 name: "Prerequisite",
                 columns: table => new
                 {
-                    PrerequisiteId = table.Column<string>(nullable: false),
-                    CourseName = table.Column<string>(nullable: true),
-                    PrerequisiteCourseName = table.Column<string>(nullable: true)
+                    PrerequisiteId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CourseID = table.Column<string>(nullable: true),
+                    PrerequisiteCourseID = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Prerequisite", x => x.PrerequisiteId);
                     table.ForeignKey(
-                        name: "FK_Prerequisite_Courses_CourseName",
-                        column: x => x.CourseName,
+                        name: "FK_Prerequisite_Courses_CourseID",
+                        column: x => x.CourseID,
                         principalTable: "Courses",
-                        principalColumn: "CourseName",
+                        principalColumn: "CourseID",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "1", null, "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "2", null, "User", "USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -224,9 +260,9 @@ namespace ACRS.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prerequisite_CourseName",
+                name: "IX_Prerequisite_CourseID",
                 table: "Prerequisite",
-                column: "CourseName");
+                column: "CourseID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -248,6 +284,12 @@ namespace ACRS.Migrations
 
             migrationBuilder.DropTable(
                 name: "Prerequisite");
+
+            migrationBuilder.DropTable(
+                name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

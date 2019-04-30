@@ -23,10 +23,4 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Data\DummyData.cs" />
-    <Compile Remove="Migrations\20190430070020_FirstMigration.cs" />
-    <Compile Remove="Migrations\20190430070020_FirstMigration.Designer.cs" />
-  </ItemGroup>
 </Project>

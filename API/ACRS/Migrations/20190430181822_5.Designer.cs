@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ACRS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190430073343_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20190430181822_5")]
+    partial class _5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,30 +23,47 @@ namespace ACRS.Migrations
 
             modelBuilder.Entity("ACRS.Models.Course", b =>
                 {
-                    b.Property<string>("CourseName")
+                    b.Property<string>("CourseID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("PassingGrade");
 
-                    b.HasKey("CourseName");
+                    b.HasKey("CourseID");
 
                     b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("ACRS.Models.Prerequisite", b =>
                 {
-                    b.Property<string>("PrerequisiteId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("PrerequisiteId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CourseName");
+                    b.Property<string>("CourseID");
 
-                    b.Property<string>("PrerequisiteCourseName");
+                    b.Property<string>("PrerequisiteCourseID");
 
                     b.HasKey("PrerequisiteId");
 
-                    b.HasIndex("CourseName");
+                    b.HasIndex("CourseID");
 
                     b.ToTable("Prerequisite");
+                });
+
+            modelBuilder.Entity("ACRS.Models.Student", b =>
+                {
+                    b.Property<string>("stdnumber")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("email")
+                        .IsRequired();
+
+                    b.Property<string>("stdname")
+                        .IsRequired();
+
+                    b.HasKey("stdnumber");
+
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("ACRS.Models.User", b =>
@@ -243,7 +260,7 @@ namespace ACRS.Migrations
                 {
                     b.HasOne("ACRS.Models.Course")
                         .WithMany("Prerequisites")
-                        .HasForeignKey("CourseName");
+                        .HasForeignKey("CourseID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

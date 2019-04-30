@@ -13,6 +13,7 @@ import { GradeComponent } from './components/grade/grade.component';
 import { LoginComponent } from './components/login/login.component';
 import { DropFileDirective } from './directives/drop-file.directive';
 import { LayoutComponent } from './components/layout/layout.component';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LayoutComponent } from './components/layout/layout.component';
     GradeComponent,
     LoginComponent,
     DropFileDirective,
-    LayoutComponent
+    LayoutComponent,
+    ErrorComponent
   ],
   imports: [
     MatTabsModule,

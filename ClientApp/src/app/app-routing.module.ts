@@ -6,12 +6,15 @@ import { GradeComponent } from './components/grade/grade.component';
 import { AuthGuard } from './guard/guard.guard';
 import { LoginComponent } from './components/login/login.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { ErrorComponent } from './components/error/error.component';
 
 const routes: Routes = [
 
   {
     path: '', component: LayoutComponent,
     children: [
+      { path: '', component: DashboardComponent },
+      { path: 'index', component: DashboardComponent },
       { path: 'upload', component: UploadComponent, },
       { path: 'grade', component: GradeComponent },
       { path: 'course', component: UploadComponent }
@@ -19,7 +22,7 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
 
-  { path: '**', component: UploadComponent }
+  { path: '**', component: ErrorComponent }
 ];
 
 @NgModule({

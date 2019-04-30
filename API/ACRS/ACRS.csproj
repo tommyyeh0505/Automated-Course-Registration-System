@@ -7,13 +7,26 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="12.1.2" />
+    <!-- <PackageReference Include="EntityFramework" Version="6.2.0" /> -->
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
+
+  <ItemGroup>
+       <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+   </ItemGroup>
+
+  
 
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\DummyData.cs" />
+    <Compile Remove="Migrations\20190430070020_FirstMigration.cs" />
+    <Compile Remove="Migrations\20190430070020_FirstMigration.Designer.cs" />
+  </ItemGroup>
 </Project>

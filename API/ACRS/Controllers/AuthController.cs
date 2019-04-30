@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ACRS
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
@@ -32,10 +32,10 @@ namespace ACRS
             _config = config;
         }
 
+        [Authorize]
         //https://localhost:5001/api/Auth/register
         [Route("register")]
         [HttpPost]
-        [AllowAnonymous]
         public async Task<ActionResult> InsertUser([FromBody] User model)
         {
             var user = new IdentityUser
@@ -54,43 +54,36 @@ namespace ACRS
         //https://localhost:5001/api/Auth/login
         [Route("login")]
         [HttpPost]
-        public async Task<ActionResult> Login([FromBody] User model)
+        public async Task<ActionResult> LoginAsync([FromBody] User model)
         {
             var user = await _userManager.FindByNameAsync(model.password);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
             {
-                var claim = new[] {
+            var claim = new[] {
         new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
       };
-                var signinKey = new SymmetricSecurityKey(
-                  Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
+            var signinKey = new SymmetricSecurityKey(
+              Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
 
-                int expiryInMinutes = Convert.ToInt32(_config["Jwt:ExpiryInMinutes"]);
+            int expiryInMinutes = Convert.ToInt32(_config["Jwt:ExpiryInMinutes"]);
 
-                var token = new JwtSecurityToken(
-                  issuer: _config["Jwt:Site"],
-                  audience: _config["Jwt:Site"],
-                  expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
-                  signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
-                );
+            var token = new JwtSecurityToken(
+              issuer: _config["Jwt:Site"],
+              audience: _config["Jwt:Site"],
+              expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
+              signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
+            );
 
-                return Ok(
-                  new
-                  {
-                      token = new JwtSecurityTokenHandler().WriteToken(token),
-                      expiration = token.ValidTo
-                  });
+            return Ok(
+              new
+              {
+                  token = new JwtSecurityTokenHandler().WriteToken(token),
+                  expiration = token.ValidTo
+              });
             }
             return Unauthorized();
         }
 
-        // GET: api/Auth
-        //Test return value
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
         // GET: Auth
         [Route("AllAuth")]
@@ -116,12 +109,7 @@ namespace ACRS
 
                 return View(user);
             }
-
-            // GET: Auth/Create
-            public IActionResult Create()
-            {
-                return View();
-            }
+            
 
             // POST: Auth/Create
             // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -139,21 +127,21 @@ namespace ACRS
                 return View(user);
             }
 
-            // GET: Auth/Edit/5
-            public async Task<IActionResult> Edit(string id)
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
+            //// GET: Auth/Edit/5
+            //public async Task<IActionResult> Edit(string id)
+            //{
+                //if (id == null)
+                //{
+                //    return NotFound();
+                //}
 
-                var user = await _context.User.FindAsync(id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                return View(user);
-            }
+                //var user = await _context.User.FindAsync(id);
+                //if (user == null)
+                //{
+                //    return NotFound();
+                //}
+                //return View(user);
+            //}
 
             // POST: api/Auth/Edit/5
             // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -190,23 +178,23 @@ namespace ACRS
                 return View(user);
             }
 
-            // GET: api/Auth/Delete/5
-            public async Task<IActionResult> Delete(string id)
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
+            //// GET: api/Auth/Delete/5
+            //public async Task<IActionResult> Delete(string id)
+            //{
+            //    if (id == null)
+            //    {
+            //        return NotFound();
+            //    }
 
-                var user = await _context.User
-                    .FirstOrDefaultAsync(m => m.username == id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
+            //    var user = await _context.User
+            //        .FirstOrDefaultAsync(m => m.username == id);
+            //    if (user == null)
+            //    {
+            //        return NotFound();
+            //    }
 
-                return View(user);
-            }
+            //    return View(user);
+            //}
 
             // POST: api/Auth/Delete/5
             [HttpPost, ActionName("Delete")]

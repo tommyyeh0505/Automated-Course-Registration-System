@@ -34,7 +34,7 @@ namespace ACRS
             }
 
             var student = await _context.Student
-                .FirstOrDefaultAsync(m => m.Stdnumber == id);
+                .FirstOrDefaultAsync(m => m.StudentId == id);
             if (student == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace ACRS
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Stdname,Stdnumber,Email")] Student student)
+        public async Task<IActionResult> Create([Bind("SudentName,StudentId,Email")] Student student)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace ACRS
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Stdname,Stdnumber,Email")] Student student)
+        public async Task<IActionResult> Edit(string id, [Bind("SudentName,StudentId,Email")] Student student)
         {
-            if (id != student.Stdnumber)
+            if (id != student.StudentId)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace ACRS
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.Stdnumber))
+                    if (!StudentExists(student.StudentId))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace ACRS
             }
 
             var student = await _context.Student
-                .FirstOrDefaultAsync(m => m.Stdnumber == id);
+                .FirstOrDefaultAsync(m => m.StudentId == id);
             if (student == null)
             {
                 return NotFound();
@@ -147,7 +147,7 @@ namespace ACRS
 
         private bool StudentExists(string id)
         {
-            return _context.Student.Any(e => e.Stdnumber == id);
+            return _context.Student.Any(e => e.StudentId == id);
         }
     }
 }

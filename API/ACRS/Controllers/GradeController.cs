@@ -34,7 +34,7 @@ namespace ACRS
             }
 
             var grade = await _context.Grade
-                .FirstOrDefaultAsync(m => m.GradeID == id);
+                .FirstOrDefaultAsync(m => m.GradeId == id);
             if (grade == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace ACRS
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GradeID,StdID,CRNs,CourseID,Term,Date,FinalGrade")] Grade grade)
+        public async Task<IActionResult> Create([Bind("GradeId,StudentId,CRN,CourseID,Term,StartDate,EndDate,FinalGrade")] Grade grade)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace ACRS
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GradeID,StdID,CRNs,CourseID,Term,Date,FinalGrade")] Grade grade)
+        public async Task<IActionResult> Edit(int id, [Bind("GradeId,StudentId,CRN,CourseID,Term,StartDate,EndDate,FinalGrade")] Grade grade)
         {
-            if (id != grade.GradeID)
+            if (id != grade.GradeId)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace ACRS
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GradeExists(grade.GradeID))
+                    if (!GradeExists(grade.GradeId))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace ACRS
             }
 
             var grade = await _context.Grade
-                .FirstOrDefaultAsync(m => m.GradeID == id);
+                .FirstOrDefaultAsync(m => m.GradeId == id);
             if (grade == null)
             {
                 return NotFound();
@@ -147,7 +147,7 @@ namespace ACRS
 
         private bool GradeExists(int id)
         {
-            return _context.Grade.Any(e => e.GradeID == id);
+            return _context.Grade.Any(e => e.GradeId == id);
         }
     }
 }

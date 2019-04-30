@@ -11,14 +11,15 @@ namespace ACRS.Models
     {
 
         [Required]
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int GradeID { get; set; }
+        public int GradeId { get; set; }
 
         [Required]
-        public string StdID { get; set; }
+        public string StudentId { get; set; }
 
         [Required]
-        public string CRNs { get; set; }
+        public string CRN { get; set; }
 
         [Required]
         public string CourseID { get; set; }
@@ -27,7 +28,10 @@ namespace ACRS.Models
         public string Term { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime StartDate { get; set; }
+
+        [Required]
+        public DateTime EndDate { get; set; }
 
         [Required]
         [Range(0,500, ErrorMessage ="final garde cannot be negative")]

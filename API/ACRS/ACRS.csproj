@@ -34,5 +34,8 @@
     <Content Remove="Views\Grade\Delete.cshtml" />
     <Content Remove="Views\Student\Create.cshtml" />
     <Content Remove="Views\Student\Delete.cshtml" />
+    <Content Remove="Views\Student\Create.cshtml" />
+    <Content Remove="Views\Student\Delete.cshtml" />
+    <Content Remove="Views\Grade\Create.cshtml" />
   </ItemGroup>
 </Project>

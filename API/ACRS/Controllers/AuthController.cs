@@ -32,7 +32,7 @@ namespace ACRS
             _config = config;
         }
 
-
+        //https://localhost:5001/api/Auth/register
         [Route("register")]
         [HttpPost]
         [AllowAnonymous]
@@ -51,7 +51,7 @@ namespace ACRS
             return Ok(new { Username = user.UserName });
         }
 
-
+        //https://localhost:5001/api/Auth/login
         [Route("login")]
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] User model)
@@ -93,7 +93,7 @@ namespace ACRS
         }
 
         // GET: Auth
-        [Route("api/[controller]/All")]
+        [Route("AllAuth")]
         public async Task<IActionResult> Index()
             {
                 return View(await _context.User.ToListAsync());

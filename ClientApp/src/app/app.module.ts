@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from  '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadComponent } from './components/upload/upload.component';
@@ -10,7 +10,14 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GradeComponent } from './components/grade/grade.component';
+import { LoginComponent } from './components/login/login.component';
 import { DropFileDirective } from './directives/drop-file.directive';
+import { LayoutComponent } from './components/layout/layout.component';
+import { ErrorComponent } from './components/error/error.component';
+import { CourseComponent } from './components/course/course.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { StudentComponent } from './components/student/student.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +25,12 @@ import { DropFileDirective } from './directives/drop-file.directive';
     UploadComponent,
     DashboardComponent,
     GradeComponent,
-    DropFileDirective
+    LoginComponent,
+    DropFileDirective,
+    LayoutComponent,
+    ErrorComponent,
+    CourseComponent,
+    StudentComponent,
   ],
   imports: [
     MatTabsModule,
@@ -40,7 +52,10 @@ import { DropFileDirective } from './directives/drop-file.directive';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

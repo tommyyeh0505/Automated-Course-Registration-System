@@ -8,12 +8,10 @@ namespace ACRS.Models
 
     {
         [Required]
-        //[DisplayName("Student Name")]
         public string SudentName { get; set; }
 
         [Required]
         [Key]
-        //[DisplayName("Student Number")]
         public string StudentId { get; set; }
 
         [EmailAddress]

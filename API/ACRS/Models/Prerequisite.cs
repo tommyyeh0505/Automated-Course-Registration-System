@@ -13,7 +13,8 @@ namespace ACRS.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PrerequisiteId { get; set; }
 
-        public string CourseID { get; set; }
+        public string CourseId { get; set; }
+
         public string PrerequisiteCourseID { get; set; }
     }
 }

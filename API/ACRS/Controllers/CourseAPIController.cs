@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using ACRS.Models;
 using ACRS.Data;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Cors;
 
 namespace ACRS.Controllers
 {
+    [EnableCors("CORSPolicy")]
     [Route("api/courses")]
     public class CourseAPIController : Controller
     {

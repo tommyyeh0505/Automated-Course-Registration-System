@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using ACRS.Data;
+using ACRS.Models;
 using CsvHelper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +21,13 @@ namespace ACRS.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
+        ApplicationDbContext _context;
+
+        public UploadController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpPost, DisableRequestSizeLimit]
         public ActionResult Upload()
         {
@@ -34,8 +43,9 @@ namespace ACRS.Controllers
                 if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
                     Trace.WriteLine($"Parsing: {file.Name}");
-                    List<dynamic> data = ParseCsv(file);
-                } else
+                    ParseCsv(file);
+                }
+                else
                 {
                     Trace.WriteLine($"File has 0 bytes or is not a .csv file - Skipping: {file.Name}");
                 }
@@ -44,38 +54,83 @@ namespace ACRS.Controllers
             return Ok();
         }
 
-        private List<dynamic> ParseCsv(IFormFile file)
+        private void ParseCsv(IFormFile file)
         {
-            List<dynamic> data = new List<dynamic>();
-
             using (var stream = file.OpenReadStream())
             {
                 using (var reader = new StreamReader(stream))
                 {
+
                     var csv = new CsvReader(reader);
                     while (csv.Read())
                     {
+                        var term = csv[0];
                         var crn = csv[1];
+                        var subject = csv[3];
                         var courseNo = csv[4];
+                        var courseId = subject + courseNo;
+                        var courseTitle = csv[6];
+
                         var name = csv[14];
+
                         var id = csv[15];
-                        var grade = csv[33];
 
-                        Trace.WriteLine($"CRN: {crn} Course No: {courseNo} Name: {name} ID: {id} Grade: {grade}");
+                        //int.Parse(csv[33].Trim());
+                        var finalGrade = 60;
+                        var passingGrade = csv[40];
 
-                        data.Add(new
-                        {
-                            Crn = crn,
-                            CourseNo = courseNo,
-                            FullName = name,
-                            StudentId = id,
-                            Grade = grade
-                        });
+                        Student student = CreateStudent(name, id, "AA@AA.AA");
+                        Grade grade = CreateGrade(id, crn, courseId, term, finalGrade);
+
+                        UpdateStudents(student);
+                        UpdateGrades(grade);
                     }
                 }
             }
+        }
 
-            return data;
+        private void UpdateStudents(Student student)
+        {
+            if (_context.Students.Any(s => s.StudentId == student.StudentId))
+            {
+                return;
+            }
+
+            _context.Students.Add(student);
+            _context.SaveChanges();
+        }
+
+        private void UpdateGrades(Grade grade)
+        {
+            if (!_context.Courses.Any(c => c.CRN == grade.CRN && c.Term == grade.Term))
+            {
+                return;
+            }
+
+            _context.Grades.Add(grade);
+            _context.SaveChanges();
+        }
+
+        private Student CreateStudent(string name, string id, string email)
+        {
+            return new Student()
+            {
+                SudentName = name,
+                StudentId = id,
+                Email = email
+            };
+        }
+
+        private Grade CreateGrade(string id, string crn, string courseId, string term, int grade)
+        {
+            return new Grade()
+            {
+                StudentId = id,
+                CRN = crn,
+                CourseId = courseId,
+                Term = term,
+                FinalGrade = grade
+            };
         }
     }
 }

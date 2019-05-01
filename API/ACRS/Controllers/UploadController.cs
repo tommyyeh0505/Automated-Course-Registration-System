@@ -22,7 +22,7 @@ namespace ACRS.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public UploadController(ApplicationDbContext context)
         {

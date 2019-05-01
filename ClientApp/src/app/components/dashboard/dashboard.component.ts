@@ -64,7 +64,12 @@ export class DashboardComponent {
   ngOnInit(): void {
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-    },1); // BUGFIX:
+    }); // BUGFIX:
+  }
+
+  onSelect(event) {
+    console.log(event);
+    window.alert("henlo")
   }
 
 

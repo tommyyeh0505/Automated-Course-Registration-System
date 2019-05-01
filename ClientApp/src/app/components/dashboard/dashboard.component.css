@@ -30,6 +30,9 @@ ngx-charts-number-card{
 }
 
 
+ngx-charts-number-card:hover{
+  cursor: pointer;
+}
 
 @keyframes fadein {
   from { opacity: 0; }

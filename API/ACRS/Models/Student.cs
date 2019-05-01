@@ -9,8 +9,6 @@ namespace ACRS.Models
         [Required]
         [Key]
         public string StudentId { get; set; }
-<<<<<<< HEAD
-=======
 
         [Required]
         public string StudentName { get; set; }
@@ -18,6 +16,5 @@ namespace ACRS.Models
         [EmailAddress]
         public string Email { get; set; }
 
->>>>>>> develop
     }
 }

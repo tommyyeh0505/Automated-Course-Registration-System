@@ -30,7 +30,7 @@ namespace ACRS.Data
                 context.SaveChanges();
 
                 var users = GetUsers().ToArray();
-                context.Users.AddRange(users);
+                context.User.AddRange(users);
                 context.SaveChanges();
 
             }

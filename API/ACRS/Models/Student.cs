@@ -9,7 +9,7 @@ namespace ACRS.Models
     {
         [Required]
         //[DisplayName("Student Name")]
-        public string SudentName { get; set; }
+        public string StudentName { get; set; }
 
         [Required]
         [Key]

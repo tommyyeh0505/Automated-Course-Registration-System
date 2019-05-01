@@ -28,8 +28,26 @@ namespace ACRS.Data
                 var students = GetStudents().ToArray();
                 context.Students.AddRange(students);
                 context.SaveChanges();
+
+                var users = GetUsers().ToArray();
+                context.Users.AddRange(users);
+                context.SaveChanges();
+
             }
         }
+
+
+        private static List<User> GetUsers()
+        {
+            return new List<User>()
+            {
+                new User(){
+                Username = "testbcit",
+                Password = "test123"
+                }
+            };
+        }
+
 
         private static List<Course> GetCourses()
         {

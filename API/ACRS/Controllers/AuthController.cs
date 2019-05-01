@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ACRS
 {
@@ -99,35 +100,31 @@ namespace ACRS
 
 
         // GET: Auth
-        [Route("AllAuth")]
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            return await _context.User.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUser(string username)
+        {
+
+            var user = await _context.User.FirstOrDefaultAsync(m => m.Username == username);
+
+            if (user == null)
             {
-                return View(await _context.User.ToListAsync());
+                return NotFound();
             }
 
-            // GET: Auth/Details/5
-            public async Task<IActionResult> Details(string id)
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
+            return user;
+        }
 
-                var user = await _context.User
-                    .FirstOrDefaultAsync(m => m.Username == id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
 
-                return View(user);
-            }
-            
-
-            // POST: Auth/Create
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-            // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
+        // POST: Auth/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
             [ValidateAntiForgeryToken]
             public async Task<IActionResult> Create([Bind("username,password")] User user)
             {
@@ -139,22 +136,7 @@ namespace ACRS
                 }
                 return View(user);
             }
-
-            //// GET: Auth/Edit/5
-            //public async Task<IActionResult> Edit(string id)
-            //{
-                //if (id == null)
-                //{
-                //    return NotFound();
-                //}
-
-                //var user = await _context.User.FindAsync(id);
-                //if (user == null)
-                //{
-                //    return NotFound();
-                //}
-                //return View(user);
-            //}
+            
 
             // POST: api/Auth/Edit/5
             // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -191,23 +173,7 @@ namespace ACRS
                 return View(user);
             }
 
-            //// GET: api/Auth/Delete/5
-            //public async Task<IActionResult> Delete(string id)
-            //{
-            //    if (id == null)
-            //    {
-            //        return NotFound();
-            //    }
 
-            //    var user = await _context.User
-            //        .FirstOrDefaultAsync(m => m.username == id);
-            //    if (user == null)
-            //    {
-            //        return NotFound();
-            //    }
-
-            //    return View(user);
-            //}
 
             // POST: api/Auth/Delete/5
             [HttpPost, ActionName("Delete")]

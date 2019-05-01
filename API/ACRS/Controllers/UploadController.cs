@@ -91,20 +91,18 @@ namespace ACRS.Controllers
 
         private void UpdateStudents(Student student)
         {
-            if (_context.Student.Any(s => s.StudentId == student.StudentId))
+            if (_context.Students.Any(s => s.StudentId == student.StudentId))
             {
                 return;
             }
 
-            _context.Student.Add(student);
+            _context.Students.Add(student);
             _context.SaveChanges();
         }
 
         private void UpdateGrades(Grade grade)
         {
-            // courseid
-            // studentid
-            //Grade g = _context.Grade.Select(g => g.CourseID == grade.CourseID && g.StudentId == grade.StudentId).SingleOrDefault();
+            
         }
 
         private Student CreateStudent(string name, string id, string email)
@@ -123,7 +121,7 @@ namespace ACRS.Controllers
             {
                 StudentId = id,
                 CRN = crn,
-                CourseID = courseId,
+                CourseId = courseId,
                 Term = term,
                 StartDate = startDate,
                 EndDate = endDate,

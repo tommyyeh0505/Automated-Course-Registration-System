@@ -5,9 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ACRS.Models
 {
     public class Grade
-
-        // String start with lowercase 
-        //other public variable start with Capital 
     {
 
         [Required]
@@ -15,12 +12,11 @@ namespace ACRS.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GradeId { get; set; }
 
-        [Required]
         public string StudentId { get; set; }
 
         public string CRN { get; set; }
 
-        public string CourseID { get; set; }
+        public string CourseId { get; set; }
 
         public string Term { get; set; }
 
@@ -28,7 +24,7 @@ namespace ACRS.Models
 
         public DateTime EndDate { get; set; }
 
-        [Range(0,500, ErrorMessage ="final garde cannot be negative")]
+        [Range(0, 100, ErrorMessage = "Value must be between 0 and 100")]
         public double FinalGrade { get; set; }
 
     }

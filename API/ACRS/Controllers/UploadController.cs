@@ -70,17 +70,17 @@ namespace ACRS.Controllers
                         var courseNo = csv[4];
                         var courseId = subject + courseNo;
                         var courseTitle = csv[6];
-                        var startDate = DateTime.ParseExact(csv[9], "MM/dd/yyyy HH::mm", null);
-                        var endDate = DateTime.ParseExact(csv[10], "MM/dd/yyyy HH::mm", null);
 
                         var name = csv[14];
 
                         var id = csv[15];
-                        var finalGrade = int.Parse(csv[33]);
+
+                        //int.Parse(csv[33].Trim());
+                        var finalGrade = 60;
                         var passingGrade = csv[40];
 
-                        Student student = CreateStudent(name, id, null);
-                        Grade grade = CreateGrade(id, crn, courseId, term, startDate, endDate, finalGrade);
+                        Student student = CreateStudent(name, id, "AA@AA.AA");
+                        Grade grade = CreateGrade(id, crn, courseId, term, finalGrade);
 
                         UpdateStudents(student);
                         UpdateGrades(grade);
@@ -102,7 +102,13 @@ namespace ACRS.Controllers
 
         private void UpdateGrades(Grade grade)
         {
-            
+            if (!_context.Courses.Any(c => c.CRN == grade.CRN && c.Term == grade.Term))
+            {
+                return;
+            }
+
+            _context.Grades.Add(grade);
+            _context.SaveChanges();
         }
 
         private Student CreateStudent(string name, string id, string email)
@@ -115,7 +121,7 @@ namespace ACRS.Controllers
             };
         }
 
-        private Grade CreateGrade(string id, string crn, string courseId, string term, DateTime startDate, DateTime endDate, int grade)
+        private Grade CreateGrade(string id, string crn, string courseId, string term, int grade)
         {
             return new Grade()
             {
@@ -123,8 +129,6 @@ namespace ACRS.Controllers
                 CRN = crn,
                 CourseId = courseId,
                 Term = term,
-                StartDate = startDate,
-                EndDate = endDate,
                 FinalGrade = grade
             };
         }

@@ -4,6 +4,7 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { Router } from '@angular/router';
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
@@ -16,7 +17,7 @@ export class DashboardComponent {
   view: any[] = [500, 250];
 
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', 'pink']
+    domain: ['#F74385', '#AB28F7', '#2F72ED', '#28F78C']
   };
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -39,11 +40,11 @@ export class DashboardComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router) {
     this.single = [
       [{
         "name": "Students ",
-        "value": 3510
+        "value": 3510,
       }],
       [{
         "name": "Courses ",
@@ -68,10 +69,24 @@ export class DashboardComponent {
   }
 
   onSelect(event) {
-    console.log(event);
-    window.alert("henlo")
+    let name = event.name.trim();
+    if (name === 'Students')
+      this.router.navigate(['student'])
+    else if (name === 'Courses')
+      this.router.navigate(['course'])
+    else if (name === 'Waitlists')
+      this.router.navigate(['waitlist'])
+    else if (name === 'Accounts') {
+      this.router.navigate(['account'])
+
+
+    }
+
+
+
   }
-
-
-
 }
+
+
+
+

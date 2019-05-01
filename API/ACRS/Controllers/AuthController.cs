@@ -14,11 +14,13 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace ACRS
 {
 
     [Route("api/[controller]")]
+    [EnableCors("CORSPolicy")]
     public class AuthController : Controller
     {
         private readonly ApplicationDbContext _context;

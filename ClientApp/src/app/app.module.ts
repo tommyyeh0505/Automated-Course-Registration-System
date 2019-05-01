@@ -5,11 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GradeComponent } from './components/grade/grade.component';
+import { DropFileDirective } from './directives/drop-file.directive';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { GradeComponent } from './components/grade/grade.component';
     UploadComponent,
     DashboardComponent,
     GradeComponent,
+    DropFileDirective
   ],
   imports: [
     MatTabsModule,
@@ -37,7 +39,8 @@ import { GradeComponent } from './components/grade/grade.component';
     MatListModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

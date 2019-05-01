@@ -10,7 +10,7 @@ namespace ACRS.Data
 {
     public static class DummyData
     {
-        public static async Task Initialize(IApplicationBuilder app)
+        public static void Initialize(IApplicationBuilder app)
         {
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
@@ -28,11 +28,8 @@ namespace ACRS.Data
                 var students = GetStudents().ToArray();
                 context.Students.AddRange(students);
                 context.SaveChanges();
-
-
             }
         }
-
 
         private static List<Course> GetCourses()
         {
@@ -40,19 +37,25 @@ namespace ACRS.Data
             {
                 new Course()
                 {
-                    CourseID = "COMP1000",
+                    CourseId = "INTD2360",
                     PassingGrade = 65,
+                    Term = "201820",
+                    CRN = "61912"
                 },
                 new Course()
                 {
-                    CourseID = "COMMP2000",
-                    PassingGrade = 100,
+                    CourseId = "COMMP4900",
+                    PassingGrade = 50,
+                    Term = "201930",
+                    CRN = "12346",
                     Prerequisites = new List<Prerequisite>(){GetPrerequisite1()}
                },
                 new Course()
                 {
-                    CourseID = "COMMP3000",
+                    CourseId = "COMMP3000",
                     PassingGrade = 50,
+                    Term = "20190",
+                    CRN = "65421",
                     Prerequisites = new List<Prerequisite>(){GetPrerequisite1()}
                },
             };
@@ -62,7 +65,7 @@ namespace ACRS.Data
         {
             return new Prerequisite()
             {
-                CourseID = "COMP1000",
+                CourseId = "COMP1000",
                 PrerequisiteCourseID = "COMP2000"
             };
         }
@@ -73,17 +76,17 @@ namespace ACRS.Data
             {
                 new Prerequisite()
                 {
-                    CourseID = "COMP2000",
+                    CourseId = "COMP2000",
                     PrerequisiteCourseID = "COMP1000"
                 },
                 new Prerequisite()
                 {
-                    CourseID = "COMP3000",
+                    CourseId = "COMP3000",
                     PrerequisiteCourseID = "COMP2000"
                 },
                 new Prerequisite()
                 {
-                    CourseID = "COMP2000",
+                    CourseId = "COMP2000",
                     PrerequisiteCourseID = "COMP1000"
                 },
             };
@@ -95,27 +98,27 @@ namespace ACRS.Data
             {
                 new Student()
                 {
-                    stdnumber = "A111111",
-                    stdname = "Tommy Yeh",
-                    email = "tommyyeh0505@hotail.com"
+                    StudentId = "A111111",
+                    SudentName = "Tommy Yeh",
+                    Email = "tommyyeh0505@hotail.com"
                 },
                 new Student()
                 {
-                    stdnumber = "A222222",
-                    stdname = "Eva Au",
-                    email = "Eva5@hotail.com"
+                    StudentId = "A222222",
+                    SudentName = "Eva Au",
+                    Email = "Eva5@hotail.com"
                 },
                 new Student()
                 {
-                    stdnumber = "A333333",
-                    stdname = "Andy Tang",
-                    email = "AndyTang@hotail.com"
+                    StudentId = "A333333",
+                    SudentName = "Andy Tang",
+                    Email = "AndyTang@hotail.com"
                 },
                 new Student()
                 {
-                    stdnumber = "A444444",
-                    stdname = "Mike Hoang",
-                    email = "Mikeg@hotail.com"
+                    StudentId = "A444444",
+                    SudentName = "Mike Hoang",
+                    Email = "Mikeg@hotail.com"
                 },
             };
         }

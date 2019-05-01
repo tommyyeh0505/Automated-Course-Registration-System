@@ -1,6 +1,3 @@
-<input #file type="file" multiple (change)="upload(file.files)" />
-<p>asdf</p>
-<h1>asdfasdfasdfawef</h1>
-<br/>
-<span *ngIf="progress > 0">{{progress}}%</span>
-<span  *ngIf="message">{{message}}</span>
+<div class="filedrop" appDropFile (progressEvent)="onProgress($event)" defaultColor="#ffffff" hoverColor="#e2e2e2">
+    <span class="progress">{{progress}}%</span>
+</div>

@@ -47,15 +47,15 @@ export class DashboardComponent {
       }],
       [{
         "name": "Courses ",
-        "value": 15
+        "value": 259
       }],
       [{
-        "name": "Waitlist ",
+        "name": "Waitlists ",
         "value": 1512
       }],
       [{
         "name": "Accounts ",
-        "value": 3
+        "value": 15
       }]
     ]
       ;

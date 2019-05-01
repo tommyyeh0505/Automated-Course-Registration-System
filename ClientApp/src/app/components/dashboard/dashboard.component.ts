@@ -13,7 +13,7 @@ export class DashboardComponent {
   single: any[];
   multi: any[];
 
-  view: any[] = [500, 300];
+  view: any[] = [500, 250];
 
   colorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', 'pink']
@@ -59,7 +59,14 @@ export class DashboardComponent {
       }]
     ]
       ;
+
   }
+  ngOnInit(): void {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    },1); // BUGFIX:
+  }
+
 
 
 }

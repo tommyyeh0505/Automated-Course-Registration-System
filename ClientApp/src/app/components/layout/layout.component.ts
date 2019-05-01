@@ -11,6 +11,7 @@ import {
 } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { Observable } from 'rxjs';
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.css']
 })
+
 export class LayoutComponent {
 
 
@@ -26,5 +28,11 @@ export class LayoutComponent {
             map(result => result.matches)
         );
 
-    constructor(private breakpointObserver: BreakpointObserver) { }
+    constructor(private breakpointObserver: BreakpointObserver, private authenticationService: AuthenticationService) { }
+
+    logout() {
+        this.authenticationService.logout();
+  
+    }
+    
 }

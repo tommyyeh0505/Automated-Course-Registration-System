@@ -24,14 +24,14 @@
             <a mat-list-item href="/account">
                 <mat-icon>account_box</mat-icon>Account
             </a>
-            <a mat-list-item href="/logout">
+            <a mat-list-item href="/logout" (click)="logout()">
                 <mat-icon>exit_to_app</mat-icon>Logout
             </a>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
 
-        <mat-toolbar color="primary">
+        <mat-toolbar color="accent">
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
                 *ngIf="isHandset$ | async">
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>

@@ -1,12 +1,13 @@
 :host {
   display: flex;
   justify-content: center;
-  margin: 100px 0px;
+  margin: 0px 0px;
+  
 }
 
 .mat-form-field {
   width: 100%;
-  min-width: 400px;
+  min-width:350px;
 }
 
 mat-card-title,
@@ -15,7 +16,11 @@ mat-card-content {
   justify-content: center;
 }
 
-
+mat-card{
+  margin:130px auto;
+  width:100%;
+  max-width: 400px;
+}
 
 .button {
   margin-top: 25px;

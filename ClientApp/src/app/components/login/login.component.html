@@ -1,29 +1,34 @@
-<mat-card>
-  <mat-card-header color="primary">
-    <mat-card-title>Login</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <p>
-        <mat-form-field appearance="outline">
-          <mat-label>Username</mat-label>
-          <input type="text" matInput placeholder="Username" formControlName="username" required>
-          <mat-error *ngIf="hasError()">{{getErrorMessage()}}</mat-error>
-        </mat-form-field>
-      </p>
+<div class="grid-container" style="height:100vh; width:100vw;background:url('/assets/img/background.jpg'); background-size:cover;  background-repeat: no-repeat;
+background-attachment: fixed;
+background-position: center;  ">
 
-      <p>
-        <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
-          <input type="password" matInput placeholder="Password" formControlName="password" required>
-        </mat-form-field>
-      </p>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <p>
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input type="text" matInput placeholder="Username" formControlName="username" required autofocus>
+            <mat-error *ngIf="hasError()">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </p>
+
+        <p>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput placeholder="Password" formControlName="password" required>
+          </mat-form-field>
+        </p>
 
 
-      <div class="button">
-        <button [disabled]="isLoading" mat-raised-button color="primary">Login</button>
-      </div>
+        <div class="button">
+          <button class="pulse waves-effect waves-light"[disabled]="isLoading" mat-raised-button color="accent">Login</button>
+        </div>
 
-    </form>
-  </mat-card-content>
-</mat-card>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

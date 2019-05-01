@@ -22,7 +22,7 @@ const routes: Routes = [
     ]
   },
   { path: 'login', component: LoginComponent },
-
+  { path: 'logout', redirectTo: 'login' },
   { path: '**', component: ErrorComponent }
 ];
 

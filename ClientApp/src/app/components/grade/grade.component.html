@@ -1,7 +1,7 @@
 <div class="grid-container">
-  <mat-tab-group mat-align-tabs="center">
+  <mat-tab-group mat-align-tabs="center" color="accent">
     <mat-tab label="COMP2413">
-      <mat-form-field style="margin-top:40px;">
+      <mat-form-field style="margin-top:40px;" color="accent">
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
 
@@ -35,7 +35,7 @@
 
         </table>
 
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" color="accent"></mat-paginator>
       </div>
     </mat-tab>
     <mat-tab label="COMP4153">COMP4153</mat-tab>

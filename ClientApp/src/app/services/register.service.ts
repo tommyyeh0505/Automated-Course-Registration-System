@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterModel } from '../models/registermodel';
+import { User } from '../models/user';
 import { map } from 'rxjs/operators';
 
 const endpoint = "https://fsassnbackend.azurewebsites.net/register";
@@ -19,7 +19,7 @@ export class RegisterService {
 
   constructor(private http: HttpClient) { }
 
-  register(model: RegisterModel) {
+  register(model: User) {
     return this.http.post<any>(endpoint, model)
       .pipe(map(result => {
         return result;

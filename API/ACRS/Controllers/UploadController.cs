@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ACRS.Data;
 using ACRS.Models;
@@ -21,7 +22,7 @@ namespace ACRS.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
-        ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
         public UploadController(ApplicationDbContext context)
         {
@@ -62,62 +63,69 @@ namespace ACRS.Controllers
                 {
 
                     var csv = new CsvReader(reader);
+
+                    // Skip headers
+                    csv.Read();
+                    csv.ReadHeader();
+
                     while (csv.Read())
                     {
-                        var term = csv[0];
-                        var crn = csv[1];
-                        var subject = csv[3];
-                        var courseNo = csv[4];
-                        var courseId = subject + courseNo;
-                        var courseTitle = csv[6];
+                        CsvData data = new CsvData(csv);
 
-                        var name = csv[14];
-
-                        var id = csv[15];
-
-                        //int.Parse(csv[33].Trim());
-                        var finalGrade = 60;
-                        var passingGrade = csv[40];
-
-                        Student student = CreateStudent(name, id, "AA@AA.AA");
-                        Grade grade = CreateGrade(id, crn, courseId, term, finalGrade);
-
-                        UpdateStudents(student);
-                        UpdateGrades(grade);
+                        UpdateDatabase(data);
                     }
                 }
             }
         }
 
-        private void UpdateStudents(Student student)
+        private bool UpdateDatabase(CsvData data)
         {
-            if (_context.Students.Any(s => s.StudentId == student.StudentId))
+            if (!_context.Students.Any(s => s.StudentId == data.StudentId))
             {
-                return;
+                _context.Students.Add(CreateStudent(data.StudentName, data.StudentId));
             }
 
-            _context.Students.Add(student);
-            _context.SaveChanges();
-        }
-
-        private void UpdateGrades(Grade grade)
-        {
-            if (!_context.Courses.Any(c => c.CRN == grade.CRN && c.Term == grade.Term))
+            // NOTE: Cannot make new course, don't have data to prerequisites
+            if (!_context.Courses.Any(c => c.CRN == data.CRN && c.Term == data.Term))
             {
-                return;
+                return false;
             }
 
-            _context.Grades.Add(grade);
+            Grade uploadedGrade = CreateGrade(data.StudentId, data.CRN, data.CourseId, data.Term, data.FinalGrade);
+
+            // If exception is thrown on this line, then there is more than one entry
+            // At most there should only be 1 entry in the database for the conditions below
+            Grade currentGrade = _context.Grades.Where(g => g.CourseId == data.CourseId &&
+                                                            g.StudentId == data.StudentId &&
+                                                            g.CRN == data.CRN &&
+                                                            g.Term == data.Term).SingleOrDefault();
+            if (currentGrade != null)
+            {
+                if (currentGrade.FinalGrade < uploadedGrade.FinalGrade)
+                {
+                    _context.Grades.Remove(currentGrade);
+                }
+                else
+                {
+                    // Grade in database is higher, ignore the newer one
+                    _context.SaveChanges();
+                    return true;
+                }
+            }
+
+            _context.Grades.Add(uploadedGrade);
+
             _context.SaveChanges();
+
+            return true;
         }
 
-        private Student CreateStudent(string name, string id, string email)
+        private Student CreateStudent(string name, string id)
         {
             return new Student()
             {
-                SudentName = name,
-                StudentId = id,
-                Email = email
+                StudentName = name,
+                StudentId = id
             };
         }
 
@@ -132,5 +140,6 @@ namespace ACRS.Controllers
                 FinalGrade = grade
             };
         }
+
     }
 }

@@ -70,7 +70,7 @@ namespace ACRS
 
             var host = Configuration["DBHOST"] ?? "localhost";
             var port = Configuration["DBPORT"] ?? "3306";
-            var password = Configuration["DBPASSWORD"] ?? "cunbong0812";
+            var password = Configuration["DBPASSWORD"] ?? "password";
             var db = Configuration["DBNAME"] ?? "ACRS";
             services.AddDbContext<ApplicationDbContext>(options =>
             {

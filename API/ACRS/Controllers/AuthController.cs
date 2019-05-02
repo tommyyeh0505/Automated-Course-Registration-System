@@ -194,16 +194,15 @@ namespace ACRS
                 return NotFound();
             }
 
-             _context.User.Remove(user);
-            await _context.SaveChangesAsync();
+            await _userManager.DeleteAsync(user);
 
-            return user;
+            return Ok();
         }
 
 
-        private bool UserExists(string id)
+        private Task<IdentityUser> UserExists(string id)
         {
-            return _context.User.Any(e => e.Username == id);
+            return _userManager.FindByIdAsync(id);
         }
     }
 }

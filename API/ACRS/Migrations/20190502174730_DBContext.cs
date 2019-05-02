@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ACRS.Migrations
 {
-    public partial class update1 : Migration
+    public partial class DBContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

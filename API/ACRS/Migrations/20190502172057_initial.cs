@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ACRS.Migrations
 {
-    public partial class _5 : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,37 +51,56 @@ namespace ACRS.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    CourseID = table.Column<string>(nullable: false),
+                    CourseId = table.Column<string>(nullable: false),
+                    CRN = table.Column<string>(nullable: false),
+                    Term = table.Column<string>(nullable: false),
                     PassingGrade = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.CourseID);
+                    table.PrimaryKey("PK_Courses", x => x.CourseId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    GradeId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    StudentId = table.Column<string>(nullable: true),
+                    CRN = table.Column<string>(nullable: true),
+                    CourseId = table.Column<string>(nullable: true),
+                    Term = table.Column<string>(nullable: true),
+                    FinalGrade = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.GradeId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
-                    stdnumber = table.Column<string>(nullable: false),
-                    stdname = table.Column<string>(nullable: false),
-                    email = table.Column<string>(nullable: false)
+                    StudentId = table.Column<string>(nullable: false),
+                    StudentName = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.stdnumber);
+                    table.PrimaryKey("PK_Students", x => x.StudentId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
-                    username = table.Column<string>(maxLength: 20, nullable: false),
-                    password = table.Column<string>(maxLength: 20, nullable: false)
+                    Username = table.Column<string>(maxLength: 20, nullable: false),
+                    Password = table.Column<string>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.username);
+                    table.PrimaryKey("PK_User", x => x.Username);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,7 +108,7 @@ namespace ACRS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -110,7 +129,7 @@ namespace ACRS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -195,18 +214,18 @@ namespace ACRS.Migrations
                 columns: table => new
                 {
                     PrerequisiteId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CourseID = table.Column<string>(nullable: true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CourseId = table.Column<string>(nullable: true),
                     PrerequisiteCourseID = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Prerequisite", x => x.PrerequisiteId);
                     table.ForeignKey(
-                        name: "FK_Prerequisite_Courses_CourseID",
-                        column: x => x.CourseID,
+                        name: "FK_Prerequisite_Courses_CourseId",
+                        column: x => x.CourseId,
                         principalTable: "Courses",
-                        principalColumn: "CourseID",
+                        principalColumn: "CourseId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -229,8 +248,7 @@ namespace ACRS.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -256,13 +274,12 @@ namespace ACRS.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prerequisite_CourseID",
+                name: "IX_Prerequisite_CourseId",
                 table: "Prerequisite",
-                column: "CourseID");
+                column: "CourseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -281,6 +298,9 @@ namespace ACRS.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Grades");
 
             migrationBuilder.DropTable(
                 name: "Prerequisite");

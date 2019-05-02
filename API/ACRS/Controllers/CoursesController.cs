@@ -25,7 +25,9 @@ namespace ACRS.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Courses
+                .Include(e => e.Prerequisites)
+                .ToListAsync();
         }
 
         // GET: api/Courses/5
@@ -78,7 +80,6 @@ namespace ACRS.Controllers
         {
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
         }
 

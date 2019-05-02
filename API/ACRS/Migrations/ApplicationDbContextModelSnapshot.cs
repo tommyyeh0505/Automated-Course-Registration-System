@@ -3,6 +3,7 @@ using System;
 using ACRS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ACRS.Migrations
@@ -15,7 +16,8 @@ namespace ACRS.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ACRS.Models.Course", b =>
                 {
@@ -38,13 +40,18 @@ namespace ACRS.Migrations
             modelBuilder.Entity("ACRS.Models.Grade", b =>
                 {
                     b.Property<int>("GradeId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CRN");
 
                     b.Property<string>("CourseId");
 
+                    b.Property<DateTime>("EndDate");
+
                     b.Property<double>("FinalGrade");
+
+                    b.Property<DateTime>("StartDate");
 
                     b.Property<string>("StudentId");
 
@@ -58,7 +65,8 @@ namespace ACRS.Migrations
             modelBuilder.Entity("ACRS.Models.Prerequisite", b =>
                 {
                     b.Property<int>("PrerequisiteId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CourseId");
 
@@ -68,7 +76,7 @@ namespace ACRS.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Prerequisite");
+                    b.ToTable("Prerequisites");
                 });
 
             modelBuilder.Entity("ACRS.Models.Student", b =>
@@ -101,6 +109,23 @@ namespace ACRS.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("ACRS.Models.WaitList", b =>
+                {
+                    b.Property<int>("WaitListID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CourseID")
+                        .IsRequired();
+
+                    b.Property<string>("StudentID")
+                        .IsRequired();
+
+                    b.HasKey("WaitListID");
+
+                    b.ToTable("WaitLists");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -119,7 +144,8 @@ namespace ACRS.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
 
@@ -141,7 +167,8 @@ namespace ACRS.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 
@@ -202,7 +229,8 @@ namespace ACRS.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -210,7 +238,8 @@ namespace ACRS.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 

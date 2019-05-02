@@ -22,4 +22,8 @@
        <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
    </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20190430181822_5.Designer.cs" />
+    <Compile Remove="Migrations\20190430181822_5.cs" />
+  </ItemGroup>
 </Project>

@@ -76,6 +76,7 @@ namespace ACRS
 
         // GET: api/Auth
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.User.ToListAsync();

@@ -1,5 +1,6 @@
 ﻿using ACRS.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace ACRS.Data
 {
     public static class DummyData
     {
-        public static void Initialize(IApplicationBuilder app)
+        public static async Task Initialize(IApplicationBuilder app, UserManager<User> userManager)
         {
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
@@ -29,24 +30,25 @@ namespace ACRS.Data
                 context.Students.AddRange(students);
                 context.SaveChanges();
 
-                var users = GetUsers().ToArray();
-                context.User.AddRange(users);
-                context.SaveChanges();
+                const string defaultPassword = "adminpw";
 
+                if (await userManager.FindByNameAsync("a") == null)
+                {
+                    User user = new User()
+                    {
+                        Username = "Admintest"
+     
+                    };
+
+                    var result = await userManager.CreateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddPasswordAsync(user, defaultPassword);
+                    }
+                }
             }
         }
 
-
-        private static List<User> GetUsers()
-        {
-            return new List<User>()
-            {
-                new User(){
-                Username = "testbcit",
-                Password = "test123"
-                }
-            };
-        }
 
 
         private static List<Course> GetCourses()

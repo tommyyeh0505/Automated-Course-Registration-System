@@ -76,6 +76,7 @@ namespace ACRS
 
         // GET: api/Auth
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.User.ToListAsync();
@@ -96,31 +97,31 @@ namespace ACRS
             return user;
         }
 
-        [Authorize]
-        //POST: api/Auth/register
-        [Route("register")]
-        [HttpPost]
-        public async Task<ActionResult> InsertUser([FromBody] User model)
-        {
+        //[Authorize]
+        ////POST: api/Auth/register
+        //[Route("register")]
+        //[HttpPost]
+        //public async Task<ActionResult> InsertUser([FromBody] User model)
+        //{
 
-            if (UserExists(model.Username))
-            {
-                return BadRequest();
-            }
+        //    if (UserExists(model.Username))
+        //    {
+        //        return BadRequest();
+        //    }
 
 
-            var user = new IdentityUser
-            {
-                UserName = model.Username,
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, "ADMIN");
-            }
-            return Ok(new { Username = user.UserName });
-        }
+        //    var user = new IdentityUser
+        //    {
+        //        UserName = model.Username,
+        //        SecurityStamp = Guid.NewGuid().ToString()
+        //    };
+        //    var result = await _userManager.CreateAsync(user, model.Password);
+        //    if (result.Succeeded)
+        //    {
+        //        await _userManager.AddToRoleAsync(user, "ADMIN");
+        //    }
+        //    return Ok(new { Username = user.UserName });
+        //}
 
 
         //POST: api/Auth/

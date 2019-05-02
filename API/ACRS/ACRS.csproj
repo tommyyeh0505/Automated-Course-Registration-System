@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>
 
       <ItemGroup>
@@ -25,5 +26,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190430181822_5.Designer.cs" />
     <Compile Remove="Migrations\20190430181822_5.cs" />
+    <Compile Remove="Migrations\20190502172730_update 1.Designer.cs" />
+    <Compile Remove="Migrations\20190502172730_update 1.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 </Project>

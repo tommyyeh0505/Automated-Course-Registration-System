@@ -32,6 +32,8 @@ namespace ACRS.Controllers
         [HttpPost, DisableRequestSizeLimit]
         public ActionResult Upload()
         {
+            List<string> failedFiles = new List<string>();
+
             var files = Request.Form.Files;
 
             if (files.Count == 0)
@@ -44,7 +46,10 @@ namespace ACRS.Controllers
                 if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
                     Trace.WriteLine($"Parsing: {file.Name}");
-                    ParseCsv(file);
+                    if (!ParseCsv(file))
+                    {
+                        failedFiles.Add(file.Name);
+                    }
                 }
                 else
                 {
@@ -52,11 +57,13 @@ namespace ACRS.Controllers
                 }
             }
 
-            return Ok();
+            return Ok(failedFiles);
         }
 
-        private void ParseCsv(IFormFile file)
+        private bool ParseCsv(IFormFile file)
         {
+            bool status = false;
+
             using (var stream = file.OpenReadStream())
             {
                 using (var reader = new StreamReader(stream))
@@ -70,12 +77,25 @@ namespace ACRS.Controllers
 
                     while (csv.Read())
                     {
-                        CsvData data = new CsvData(csv);
+                        try
+                        {
+                            CsvData data = new CsvData(csv);
+                            status = UpdateDatabase(data);
+                        }
+                        catch (Exception ex)
+                        {
+                            return false;
+                        }
+                    }
 
-                        UpdateDatabase(data);
+                    if (!status)
+                    {
+                        return false;
                     }
                 }
             }
+
+            return true;
         }
 
         private bool UpdateDatabase(CsvData data)

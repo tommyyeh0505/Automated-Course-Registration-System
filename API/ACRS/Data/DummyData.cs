@@ -28,8 +28,26 @@ namespace ACRS.Data
                 var students = GetStudents().ToArray();
                 context.Students.AddRange(students);
                 context.SaveChanges();
+
+                var users = GetUsers().ToArray();
+                context.User.AddRange(users);
+                context.SaveChanges();
+
             }
         }
+
+
+        private static List<User> GetUsers()
+        {
+            return new List<User>()
+            {
+                new User(){
+                Username = "testbcit",
+                Password = "test123"
+                }
+            };
+        }
+
 
         private static List<Course> GetCourses()
         {
@@ -99,25 +117,25 @@ namespace ACRS.Data
                 new Student()
                 {
                     StudentId = "A111111",
-                    SudentName = "Tommy Yeh",
+                    StudentName = "Tommy Yeh",
                     Email = "tommyyeh0505@hotail.com"
                 },
                 new Student()
                 {
                     StudentId = "A222222",
-                    SudentName = "Eva Au",
+                    StudentName = "Eva Au",
                     Email = "Eva5@hotail.com"
                 },
                 new Student()
                 {
                     StudentId = "A333333",
-                    SudentName = "Andy Tang",
+                    StudentName = "Andy Tang",
                     Email = "AndyTang@hotail.com"
                 },
                 new Student()
                 {
                     StudentId = "A444444",
-                    SudentName = "Mike Hoang",
+                    StudentName = "Mike Hoang",
                     Email = "Mikeg@hotail.com"
                 },
             };

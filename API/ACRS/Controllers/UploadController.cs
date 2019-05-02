@@ -92,6 +92,10 @@ namespace ACRS.Controllers
                     {
                         return false;
                     }
+                    else
+                    {
+                        _context.SaveChanges();
+                    }
                 }
             }
 
@@ -116,9 +120,8 @@ namespace ACRS.Controllers
             // If exception is thrown on this line, then there is more than one entry
             // At most there should only be 1 entry in the database for the conditions below
             Grade currentGrade = _context.Grades.Where(g => g.CourseId == data.CourseId &&
-                                                            g.StudentId == data.StudentId &&
-                                                            g.CRN == data.CRN &&
-                                                            g.Term == data.Term).SingleOrDefault();
+                                                            g.StudentId == data.StudentId
+                                                            ).SingleOrDefault();
             if (currentGrade != null)
             {
                 if (currentGrade.FinalGrade < uploadedGrade.FinalGrade)
@@ -128,14 +131,11 @@ namespace ACRS.Controllers
                 else
                 {
                     // Grade in database is higher, ignore the newer one
-                    _context.SaveChanges();
                     return true;
                 }
             }
 
             _context.Grades.Add(uploadedGrade);
-
-            _context.SaveChanges();
 
             return true;
         }

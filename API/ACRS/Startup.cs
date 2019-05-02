@@ -42,11 +42,13 @@ namespace ACRS
             }).AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddAuthentication(option => {
+            services.AddAuthentication(option =>
+            {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options => {
+            }).AddJwtBearer(options =>
+            {
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = true;
                 options.TokenValidationParameters = new TokenValidationParameters()
@@ -59,7 +61,6 @@ namespace ACRS
                 };
             });
 
-
             services.AddCors(o => o.AddPolicy("CORSPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -67,9 +68,10 @@ namespace ACRS
                        .AllowAnyHeader();
             }));
 
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=ACRS;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<ApplicationDbContext>
-                (options => options.UseSqlServer(connection));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -84,6 +86,7 @@ namespace ACRS
             {
                 app.UseHsts();
             }
+
             app.UseCors("CORSPolicy");
             app.UseHttpsRedirection();
             app.UseAuthentication();

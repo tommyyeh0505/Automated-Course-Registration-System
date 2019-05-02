@@ -29,5 +29,7 @@
     <Compile Remove="Migrations\20190502172730_update 1.Designer.cs" />
     <Compile Remove="Migrations\20190502172730_update 1.cs" />
     <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\20190502175242_DBContext.Designer.cs" />
+    <Compile Remove="Migrations\20190502175242_DBContext.cs" />
   </ItemGroup>
 </Project>

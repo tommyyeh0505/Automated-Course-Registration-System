@@ -1,9 +1,12 @@
 .filedrop {
+    border: 2px white dotted;
     width: 100%;
-    height: 100%;
+    height: 50%;
     overflow: hidden;
     text-align: center;
     display:table;
+    position: absolute;
+    bottom:0px;
 }
 
 .progress {
@@ -11,4 +14,8 @@
     font-size: 72pt;
     display:table-cell;
     vertical-align:middle;
+}
+
+.normal{
+    font-size: 20pt;
 }

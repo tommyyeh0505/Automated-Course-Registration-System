@@ -68,9 +68,19 @@ namespace ACRS
                        .AllowAnyHeader();
             }));
 
+            var host = Configuration["DBHOST"] ?? "localhost";
+            var port = Configuration["DBPORT"] ?? "3306";
+            var password = Configuration["DBPASSWORD"] ?? "password";
+            var db = Configuration["DBNAME"] ?? "ACRS";
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseMySql($"server={host}; userid=root; pwd={password};"
+                    + $"port={port}; database={db}");
+            });
+
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseMySql(
+            //        Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

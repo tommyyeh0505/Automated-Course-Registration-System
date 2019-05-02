@@ -127,19 +127,21 @@ namespace ACRS
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-            [ValidateAntiForgeryToken]
-            public async Task<ActionResult<User>> PostUser([Bind("username,password")] User user)
-            {
-                _context.User.Add(user);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction("GetUser", new { id = user.Username }, user);
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult<User>> PostUser([Bind("username,password")] User user)
+        {
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetUser", new { id = user.Username }, user);
 
-            }
+        }
 
 
         // PUT: api/Auth/1
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPut("{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PutUser(string id, [Bind("username,password")] User user)
@@ -174,6 +176,7 @@ namespace ACRS
         }
 
         // DELETE: api/Auth//5
+        [Authorize]
         [HttpDelete("{id}")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<User>> DeleteUser(string id)

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ACRS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190502172057_initial")]
-    partial class initial
+    [Migration("20190502172730_update 1")]
+    partial class update1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

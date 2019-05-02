@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ACRS.Migrations
 {
-    public partial class _5 : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,37 +51,72 @@ namespace ACRS.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    CourseID = table.Column<string>(nullable: false),
+                    CourseId = table.Column<string>(nullable: false),
+                    CRN = table.Column<string>(nullable: false),
+                    Term = table.Column<string>(nullable: false),
                     PassingGrade = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.CourseID);
+                    table.PrimaryKey("PK_Courses", x => x.CourseId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    GradeId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    StudentId = table.Column<string>(nullable: true),
+                    CRN = table.Column<string>(nullable: true),
+                    CourseId = table.Column<string>(nullable: true),
+                    Term = table.Column<string>(nullable: true),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    FinalGrade = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.GradeId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
-                    stdnumber = table.Column<string>(nullable: false),
-                    stdname = table.Column<string>(nullable: false),
-                    email = table.Column<string>(nullable: false)
+                    StudentId = table.Column<string>(nullable: false),
+                    StudentName = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.stdnumber);
+                    table.PrimaryKey("PK_Students", x => x.StudentId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
-                    username = table.Column<string>(maxLength: 20, nullable: false),
-                    password = table.Column<string>(maxLength: 20, nullable: false)
+                    Username = table.Column<string>(maxLength: 20, nullable: false),
+                    Password = table.Column<string>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.username);
+                    table.PrimaryKey("PK_User", x => x.Username);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WaitLists",
+                columns: table => new
+                {
+                    WaitListID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    StudentID = table.Column<string>(nullable: false),
+                    CourseID = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WaitLists", x => x.WaitListID);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,22 +226,22 @@ namespace ACRS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Prerequisite",
+                name: "Prerequisites",
                 columns: table => new
                 {
                     PrerequisiteId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CourseID = table.Column<string>(nullable: true),
+                    CourseId = table.Column<string>(nullable: true),
                     PrerequisiteCourseID = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Prerequisite", x => x.PrerequisiteId);
+                    table.PrimaryKey("PK_Prerequisites", x => x.PrerequisiteId);
                     table.ForeignKey(
-                        name: "FK_Prerequisite_Courses_CourseID",
-                        column: x => x.CourseID,
+                        name: "FK_Prerequisites_Courses_CourseId",
+                        column: x => x.CourseId,
                         principalTable: "Courses",
-                        principalColumn: "CourseID",
+                        principalColumn: "CourseId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -260,9 +295,9 @@ namespace ACRS.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prerequisite_CourseID",
-                table: "Prerequisite",
-                column: "CourseID");
+                name: "IX_Prerequisites_CourseId",
+                table: "Prerequisites",
+                column: "CourseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -283,13 +318,19 @@ namespace ACRS.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Prerequisite");
+                name: "Grades");
+
+            migrationBuilder.DropTable(
+                name: "Prerequisites");
 
             migrationBuilder.DropTable(
                 name: "Students");
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "WaitLists");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

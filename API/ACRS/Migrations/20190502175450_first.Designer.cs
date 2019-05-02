@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ACRS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190501010323_updated1")]
-    partial class updated1
+    [Migration("20190502175450_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,7 +78,7 @@ namespace ACRS.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Prerequisite");
+                    b.ToTable("Prerequisites");
                 });
 
             modelBuilder.Entity("ACRS.Models.Student", b =>
@@ -88,7 +88,7 @@ namespace ACRS.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<string>("SudentName")
+                    b.Property<string>("StudentName")
                         .IsRequired();
 
                     b.HasKey("StudentId");
@@ -109,6 +109,23 @@ namespace ACRS.Migrations
                     b.HasKey("Username");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ACRS.Models.WaitList", b =>
+                {
+                    b.Property<int>("WaitListID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CourseID")
+                        .IsRequired();
+
+                    b.Property<string>("StudentID")
+                        .IsRequired();
+
+                    b.HasKey("WaitListID");
+
+                    b.ToTable("WaitLists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

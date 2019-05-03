@@ -43,7 +43,7 @@ namespace ACRS.Models
             {
                 return int.Parse(numbers.First());
             }
-            catch (FormatException ex)
+            catch (Exception)
             {
                 return 65;
             }

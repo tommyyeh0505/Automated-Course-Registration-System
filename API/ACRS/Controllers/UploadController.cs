@@ -108,7 +108,7 @@ namespace ACRS.Controllers
                 _context.Students.Add(CreateStudent(data.StudentName, data.StudentId));
             }
 
-            if (!_context.Courses.Any(c => c.CRN == data.CRN && c.Term == data.Term))
+            if (!_context.Courses.Any(c => c.CourseId == data.CourseId))
             {
                 return false;
             }

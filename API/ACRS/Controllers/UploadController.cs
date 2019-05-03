@@ -32,32 +32,31 @@ namespace ACRS.Controllers
         [HttpPost, DisableRequestSizeLimit]
         public ActionResult Upload()
         {
-            List<string> failedFiles = new List<string>();
+            List<UploadError> failed = new List<UploadError>();
 
             var files = Request.Form.Files;
 
             if (files.Count == 0)
             {
-                return BadRequest("No files");
+                return BadRequest();
             }
 
             foreach (var file in files)
             {
                 if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
-                    Trace.WriteLine($"Parsing: {file.Name}");
                     if (!ParseCsv(file))
                     {
-                        failedFiles.Add(file.Name);
+                        failed.Add(new UploadError { FileName = file.Name, Reason = "Invalid record or course may not have been created yet" });
                     }
                 }
                 else
                 {
-                    Trace.WriteLine($"File has 0 bytes or is not a .csv file - Skipping: {file.Name}");
+                    failed.Add(new UploadError { FileName = file.Name, Reason = "File has 0 bytes or is not a .csv file" });
                 }
             }
 
-            return Ok(failedFiles);
+            return Accepted(failed);
         }
 
         private bool ParseCsv(IFormFile file)
@@ -82,7 +81,7 @@ namespace ACRS.Controllers
                             CsvData data = new CsvData(csv);
                             status = UpdateDatabase(data);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             return false;
                         }
@@ -109,7 +108,6 @@ namespace ACRS.Controllers
                 _context.Students.Add(CreateStudent(data.StudentName, data.StudentId));
             }
 
-            // NOTE: Cannot make new course, don't have data to prerequisites
             if (!_context.Courses.Any(c => c.CRN == data.CRN && c.Term == data.Term))
             {
                 return false;
@@ -120,8 +118,7 @@ namespace ACRS.Controllers
             // If exception is thrown on this line, then there is more than one entry
             // At most there should only be 1 entry in the database for the conditions below
             Grade currentGrade = _context.Grades.Where(g => g.CourseId == data.CourseId &&
-                                                            g.StudentId == data.StudentId
-                                                            ).SingleOrDefault();
+                                                            g.StudentId == data.StudentId).SingleOrDefault();
             if (currentGrade != null)
             {
                 if (currentGrade.FinalGrade < uploadedGrade.FinalGrade)
@@ -130,7 +127,6 @@ namespace ACRS.Controllers
                 }
                 else
                 {
-                    // Grade in database is higher, ignore the newer one
                     return true;
                 }
             }

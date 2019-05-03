@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using ACRS.Models;
 
 namespace ACRS
 {
@@ -70,7 +71,7 @@ namespace ACRS
 
             var host = Configuration["DBHOST"] ?? "localhost";
             var port = Configuration["DBPORT"] ?? "3306";
-            var password = Configuration["DBPASSWORD"] ?? "puiyi1206";
+            var password = Configuration["DBPASSWORD"] ?? "P@$$w0rd";
             var db = Configuration["DBNAME"] ?? "ACRS";
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -102,7 +103,7 @@ namespace ACRS
             app.UseAuthentication();
             app.UseMvc();
 
-            DummyData.Initialize(app);
+            DummyData.Initialize(app).Wait();
         }
     }
 }

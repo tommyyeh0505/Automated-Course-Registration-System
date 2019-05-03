@@ -24,14 +24,14 @@ namespace ACRS
     [EnableCors("CORSPolicy")]
     public class AuthController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
         private IConfiguration _config;
         private readonly UserManager<IdentityUser> _userManager;
 
         public AuthController(UserManager<IdentityUser> userManager, ApplicationDbContext context, IConfiguration config)
         {
             _userManager = userManager;
-            _context = context;
+            //_context = context;
             _config = config;
         }
 
@@ -76,51 +76,54 @@ namespace ACRS
 
         // GET: api/Auth
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        [Authorize]
+        public ActionResult GetUsers()
         {
-            return await _context.User.ToListAsync();
+            //return await _userManager.Users.ToListAsync();
+            return Ok(_userManager.Users.ToList());
         }
 
         // GET: api/Auth/1
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<User>> GetUser(string username)
         {
 
-            var user = await _context.User.FirstOrDefaultAsync(m => m.Username == username);
+            var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return (Microsoft.AspNetCore.Mvc.ActionResult<ACRS.Models.User>)user;
         }
 
-        [Authorize]
-        //POST: api/Auth/register
-        [Route("register")]
-        [HttpPost]
-        public async Task<ActionResult> InsertUser([FromBody] User model)
-        {
+        //[Authorize]
+        ////POST: api/Auth/register
+        //[Route("register")]
+        //[HttpPost]
+        //public async Task<ActionResult> InsertUser([FromBody] User model)
+        //{
 
-            if (UserExists(model.Username))
-            {
-                return BadRequest();
-            }
+        //    if (UserExists(model.Username))
+        //    {
+        //        return BadRequest();
+        //    }
 
 
-            var user = new IdentityUser
-            {
-                UserName = model.Username,
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, "ADMIN");
-            }
-            return Ok(new { Username = user.UserName });
-        }
+        //    var user = new IdentityUser
+        //    {
+        //        UserName = model.Username,
+        //        SecurityStamp = Guid.NewGuid().ToString()
+        //    };
+        //    var result = await _userManager.CreateAsync(user, model.Password);
+        //    if (result.Succeeded)
+        //    {
+        //        await _userManager.AddToRoleAsync(user, "ADMIN");
+        //    }
+        //    return Ok(new { Username = user.UserName });
+        //}
 
 
         //POST: api/Auth/
@@ -131,9 +134,19 @@ namespace ACRS
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<User>> PostUser([Bind("username,password")] User user)
         {
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetUser", new { id = user.Username }, user);
+            if (user.Username == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.CreateAsync(user);
+            if (result.Succeeded)
+            {
+                await _userManager.AddPasswordAsync(user, user.Password);
+                await _userManager.AddToRoleAsync(user, "Admin");
+            }
+
+            return Ok();
 
         }
 
@@ -153,23 +166,16 @@ namespace ACRS
 
             if (ModelState.IsValid)
             {
-                try
+                IdentityUser temp = await _userManager.FindByIdAsync(user.Id);
+
+                user = new User
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.Username))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                
+
+                    Username = user.UserName,
+                    PasswordHash = user.PasswordHash
+                };
+
+                await _userManager.UpdateAsync(user);
             }
 
           return NoContent();
@@ -181,23 +187,22 @@ namespace ACRS
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<User>> DeleteUser(string id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-             _context.User.Remove(user);
-            await _context.SaveChangesAsync();
+            await _userManager.DeleteAsync(user);
 
-            return user;
+            return Ok();
         }
 
 
-        private bool UserExists(string id)
+        private Task<IdentityUser> UserExists(string id)
         {
-            return _context.User.Any(e => e.Username == id);
+            return _userManager.FindByIdAsync(id);
         }
     }
 }

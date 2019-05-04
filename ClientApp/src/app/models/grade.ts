@@ -5,4 +5,5 @@ export interface Grade {
     courseId: string;
     term: string;
     finalGrade: number;
+    attempts: number;
 }

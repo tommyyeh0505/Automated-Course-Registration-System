@@ -35,7 +35,7 @@ namespace ACRS.Data
 
                 User admin = new User
                 {
-                    UserName = "admin"
+                    Username = "admin"
                 };
 
                 var result = await userManager.CreateAsync(admin, defaultPassword);

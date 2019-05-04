@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 })
 
 export class GradeComponent implements OnInit {
-  displayedColumns: string[] = ['gradeId', 'finalGrade', 'studentId'];
+  displayedColumns: string[] = ['gradeId', 'studentId', 'finalGrade', 'attempts'];
   dataSource: MatTableDataSource<Grade>;
   grades: Grade[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;

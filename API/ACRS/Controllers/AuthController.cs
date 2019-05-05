@@ -16,6 +16,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Http;
 
 namespace ACRS
 {
@@ -83,6 +84,49 @@ namespace ACRS
             return Unauthorized();
         }
 
+        //[Authorize]
+        [HttpPost, Route("register")]
+        public async Task<ActionResult<AuthRegister>> Register([FromBody] AuthRegister user)
+        {
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var passwordValidator = new PasswordValidator<IdentityUser>();
+            if (!(await passwordValidator.ValidateAsync(_userManager, null, user.Password)).Succeeded)
+            {
+                return BadRequest("Password is too weak");
+            }
+
+            if (await _userManager.FindByNameAsync(user.UserName) != null)
+            {
+                return BadRequest($"User with username: {user.UserName} already exists");
+            }
+
+            IdentityUser newUser = new IdentityUser
+            {
+                UserName = user.UserName
+            };
+
+            var result = await _userManager.CreateAsync(newUser);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddPasswordAsync(newUser, user.Password);
+
+                // Admin is the only role!
+                await _userManager.AddToRoleAsync(newUser, "Admin");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return CreatedAtAction("GetUsers", new { userName = newUser.UserName });
+        }
+
+        //[Authorize]
         [HttpGet, Route("users")]
         public async Task<ActionResult<IEnumerable<string>>> GetUsers()
         {

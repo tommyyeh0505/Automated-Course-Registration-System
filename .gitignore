@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Migrations folder
+/API/ACRS/Migrations/**
+!/API/ACRS/Migrations/.gitkeep 
+
 # User-specific files
 *.rsuser
 *.suo

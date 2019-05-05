@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using ACRS.Models;
 
 namespace ACRS
 {
@@ -102,7 +103,7 @@ namespace ACRS
             app.UseAuthentication();
             app.UseMvc();
 
-            DummyData.Initialize(app);
+            DummyData.Initialize(app).Wait();
         }
     }
 }

@@ -11,11 +11,12 @@ namespace ACRS.Data
 {
     public static class DummyData
     {
-        public static async Task Initialize(IApplicationBuilder app, UserManager<User> userManager)
+        public static async Task Initialize(IApplicationBuilder app)
         {
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                UserManager<User> userManager = serviceScope.ServiceProvider.GetService<UserManager<User>>();
 
                 context.Database.EnsureCreated();
 
@@ -30,21 +31,18 @@ namespace ACRS.Data
                 context.Students.AddRange(students);
                 context.SaveChanges();
 
-                const string defaultPassword = "adminpw";
+                const string defaultPassword = "P@$$w0rd";
 
-                if (await userManager.FindByNameAsync("a") == null)
+                User admin = new User
                 {
-                    User user = new User()
-                    {
-                        Username = "Admintest"
-     
-                    };
+                    UserName = "admin"
+                };
 
-                    var result = await userManager.CreateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        await userManager.AddPasswordAsync(user, defaultPassword);
-                    }
+                var result = await userManager.CreateAsync(admin, defaultPassword);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
                 }
             }
         }

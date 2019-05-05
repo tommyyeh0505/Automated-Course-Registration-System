@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 
 namespace ACRS
 {
@@ -120,7 +121,7 @@ namespace ACRS
             }
             else
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(result.Errors);
             }
 
             return CreatedAtAction("GetUsers", new { userName = newUser.UserName });
@@ -174,15 +175,10 @@ namespace ACRS
 
             if (!result.Succeeded)
             {
-                return Unauthorized("Passwords do not match");
+                return BadRequest(result.Errors);
             }
 
             return NoContent();
-        }
-
-        private bool IsAnyNull(params object[] objects)
-        {
-            return objects.Any(o => o == null);
         }
     }
 }

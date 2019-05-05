@@ -84,9 +84,9 @@ namespace ACRS
         }
 
         [HttpGet, Route("users")]
-        public async Task<ActionResult<IEnumerable<IdentityUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<string>>> GetUsers()
         {
-            return await _userManager.Users.ToListAsync();
+            return await _userManager.Users.Select(u => u.UserName).ToListAsync();
         }
     }
 }

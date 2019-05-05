@@ -47,7 +47,6 @@ export class GradeComponent implements OnInit {
   }
   getGrades() {
     this.gradeServce.getGrades().subscribe((data: Grade[]) => {
-
       this.grades = data;
       this.initTable(this.grades);
     });

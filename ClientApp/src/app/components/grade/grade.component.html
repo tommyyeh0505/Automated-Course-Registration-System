@@ -15,9 +15,9 @@
           </ng-container>
 
           <ng-container matColumnDef="crn">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> CRN </th>
-              <td mat-cell *matCellDef="let row"> {{row.crn}} </td>
-            </ng-container>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> CRN </th>
+            <td mat-cell *matCellDef="let row"> {{row.crn}} </td>
+          </ng-container>
 
           <!-- Progress Column -->
           <ng-container matColumnDef="finalGrade">
@@ -33,10 +33,10 @@
 
 
           <ng-container matColumnDef="attempts">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Attempts </th>
-              <td mat-cell *matCellDef="let row"> {{row.attempts}} </td>
-            </ng-container>
-  
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Attempts </th>
+            <td mat-cell *matCellDef="let row"> {{row.attempts}} </td>
+          </ng-container>
+
 
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -45,8 +45,9 @@
 
 
         </table>
-
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" color="accent"></mat-paginator>
+
+
       </div>
     </mat-tab>
     <mat-tab label="COMP4153">COMP4153</mat-tab>

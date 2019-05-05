@@ -38,12 +38,15 @@ namespace ACRS.Data
                     Username = "admin"
                 };
 
+
                 var result = await userManager.CreateAsync(admin, defaultPassword);
 
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, "Admin");
                 }
+
+
             }
         }
 

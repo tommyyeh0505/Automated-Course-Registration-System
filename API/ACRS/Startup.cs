@@ -102,8 +102,9 @@ namespace ACRS
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
-
+          
             DummyData.Initialize(app).Wait();
+          
         }
     }
 }

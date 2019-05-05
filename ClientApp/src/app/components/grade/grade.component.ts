@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 })
 
 export class GradeComponent implements OnInit {
-  displayedColumns: string[] = ['gradeId', 'studentId', 'finalGrade', 'attempts'];
+  displayedColumns: string[] = ['gradeId', 'studentId', 'finalGrade', 'attempts', 'delete'];
   dataSource: MatTableDataSource<Grade>;
   grades: Grade[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -39,17 +39,30 @@ export class GradeComponent implements OnInit {
   ngOnInit() {
     this.getGrades();
   }
-  
+
+  initTable(data) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
   getGrades() {
     this.gradeServce.getGrades().subscribe((data: Grade[]) => {
+
       this.grades = data;
-      this.dataSource = new MatTableDataSource(this.grades);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.initTable(this.grades);
     });
 
   }
 
+
+  deleteGrade(grade: Grade) {
+    this.gradeServce.deleteGrade(grade);
+    let itemIndex = this.dataSource.data.findIndex(obj => obj.gradeId === grade.gradeId);
+    this.dataSource.data.splice(itemIndex, 1);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+  }
 
 
   applyFilter(filterValue: string) {

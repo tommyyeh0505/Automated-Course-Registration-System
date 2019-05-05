@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-const endpoint = `${environment.apiEndpoint}/courses`;
+const endpoint = environment.apiEndpoint + 'courses';
 @Injectable({
   providedIn: 'root'
 })

@@ -4,6 +4,7 @@ export class Course {
     public crn: string;
     public term: string;
     public passingGrade: number;
-    
+    public studentId: string;
+
 
 }

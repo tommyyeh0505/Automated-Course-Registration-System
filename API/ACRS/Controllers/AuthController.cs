@@ -132,5 +132,57 @@ namespace ACRS
         {
             return await _userManager.Users.Select(u => u.UserName).ToListAsync();
         }
+
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [HttpDelete("users/{username}")]
+        public async Task<ActionResult<object>> DeleteUser(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return NotFound();
+            }
+
+            return new { userName = username };
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [HttpPut("users/{username}")]
+        public async Task<IActionResult> UpdateUser(string username, [FromBody] AuthChangePassword request)
+        {
+            if (request == null || request.UserName != username)
+            {
+                return BadRequest();
+            }
+
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return Unauthorized("Passwords do not match");
+            }
+
+            return NoContent();
+        }
+
+        private bool IsAnyNull(params object[] objects)
+        {
+            return objects.Any(o => o == null);
+        }
     }
 }

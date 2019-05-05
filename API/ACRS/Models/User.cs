@@ -10,8 +10,6 @@ namespace ACRS.Models
         //other public variable start with Capital 
         public User() : base() { }
 
-        public User(string Username) : base(Username) { }
-
 
         [Key]
         [StringLength(20, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 4)]

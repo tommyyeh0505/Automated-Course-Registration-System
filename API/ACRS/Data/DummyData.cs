@@ -22,6 +22,7 @@ namespace ACRS.Data
 
                 if (context.Courses.Any()) { return; }
 
+
                 var courses = GetCourses().ToArray();
                 context.Courses.AddRange(courses);
                 context.SaveChanges();
@@ -29,15 +30,13 @@ namespace ACRS.Data
                 var students = GetStudents().ToArray();
                 context.Students.AddRange(students);
                 context.SaveChanges();
-                const string defaultPassword = "P@$$w0rd";
 
+                const string defaultPassword = "P@$$w0rd";
 
                 User admin = new User
                 {
-                    Username = "admin"
+                    UserName = "admin"
                 };
-
-
 
                 var result = await userManager.CreateAsync(admin, defaultPassword);
 
@@ -45,7 +44,6 @@ namespace ACRS.Data
                 {
                     await userManager.AddToRoleAsync(admin, "Admin");
                 }
-
             }
         }
 

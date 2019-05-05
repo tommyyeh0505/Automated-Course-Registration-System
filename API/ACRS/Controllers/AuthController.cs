@@ -83,6 +83,10 @@ namespace ACRS
             return Unauthorized();
         }
 
-
+        [HttpGet, Route("users")]
+        public async Task<ActionResult<IEnumerable<IdentityUser>>> GetUsers()
+        {
+            return await _userManager.Users.ToListAsync();
+        }
     }
 }

@@ -27,7 +27,7 @@ export class CourseService {
 
   ) {
     this.jwtHelper = new JwtHelperService();
-    if (this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
+    if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
       this.authService.logout();
       this.router.navigate(['login', { expired: true }]);
     }

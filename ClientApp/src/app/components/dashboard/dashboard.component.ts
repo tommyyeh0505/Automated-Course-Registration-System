@@ -78,8 +78,6 @@ export class DashboardComponent {
       this.router.navigate(['waitlist'])
     else if (name === 'Accounts') {
       this.router.navigate(['account'])
-
-
     }
 
 

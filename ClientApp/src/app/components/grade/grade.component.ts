@@ -36,7 +36,10 @@ export class GradeComponent implements OnInit {
 
 
   }
-
+  ngOnInit() {
+    this.getGrades();
+  }
+  
   getGrades() {
     this.gradeServce.getGrades().subscribe((data: Grade[]) => {
       this.grades = data;
@@ -47,9 +50,7 @@ export class GradeComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    this.getGrades();
-  }
+
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

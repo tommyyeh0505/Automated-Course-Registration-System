@@ -29,20 +29,8 @@ namespace ACRS
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<IdentityUser, IdentityRole>(
-            option =>
-            {
-                option.Password.RequireDigit = false;
-                option.Password.RequiredLength = 4;
-                option.Password.RequireNonAlphanumeric = false;
-                option.Password.RequireUppercase = false;
-                option.Password.RequireLowercase = false;
-            }).AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
-
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,6 +50,12 @@ namespace ACRS
                 };
             });
 
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Stores.MaxLengthForKeys = 128;
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+           .AddDefaultTokenProviders();
+
             services.AddCors(o => o.AddPolicy("CORSPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -79,15 +73,10 @@ namespace ACRS
                     + $"port={port}; database={db}");
             });
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseMySql(
-            //        Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -103,7 +92,7 @@ namespace ACRS
             app.UseAuthentication();
             app.UseMvc();
 
-            DummyData.Initialize(app).Wait();
+            DummyData.Initialize(app, userManager, roleManager).Wait();
         }
     }
 }

@@ -57,6 +57,7 @@ export class LoginComponent {
   hasError() {
     return this.authFailed;
   }
+  
   getErrorMessage() {
 
     return this.hasError() ? "Invalid Username or Password" : "";

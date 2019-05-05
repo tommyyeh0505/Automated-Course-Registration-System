@@ -7,10 +7,6 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 
 
-
-
-
-
 /**
  * @title Data table with sorting, pagination, and filtering.
  */
@@ -32,6 +28,7 @@ export class GradeComponent implements OnInit {
     private authService: AuthenticationService,
     private router: Router
   ) {
+    this.getGrades();
     // Create 100 users
 
 
@@ -42,7 +39,6 @@ export class GradeComponent implements OnInit {
 
   getGrades() {
     this.gradeServce.getGrades().subscribe((data: Grade[]) => {
-
       this.grades = data;
       this.dataSource = new MatTableDataSource(this.grades);
       this.dataSource.paginator = this.paginator;
@@ -53,7 +49,6 @@ export class GradeComponent implements OnInit {
 
   ngOnInit() {
     this.getGrades();
-
   }
 
   applyFilter(filterValue: string) {

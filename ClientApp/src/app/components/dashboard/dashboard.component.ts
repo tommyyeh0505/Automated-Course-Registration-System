@@ -17,7 +17,7 @@ export class DashboardComponent {
   view: any[] = [500, 250];
 
   colorScheme = {
-    domain: ['#F74385', '#AB28F7', '#2F72ED', '#28F78C']
+    domain: ['#f7ff26', '#AB28F7', '#2F72ED', '#28F78C']
   };
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(

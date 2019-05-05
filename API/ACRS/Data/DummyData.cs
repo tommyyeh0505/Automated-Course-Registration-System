@@ -11,17 +11,20 @@ namespace ACRS.Data
 {
     public static class DummyData
     {
-        public static async Task Initialize(IApplicationBuilder app)
+        public static async Task Initialize(IApplicationBuilder app, UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-                UserManager<User> userManager = serviceScope.ServiceProvider.GetService<UserManager<User>>();
 
                 context.Database.EnsureCreated();
 
-                if (context.Courses.Any()) { return; }
-
+                if (context.Courses != null && context.Courses.Any() &&
+                    context.Students != null && context.Students.Any())
+                {
+                    return;
+                }
 
                 var courses = GetCourses().ToArray();
                 context.Courses.AddRange(courses);
@@ -31,18 +34,30 @@ namespace ACRS.Data
                 context.Students.AddRange(students);
                 context.SaveChanges();
 
+                const string roleAdmin = "Admin";
                 const string defaultPassword = "P@$$w0rd";
 
-                User admin = new User
+                // Adding role to database
+                if (await roleManager.FindByNameAsync(roleAdmin) == null)
                 {
-                    UserName = "admin"
-                };
+                    await roleManager.CreateAsync(new IdentityRole(roleAdmin));
+                }
 
-                var result = await userManager.CreateAsync(admin, defaultPassword);
-
-                if (result.Succeeded)
+                // Add user with username 'admin' and password 'P@$$w0rd' to database
+                if (await userManager.FindByNameAsync("admin") == null)
                 {
-                    await userManager.AddToRoleAsync(admin, "Admin");
+                    IdentityUser user = new IdentityUser
+                    {
+                        UserName = "admin"
+                    };
+
+                    var result = await userManager.CreateAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddPasswordAsync(user, defaultPassword);
+                        await userManager.AddToRoleAsync(user, roleAdmin);
+                    }
                 }
             }
         }
@@ -116,27 +131,27 @@ namespace ACRS.Data
             {
                 new Student()
                 {
-                    StudentId = "A111111",
+                    StudentId = "A01915848",
                     StudentName = "Tommy Yeh",
-                    Email = "tommyyeh0505@hotail.com"
+                    Email = "tommyyeh0505@hotmail.com"
                 },
                 new Student()
                 {
-                    StudentId = "A222222",
+                    StudentId = "A71027848",
                     StudentName = "Eva Au",
-                    Email = "Eva5@hotail.com"
+                    Email = "Eva5@hotmail.com"
                 },
                 new Student()
                 {
-                    StudentId = "A333333",
+                    StudentId = "A01062848",
                     StudentName = "Andy Tang",
-                    Email = "AndyTang@hotail.com"
+                    Email = "andytang43@gmail.com"
                 },
                 new Student()
                 {
-                    StudentId = "A444444",
+                    StudentId = "A01081652",
                     StudentName = "Mike Hoang",
-                    Email = "Mikeg@hotail.com"
+                    Email = "Mikeg@hotmail.com"
                 },
             };
         }

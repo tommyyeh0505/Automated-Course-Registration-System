@@ -26,13 +26,16 @@ export class GradeService {
     private router: Router
 
   ) {
-    // this.jwtHelper = new JwtHelperService();
-    // if (this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
-    //   this.authService.logout();
-    //   this.router.navigate(['login', { expired: true }]);
-    // }
+    this.jwtHelper = new JwtHelperService();
+    if (this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
+      this.authService.logout();
+      this.router.navigate(['login', { expired: true }]);
+    }
   }
 
+  /**
+   * Http get, return a list of all grades
+   */
   public getGrades(): Observable<any> {
     return this.http.get<any>(endpoint, this.getHttpHeaders())
       .pipe(map((response: Response) => {

@@ -12,7 +12,7 @@ import { CourseComponent } from './components/course/course.component';
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
   {
-    path: '', component: LayoutComponent,
+    path: '', component: LayoutComponent, canActivate: [AuthGuard],
     children: [
       { path: '', component: DashboardComponent },
       { path: 'index', component: DashboardComponent },

@@ -9,7 +9,7 @@ background-position: center;  ">
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="submit()">
         <p>
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" color="accent">
             <mat-label>Username</mat-label>
             <input type="text" matInput placeholder="Username" formControlName="username" required autofocus>
             <mat-error *ngIf="hasError()">{{getErrorMessage()}}</mat-error>
@@ -17,7 +17,7 @@ background-position: center;  ">
         </p>
 
         <p>
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" color="accent">
             <mat-label>Password</mat-label>
             <input type="password" matInput placeholder="Password" formControlName="password" required>
           </mat-form-field>
@@ -25,7 +25,8 @@ background-position: center;  ">
 
 
         <div class="button">
-          <button class="pulse waves-effect waves-light"[disabled]="isLoading" mat-raised-button color="accent">Login</button>
+          <button class="pulse waves-effect waves-light" [disabled]="isLoading" mat-raised-button
+            color="accent">Login</button>
         </div>
 
       </form>

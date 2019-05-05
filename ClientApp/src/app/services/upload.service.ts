@@ -18,7 +18,7 @@ export class UploadService {
       formData.append(file.name, file);
     }
 
-    const request = new HttpRequest('POST', environment.apiEndpoint + 'upload', formData, {
+    const request = new HttpRequest('POST', environment.apiEndpoint + '/upload', formData, {
       reportProgress: true,
     });
 

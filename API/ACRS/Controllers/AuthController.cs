@@ -46,29 +46,29 @@ namespace ACRS
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
 
-            var claim = new[] {
+                var claim = new[] {
              new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
             };
 
-            var signinKey = new SymmetricSecurityKey(
-              Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
+                var signinKey = new SymmetricSecurityKey(
+                  Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
 
-            int expiryInMinutes = Convert.ToInt32(_config["Jwt:ExpiryInMinutes"]);
-            
+                int expiryInMinutes = Convert.ToInt32(_config["Jwt:ExpiryInMinutes"]);
+
                 //set expires time in 8 hours
-            var token = new JwtSecurityToken(
-              issuer: _config["Jwt:Site"],
-              audience: _config["Jwt:Site"],
-              expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
-              signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
-            );
+                var token = new JwtSecurityToken(
+                  issuer: _config["Jwt:Site"],
+                  audience: _config["Jwt:Site"],
+                  expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
+                  signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
+                );
 
-            return Ok(
-              new
-              {
-                  token = new JwtSecurityTokenHandler().WriteToken(token),
-                  expiration = token.ValidTo
-              });
+                return Ok(
+                  new
+                  {
+                      token = new JwtSecurityTokenHandler().WriteToken(token),
+                      expiration = token.ValidTo
+                  });
             }
             return Unauthorized();
         }
@@ -178,7 +178,7 @@ namespace ACRS
                 await _userManager.UpdateAsync(user);
             }
 
-          return NoContent();
+            return NoContent();
         }
 
         // DELETE: api/Auth//5

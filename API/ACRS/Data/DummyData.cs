@@ -71,24 +71,18 @@ namespace ACRS.Data
                 new Course()
                 {
                     CourseId = "INTD2360",
-                    PassingGrade = 65,
-                    Term = "201820",
-                    CRN = "61912"
+                    PassingGrade = 65
                 },
                 new Course()
                 {
                     CourseId = "COMMP4900",
                     PassingGrade = 50,
-                    Term = "201930",
-                    CRN = "12346",
                     Prerequisites = new List<Prerequisite>(){GetPrerequisite1()}
                },
                 new Course()
                 {
                     CourseId = "COMMP3000",
                     PassingGrade = 50,
-                    Term = "20190",
-                    CRN = "65421",
                     Prerequisites = new List<Prerequisite>(){GetPrerequisite1()}
                },
             };

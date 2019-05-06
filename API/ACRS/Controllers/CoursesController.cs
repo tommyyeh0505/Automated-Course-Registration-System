@@ -32,7 +32,8 @@ namespace ACRS.Controllers
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(string id)
+        public async Task<ActionResult<IEnumerable<Course>>> GetCourse(string id)
+
         {
             var course = await _context.Courses.FindAsync(id);
 
@@ -40,6 +41,10 @@ namespace ACRS.Controllers
             {
                 return NotFound();
             }
+
+           var test = await _context.Prerequisites.FindAsync(id);
+
+            course.Prerequisites = test;
 
             return course;
         }

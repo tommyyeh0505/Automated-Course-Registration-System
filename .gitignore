@@ -8,8 +8,6 @@
 !/API/ACRS/Migrations/.gitkeep 
 
 # User-specific files
-
-/Migrations/**
 *.rsuser
 *.suo
 *.user

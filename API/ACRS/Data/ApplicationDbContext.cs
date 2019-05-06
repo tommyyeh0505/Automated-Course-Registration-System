@@ -22,7 +22,7 @@ namespace ACRS.Data
             #region "Seed Data"
 
             builder.Entity<IdentityRole>().HasData(
-                new { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
+                new { Id = "1", Name = "Admin", NormalizedName = "Admin" },
                 new { Id = "2", Name = "User", NormalizedName = "USER" }
             );
 

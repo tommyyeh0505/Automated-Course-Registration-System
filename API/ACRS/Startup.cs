@@ -63,13 +63,15 @@ namespace ACRS
                        .AllowAnyHeader();
             }));
 
-            var host = Configuration["DBHOST"] ?? "localhost";
-            var port = Configuration["DBPORT"] ?? "3306";
-            var password = Configuration["DBPASSWORD"] ?? "P@$$w0rd";
-            var db = Configuration["DBNAME"] ?? "ACRS";
+            var host = Configuration["MySQL:Host"];
+            var port = Configuration["MySQL:Port"];
+            var userId = Configuration["MySQL:UserId"];
+            var password = Configuration["MySQL:Password"];
+            var db = Configuration["MySQL:Database"];
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseMySql($"server={host}; userid=root; pwd={password};"
+                options.UseMySql($"server={host}; userid={userId}; pwd={password};"
                     + $"port={port}; database={db}");
             });
 

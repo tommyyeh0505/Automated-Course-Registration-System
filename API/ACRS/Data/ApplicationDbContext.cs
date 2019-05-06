@@ -20,17 +20,6 @@ namespace ACRS.Data
         {
             base.OnModelCreating(builder);
 
-
-            #region "Seed Data"
-
-            builder.Entity<IdentityRole>().HasData(
-                new { Id = "1", Name = "Admin", NormalizedName = "Admin" },
-                new { Id = "2", Name = "User", NormalizedName = "USER" }
-            );
-
-
-            #endregion
-
         }
 
         public DbSet<Course> Courses { get; set; }

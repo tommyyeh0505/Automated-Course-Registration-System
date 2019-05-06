@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule, HttpEvent, HttpEventType } from '@angular/common/http';
 import { UploadService } from 'src/app/services/upload.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'upload',
@@ -12,7 +13,7 @@ export class UploadComponent implements OnInit {
   public isUploading: boolean = false;
   public files: File[] = [];
 
-  constructor(private uploadService: UploadService) { }
+  constructor(private uploadService: UploadService, private snackBar: MatSnackBar) { }
 
   ngOnInit() { }
 
@@ -24,7 +25,12 @@ export class UploadComponent implements OnInit {
     }
   }
 
-  upload() {    
+  upload() {
+    if (this.files.length <= 0) {
+      this.snackBar.open("Please select files to upload");
+      return;
+    }
+
     this.isUploading = true;
 
     this.uploadService.upload(this.files)

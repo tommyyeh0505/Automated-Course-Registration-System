@@ -1,7 +1,11 @@
 <div>
-    <mat-nav-list>
-        <p mat-list-item *ngFor="let file of files"> {{ file.name }} </p>
-    </mat-nav-list>
+    <div *ngFor="let file of files">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{file.name}}</mat-card-title>
+            </mat-card-header>
+        </mat-card>
+    </div>
 
     <button class="pulse waves-effect waves-light" (click)="upload()" [disabled]="isUploading" mat-raised-button
         color="accent">Upload&nbsp;<span *ngIf="isUploading && progress < 100">{{progress}}%</span></button>

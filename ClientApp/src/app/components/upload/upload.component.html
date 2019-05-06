@@ -1,5 +1,12 @@
-<div class="filedrop" appDropFile (progressEvent)="onProgress($event)" defaultColor="#ffffff" hoverColor="#e2e2e2">
-    <span class="progress">{{progress}}% <br /> <span class="normal">Drop your files here </span>
-    </span>
+<div>
+    <mat-nav-list>
+        <p mat-list-item *ngFor="let file of files"> {{ file.name }} </p>
+    </mat-nav-list>
 
+    <button class="pulse waves-effect waves-light" (click)="upload()" [disabled]="isUploading" mat-raised-button
+        color="accent">Upload&nbsp;<span *ngIf="isUploading && progress < 100">{{progress}}%</span></button>
+</div>
+
+<div class="filedrop" appDropFile (fileDropEvent)="onFileDrop($event)">
+    <span class="big">Drop your files here!</span>
 </div>

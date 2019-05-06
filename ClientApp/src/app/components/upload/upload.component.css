@@ -9,13 +9,10 @@
     bottom:0px;
 }
 
-.progress {
+.big{
+    font-size: 20pt;
     font-weight: bold;
-    font-size: 72pt;
+    font-size: 56pt;
     display:table-cell;
     vertical-align:middle;
-}
-
-.normal{
-    font-size: 20pt;
 }

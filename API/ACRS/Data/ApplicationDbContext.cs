@@ -15,9 +15,11 @@ namespace ACRS.Data
         {
         }
 
+        // Not actually needed!
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
 
             #region "Seed Data"
 
@@ -28,11 +30,11 @@ namespace ACRS.Data
 
 
             #endregion
+
         }
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<Student> Students { get; set; }
-        //public DbSet<User> User { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<WaitList> WaitLists { get; set; }
         public DbSet<Prerequisite> Prerequisites { get; set; }

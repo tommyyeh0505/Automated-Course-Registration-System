@@ -16,6 +16,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 
 namespace ACRS
 {
@@ -24,70 +26,143 @@ namespace ACRS
     [EnableCors("CORSPolicy")]
     public class AuthController : Controller
     {
-        //private readonly ApplicationDbContext _context;
-        private IConfiguration _config;
+        private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AuthController(UserManager<IdentityUser> userManager, ApplicationDbContext context, IConfiguration config)
+        public AuthController(IConfiguration configuration,
+            UserManager<IdentityUser> userManager)
         {
+            _configuration = configuration;
             _userManager = userManager;
-            //_context = context;
-            _config = config;
         }
 
-
-
-        //https://localhost:5001/api/Auth/login
-        [Route("login")]
-        [HttpPost]
-        public async Task<ActionResult> LoginAsync([FromBody] User model)
+        [HttpPost, Route("login")]
+        public async Task<ActionResult<AuthLogin>> Login([FromBody] AuthLogin model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            var user = await _userManager.FindByNameAsync(model.UserName);
+
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
+                var roles = await _userManager.GetRolesAsync(user);
 
-            var claim = new[] {
-             new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
-            };
+                var claims = new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString())
+                };
 
-            var signinKey = new SymmetricSecurityKey(
-              Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
+                claimsIdentity.AddClaims(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-            int expiryInMinutes = Convert.ToInt32(_config["Jwt:ExpiryInMinutes"]);
-            
-                //set expires time in 8 hours
-            var token = new JwtSecurityToken(
-              issuer: _config["Jwt:Site"],
-              audience: _config["Jwt:Site"],
-              expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
-              signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
-            );
+                var signinKey = new SymmetricSecurityKey(
+                  Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
 
-            return Ok(
-              new
-              {
-                  token = new JwtSecurityTokenHandler().WriteToken(token),
-                  expiration = token.ValidTo
-              });
+                int expiryInMinutes = Convert.ToInt32(_configuration["Jwt:ExpiryInMinutes"]);
+
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["Jwt:Site"],
+                    audience: _configuration["Jwt:Site"],
+                    claims: claimsIdentity.Claims,
+                    expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
+                    signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
+                );
+
+                return Ok(
+                  new
+                  {
+                      token = new JwtSecurityTokenHandler().WriteToken(token),
+                      expiration = token.ValidTo,
+                      role = await _userManager.GetRolesAsync(user)
+                  });
             }
+
             return Unauthorized();
         }
 
-
-        // GET: api/Auth
-        [HttpGet]
-        [Authorize]
-        public ActionResult GetUsers()
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [HttpPost, Route("register")]
+        public async Task<ActionResult<AuthRegister>> Register([FromBody] AuthRegister user)
         {
-            //return await _userManager.Users.ToListAsync();
-            return Ok(_userManager.Users.ToList());
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var passwordValidator = new PasswordValidator<IdentityUser>();
+            if (!(await passwordValidator.ValidateAsync(_userManager, null, user.Password)).Succeeded)
+            {
+                return BadRequest("Password is too weak");
+            }
+
+            if (await _userManager.FindByNameAsync(user.UserName) != null)
+            {
+                return BadRequest($"User with username: {user.UserName} already exists");
+            }
+
+            IdentityUser newUser = new IdentityUser
+            {
+                UserName = user.UserName
+            };
+
+            var result = await _userManager.CreateAsync(newUser);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddPasswordAsync(newUser, user.Password);
+
+                // Admin is the only role!
+                await _userManager.AddToRoleAsync(newUser, "Admin");
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return CreatedAtAction("GetUsers", new { userName = newUser.UserName });
         }
 
-        // GET: api/Auth/1
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<ActionResult<User>> GetUser(string username)
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [HttpGet, Route("users")]
+        public async Task<ActionResult<IEnumerable<string>>> GetUsers()
         {
+            return await _userManager.Users.Select(u => u.UserName).ToListAsync();
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [HttpDelete("users/{username}")]
+        public async Task<ActionResult<object>> DeleteUser(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return NotFound();
+            }
+
+            return new { userName = username };
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [HttpPut("users/{username}")]
+        public async Task<IActionResult> UpdateUser(string username, [FromBody] AuthChangePassword request)
+        {
+            if (request == null || request.UserName != username)
+            {
+                return BadRequest();
+            }
 
             var user = await _userManager.FindByNameAsync(username);
 
@@ -96,113 +171,14 @@ namespace ACRS
                 return NotFound();
             }
 
-            return (Microsoft.AspNetCore.Mvc.ActionResult<ACRS.Models.User>)user;
-        }
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
-        //[Authorize]
-        ////POST: api/Auth/register
-        //[Route("register")]
-        //[HttpPost]
-        //public async Task<ActionResult> InsertUser([FromBody] User model)
-        //{
-
-        //    if (UserExists(model.Username))
-        //    {
-        //        return BadRequest();
-        //    }
-
-
-        //    var user = new IdentityUser
-        //    {
-        //        UserName = model.Username,
-        //        SecurityStamp = Guid.NewGuid().ToString()
-        //    };
-        //    var result = await _userManager.CreateAsync(user, model.Password);
-        //    if (result.Succeeded)
-        //    {
-        //        await _userManager.AddToRoleAsync(user, "ADMIN");
-        //    }
-        //    return Ok(new { Username = user.UserName });
-        //}
-
-
-        //POST: api/Auth/
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult<User>> PostUser([Bind("username,password")] User user)
-        {
-            if (user.Username == null)
+            if (!result.Succeeded)
             {
-                return NotFound();
+                return BadRequest(result.Errors);
             }
 
-            var result = await _userManager.CreateAsync(user);
-            if (result.Succeeded)
-            {
-                await _userManager.AddPasswordAsync(user, user.Password);
-                await _userManager.AddToRoleAsync(user, "Admin");
-            }
-
-            return Ok();
-
-        }
-
-
-        // PUT: api/Auth/1
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPut("{id}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PutUser(string id, [Bind("username,password")] User user)
-        {
-            if (id != user.Username)
-            {
-                return BadRequest();
-            }
-
-            if (ModelState.IsValid)
-            {
-                IdentityUser temp = await _userManager.FindByIdAsync(user.Id);
-
-                user = new User
-                {
-
-                    Username = user.UserName,
-                    PasswordHash = user.PasswordHash
-                };
-
-                await _userManager.UpdateAsync(user);
-            }
-
-          return NoContent();
-        }
-
-        // DELETE: api/Auth//5
-        [Authorize]
-        [HttpDelete("{id}")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult<User>> DeleteUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            await _userManager.DeleteAsync(user);
-
-            return Ok();
-        }
-
-
-        private Task<IdentityUser> UserExists(string id)
-        {
-            return _userManager.FindByIdAsync(id);
+            return NoContent();
         }
     }
 }

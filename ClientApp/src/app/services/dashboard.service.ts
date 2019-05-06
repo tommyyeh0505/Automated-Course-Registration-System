@@ -37,35 +37,25 @@ export class DashboardService {
     /**
      * Http get, return a list of all courses
      */
-    public getCourses(): Observable<any> {
-        return this.http.get<any>(endpoint + 'courses', this.getHttpHeaders())
-            .pipe(map((response: Response) => {
-                return response;
-            }));
+    public getCourses() {
+        return this.http.get<any>(endpoint + 'courses', this.getHttpHeaders());
+
     }
 
 
-    public getStudents(): Observable<any> {
-        return this.http.get<any>(endpoint + 'students', this.getHttpHeaders())
-            .pipe(map((response: Response) => {
-                return response;
-            }));
+    public getStudents() {
+        return this.http.get<any>(endpoint + 'students', this.getHttpHeaders());
     }
 
 
-    public getWaitlists(): Observable<any> {
-        return this.http.get<any>(endpoint + 'waitlists', this.getHttpHeaders())
-            .pipe(map((response: Response) => {
-                return response;
-            }));
+    public getWaitlists() {
+        return this.http.get<any>(endpoint + 'waitlists', this.getHttpHeaders());
+
     }
 
 
-    public getAccounts(): Observable<any> {
+    public getAccounts() {
         return this.http.get<any>(endpoint + 'auth/users', this.getHttpHeaders())
-            .pipe(map((response: Response) => {
-                return response;
-            }));
     }
 
 
@@ -73,7 +63,7 @@ export class DashboardService {
     private getHttpHeaders(): {} {
         return {
             headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token,
                 'Content-Type': 'application/json'
             })
         };

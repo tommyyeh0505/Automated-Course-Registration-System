@@ -12,7 +12,7 @@ background-position: center;  ">
           <mat-form-field appearance="outline" color="accent">
             <mat-label>Username</mat-label>
             <input type="text" matInput placeholder="Username" formControlName="username" required autofocus>
-            <mat-error *ngIf="hasError()">{{getErrorMessage()}}</mat-error>
+            <mat-error>Please enter a username</mat-error>
           </mat-form-field>
         </p>
 
@@ -20,9 +20,11 @@ background-position: center;  ">
           <mat-form-field appearance="outline" color="accent">
             <mat-label>Password</mat-label>
             <input type="password" matInput placeholder="Password" formControlName="password" required>
+            <mat-error>Please enter a password</mat-error>
           </mat-form-field>
         </p>
 
+        <mat-error *ngIf="authFailed">Incorrect username or password</mat-error>
 
         <div class="button">
           <button type="submit" class="pulse waves-effect waves-light" [disabled]="isLoading" mat-raised-button

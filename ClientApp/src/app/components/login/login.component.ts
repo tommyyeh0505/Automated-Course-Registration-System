@@ -27,9 +27,8 @@ export class LoginComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService) { }
 
-  }
   ngOnInit() {
 
     if (this.route.snapshot.paramMap.get('expired')) {
@@ -49,8 +48,19 @@ export class LoginComponent {
   }
 
   submit() {
+<<<<<<< HEAD
     let username = this.form.value.username;
     let password = this.form.value.password;
+=======
+    let username: string = this.form.value.username;
+    let password: string = this.form.value.password;
+
+    if (username.trim().length == 0 || password.trim().length == 0) {
+      return;
+    }
+
+    this.isLoading = true;
+>>>>>>> 8296f65cc7c02cf7e0cc5615dbdc6567e5ab5734
 
     this.authenticationService.login(username, password)
       .pipe(first())
@@ -70,13 +80,15 @@ export class LoginComponent {
       );
   }
 
+<<<<<<< HEAD
   hasError() {
     return this.authFailed;
   }
 
+=======
+>>>>>>> 8296f65cc7c02cf7e0cc5615dbdc6567e5ab5734
   getErrorMessage() {
-
-    return this.hasError() ? "Invalid Username or Password" : "";
+    return "Invalid Username or Password";
   }
 
 }

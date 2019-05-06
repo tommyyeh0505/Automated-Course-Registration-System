@@ -22,9 +22,8 @@ export class LoginComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService) {
-
-  }
+    private authenticationService: AuthenticationService) {}
+    
   ngOnInit() {
 
     this.authenticationService.logout();

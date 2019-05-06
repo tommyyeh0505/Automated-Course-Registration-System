@@ -1,10 +1,10 @@
+import { Prerequisite } from './prerequisite';
+
 export class Course {
 
     public courseId: string;
-    public crn: string;
-    public term: string;
     public passingGrade: number;
-    public studentId: string;
+    public prerequisites: Prerequisite[];
 
 
 }

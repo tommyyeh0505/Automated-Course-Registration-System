@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-const endpoint = `${environment.apiEndpoint}/grades`;
+import { Grade } from '../models/grade';
+const endpoint = environment.apiEndpoint + 'grades/';
 @Injectable({
   providedIn: 'root'
 })
@@ -42,6 +43,14 @@ export class GradeService {
 
         return response;
       }));
+  }
+
+  public deleteGrade(grade: Grade) {
+
+    let id = grade.gradeId;
+    this.http.delete<any>(endpoint + id, this.getHttpHeaders())
+      .subscribe();
+    return grade;
   }
 
   // HTTP headers

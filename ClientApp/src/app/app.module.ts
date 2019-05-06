@@ -60,10 +60,13 @@ import { AddCourseComponent } from './components/modals/course/add/add-course.co
     NgxChartsModule,
     MatToolbarModule,
     MatDialogModule
-    
+
 
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AddCourseComponent
+  ]
 })
 export class AppModule { }

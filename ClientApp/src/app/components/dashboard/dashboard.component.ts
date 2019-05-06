@@ -14,7 +14,7 @@ export class DashboardComponent {
   single: any[];
   multi: any[];
 
-  view: any[] = [500, 250];
+
 
   colorScheme = {
     domain: ['#f7ff26', '#AB28F7', '#2F72ED', '#28F78C']

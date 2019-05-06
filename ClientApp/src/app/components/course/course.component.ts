@@ -45,7 +45,9 @@ export class CourseComponent implements OnInit {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddCourseComponent, {
-      width: '250px',
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
       data: { data: this.courses }
     });
 

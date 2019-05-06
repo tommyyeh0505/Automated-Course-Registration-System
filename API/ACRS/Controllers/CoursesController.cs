@@ -33,44 +33,37 @@ namespace ACRS.Controllers
         // GET: api/Courses/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(string id)
-        {
-            var course = await _context.Courses.FindAsync(id);
 
-            if (course == null)
+        {
+            var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == id);
+
+            if (c == null)
             {
                 return NotFound();
             }
 
-            return course;
+            return c;
+
         }
 
         // PUT: api/Courses/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(string id, Course course)
         {
-            if (id != course.CourseId)
+            if (id == null)
             {
-                return BadRequest();
+                return NotFound();
+            }
+            var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == id);
+            if(c.Prerequisites!= null)
+            {
+                _context.Prerequisites.RemoveRange(c.Prerequisites);
+
             }
 
-            _context.Entry(course).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            c.Prerequisites = course.Prerequisites;
+            _context.Entry(c).CurrentValues.SetValues(course);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
@@ -92,6 +85,12 @@ namespace ACRS.Controllers
             {
                 return NotFound();
             }
+            var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == id);
+            foreach(Prerequisite pr in c.Prerequisites)
+            {
+                _context.Prerequisites.Remove(pr);
+            }
+            await _context.SaveChangesAsync();
 
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();

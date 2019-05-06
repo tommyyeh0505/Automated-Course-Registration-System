@@ -48,10 +48,6 @@ export class LoginComponent {
   }
 
   submit() {
-<<<<<<< HEAD
-    let username = this.form.value.username;
-    let password = this.form.value.password;
-=======
     let username: string = this.form.value.username;
     let password: string = this.form.value.password;
 
@@ -60,7 +56,6 @@ export class LoginComponent {
     }
 
     this.isLoading = true;
->>>>>>> 8296f65cc7c02cf7e0cc5615dbdc6567e5ab5734
 
     this.authenticationService.login(username, password)
       .pipe(first())
@@ -80,13 +75,6 @@ export class LoginComponent {
       );
   }
 
-<<<<<<< HEAD
-  hasError() {
-    return this.authFailed;
-  }
-
-=======
->>>>>>> 8296f65cc7c02cf7e0cc5615dbdc6567e5ab5734
   getErrorMessage() {
     return "Invalid Username or Password";
   }

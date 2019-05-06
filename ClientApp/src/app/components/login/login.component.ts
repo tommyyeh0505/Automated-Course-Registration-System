@@ -17,6 +17,7 @@ export class LoginComponent {
   isLoading: boolean = false;
   authFailed: boolean = false;
   fromExpiration: boolean = false;
+  @Input() id: string;
 
 
   constructor(
@@ -36,19 +37,21 @@ export class LoginComponent {
   submit() {
     let username = this.form.value.username;
     let password = this.form.value.password;
-    this.isLoading = true;
+
     this.authenticationService.login(username, password)
       .pipe(first())
       .subscribe(
         data => {
-          console.log(data);
-          this.isLoading = false;
+
+
           this.authFailed = false;
           this.router.navigate(['/']); //navigate to home
         },
         error => {
+          console.log(123);
           this.authFailed = true;
-          this.isLoading = false;
+
+
         }
       );
   }
@@ -56,7 +59,7 @@ export class LoginComponent {
   hasError() {
     return this.authFailed;
   }
-  
+
   getErrorMessage() {
 
     return this.hasError() ? "Invalid Username or Password" : "";

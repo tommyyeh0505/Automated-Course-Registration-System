@@ -55,7 +55,10 @@ import { StudentComponent } from './components/student/student.component';
     MatProgressBarModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MatToolbarModule
+    
+
   ],
   providers: [],
   bootstrap: [AppComponent]

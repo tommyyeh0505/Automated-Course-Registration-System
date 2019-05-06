@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
-import { NgModule } from '@angular/core';
 import { Course } from 'src/app/models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
-
+import { AddCourseComponent } from '../modals/course/add/add-course.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 /**
@@ -27,7 +27,8 @@ export class CourseComponent implements OnInit {
   constructor(
     private courseServce: CourseService,
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.getCourses();
     // Create 100 users
@@ -39,6 +40,18 @@ export class CourseComponent implements OnInit {
   }
   ngOnInit() {
     this.getCourses();
+  }
+
+
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddCourseComponent, {
+      width: '250px',
+      data: { data: this.courses }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
   }
 
   initTable(data) {

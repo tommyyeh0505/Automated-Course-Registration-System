@@ -1,11 +1,14 @@
 <div class="grid-container">
   <mat-tab-group mat-align-tabs="center" color="accent">
     <mat-tab label="COMP2413">
-      <mat-form-field style="margin-top:40px;" color="accent">
+      <mat-form-field style="margin-top:40px; width:85%; margin-right:15px" color="accent">
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+
       </mat-form-field>
 
-      <div class="mat-elevation-z8">
+      <button style="position:absoulute; left:0" mat-raised-button color="accent" (click)="openAddDialog()">Add</button>
+
+      <div class="mat-elevation-z8" style="margin-top:15px">
         <table mat-table [dataSource]="dataSource" matSort>
 
 

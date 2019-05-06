@@ -105,6 +105,12 @@ namespace ACRS.Controllers
             return student;
         }
 
+        [HttpGet("{id}/grades")]
+        public async Task<IEnumerable<Grade>> GetStudentGrades(string id)
+        {
+            return await _context.Grades.Where(g => g.StudentId == id).ToListAsync();
+        }
+
         private bool StudentExists(string id)
         {
             return _context.Students.Any(e => e.StudentId == id);

@@ -1,5 +1,17 @@
-import { Component, OnInit } from '@angular/core';
 
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
+import { Course } from 'src/app/models/course';
+import { CourseService } from 'src/app/services/course.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Router } from '@angular/router';
+import { AddCourseComponent } from '../modals/course/add/add-course.component';
+import { MatDialog } from '@angular/material/dialog';
+
+
+/**
+ * @title Data table with sorting, pagination, and filtering.
+ */
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -7,9 +19,73 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CourseComponent implements OnInit {
 
-  constructor() { }
+  displayedColumns: string[] = ['courseId', 'crn', 'term', 'passingGrade', 'view', 'delete'];
+  dataSource: MatTableDataSource<Course>;
+  courses: Course[] = [];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  ngOnInit() {
+  constructor(
+    private courseServce: CourseService,
+    private authService: AuthenticationService,
+    private router: Router,
+    public dialog: MatDialog
+  ) {
+    this.getCourses();
+    // Create 100 users
+
+
+    // Assign the data to the data source for the table to render
+
+
   }
 
+
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddCourseComponent, {
+      width: '250px',
+      data: { data: this.courses }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+  }
+
+  initTable(data) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  getCourses() {
+    this.courseServce.getCourses().subscribe((data: Course[]) => {
+      this.courses = data;
+      this.initTable(this.courses);
+    });
+
+  }
+
+  getCourse(course: Course) {
+
+  }
+
+
+  deleteCourse(course: Course) {
+    this.courseServce.deleteCourse(course);
+    let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
+    this.dataSource.data.splice(itemIndex, 1);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+  }
+
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 }
+

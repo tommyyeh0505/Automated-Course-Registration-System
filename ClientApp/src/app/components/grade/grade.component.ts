@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 
 
@@ -27,9 +27,10 @@ const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
 })
 
 export class GradeComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'progress'];
-  dataSource: MatTableDataSource<UserData>;
 
+  displayedColumns: string[] = ['gradeId', 'studentId', 'finalGrade', 'attempts', 'delete'];
+  dataSource: MatTableDataSource<Grade>;
+  grades: Grade[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -41,10 +42,32 @@ export class GradeComponent implements OnInit {
     this.dataSource = new MatTableDataSource(users);
   }
 
+  initTable(data) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  getGrades() {
+    this.gradeServce.getGrades().subscribe((data: Grade[]) => {
+      this.grades = data;
+      this.initTable(this.grades);
+    });
+
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+
+  deleteGrade(grade: Grade) {
+    this.gradeServce.deleteGrade(grade);
+    let itemIndex = this.dataSource.data.findIndex(obj => obj.gradeId === grade.gradeId);
+    this.dataSource.data.splice(itemIndex, 1);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+  }
+
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

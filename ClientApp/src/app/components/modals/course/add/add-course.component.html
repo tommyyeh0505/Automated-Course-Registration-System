@@ -1,0 +1,38 @@
+<mat-card-content>
+  <form [formGroup]="addCourseForm" (ngSubmit)="onSubmit(addCourseForm.value)"
+    [class.error]="!addCourseForm.valid && addCourseForm.touched">
+
+    <ul class="items">
+
+
+
+      <li><label class="label-pad">Course ID: </label>
+        <mat-form-field class="inputBackground">
+          <input matInput #userName maxlength="30" class="inputField" type="text" id="courseId"
+            formControlName="courseId" [errorStateMatcher]="matcher" required>
+
+
+
+          <mat-error>{{ errors.required }}</mat-error>
+
+        </mat-form-field>
+      </li>
+      <br>
+
+      <!-- <li><label class="label-pad">Country of current legal residence: </label>
+        <mat-form-field>
+          <mat-select placeholder="Select one" type="text" id="country" formControlName="country" required>
+            <mat-option *ngFor="let country of countries" [value]="country">{{country}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </li> -->
+
+
+    </ul>
+
+    <!-- <div *ngIf="!addEditMemberForm.valid" class="ui error message">All fields require information.</div> -->
+
+  </form>
+
+</mat-card-content>

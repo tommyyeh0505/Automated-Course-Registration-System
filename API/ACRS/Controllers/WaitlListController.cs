@@ -50,14 +50,14 @@ namespace ACRS.Controllers
             _context.WaitLists.Add(waitList);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWaitList", new { id = waitList.WaitListID }, waitList);
+            return CreatedAtAction("GetWaitList", new { id = waitList.WaitListId }, waitList);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWaitList(int id, WaitList waitList)
         {
-            if (id != waitList.WaitListID)
+            if (id != waitList.WaitListId)
             {
                 return BadRequest();
             }
@@ -99,9 +99,15 @@ namespace ACRS.Controllers
             return waitList;
         }
 
+        [HttpGet("students/{id}")]
+        public async Task<IEnumerable<WaitList>> GetWaitListByStudent(string id)
+        {
+            return await _context.WaitLists.Where(w => w.StudentId == id).ToListAsync();
+        }
+
         private bool WaitListExists(int id)
         {
-            return _context.WaitLists.Any(e => e.WaitListID == id);
+            return _context.WaitLists.Any(e => e.WaitListId == id);
         }
     }
 }

@@ -93,8 +93,15 @@ namespace ACRS.Controllers
             }
 
             _context.Students.Remove(student);
+            List<Grade> grades = _context.Grades.ToList();
+            foreach(Grade g in grades)
+            {
+                if (g.StudentId.Equals(student.StudentId))
+                {
+                    _context.Grades.Remove(g);
+                }
+            }
             await _context.SaveChangesAsync();
-
             return student;
         }
 

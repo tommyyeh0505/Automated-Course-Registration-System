@@ -22,8 +22,8 @@ export class LoginComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService) {}
-    
+    private authenticationService: AuthenticationService) { }
+
   ngOnInit() {
 
     this.authenticationService.logout();
@@ -33,9 +33,15 @@ export class LoginComponent {
   }
 
   submit() {
-    let username = this.form.value.username;
-    let password = this.form.value.password;
+    let username: string = this.form.value.username;
+    let password: string = this.form.value.password;
+
+    if (username.trim().length == 0 || password.trim().length == 0) {
+      return;
+    }
+
     this.isLoading = true;
+
     this.authenticationService.login(username, password)
       .pipe(first())
       .subscribe(
@@ -52,13 +58,8 @@ export class LoginComponent {
       );
   }
 
-  hasError() {
-    return this.authFailed;
-  }
-  
   getErrorMessage() {
-
-    return this.hasError() ? "Invalid Username or Password" : "";
+    return "Invalid Username or Password";
   }
 
 }

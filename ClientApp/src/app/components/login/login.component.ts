@@ -3,12 +3,14 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { first, isEmpty } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
+const helper = new JwtHelperService();
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent {
   form = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -19,6 +21,9 @@ export class LoginComponent {
   fromExpiration: boolean = false;
 
 
+
+
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -26,9 +31,19 @@ export class LoginComponent {
 
   ngOnInit() {
 
-    this.authenticationService.logout();
     if (this.route.snapshot.paramMap.get('expired')) {
       this.fromExpiration = true;
+    }
+    if (localStorage.getItem('currentUser')) {
+      let token = JSON.parse(localStorage.getItem('currentUser')).token;
+
+      const isExpired = helper.isTokenExpired(token);
+      if (isExpired) {
+        this.authenticationService.logout();
+      } else {
+        this.router.navigate(['/']);
+      }
+      return true;
     }
   }
 
@@ -46,14 +61,16 @@ export class LoginComponent {
       .pipe(first())
       .subscribe(
         data => {
-          console.log(data);
-          this.isLoading = false;
+
+
           this.authFailed = false;
           this.router.navigate(['/']); //navigate to home
         },
         error => {
+          console.log(123);
           this.authFailed = true;
-          this.isLoading = false;
+
+
         }
       );
   }

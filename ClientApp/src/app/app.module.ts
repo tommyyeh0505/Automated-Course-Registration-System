@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule, MatSnackBarModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule, MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -18,6 +18,7 @@ import { CourseComponent } from './components/course/course.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StudentComponent } from './components/student/student.component';
+import { AddCourseComponent } from './components/modals/course/add/add-course.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { StudentComponent } from './components/student/student.component';
     ErrorComponent,
     CourseComponent,
     StudentComponent,
+    AddCourseComponent,
   ],
   imports: [
     MatTabsModule,
@@ -56,6 +58,8 @@ import { StudentComponent } from './components/student/student.component';
     FormsModule,
     ReactiveFormsModule,
     NgxChartsModule,
+    MatToolbarModule,
+    MatDialogModule,
     MatSnackBarModule
   ],
   providers: [],

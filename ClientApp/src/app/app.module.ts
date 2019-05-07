@@ -36,6 +36,7 @@ import { EditCourseComponent } from './components/modals/course/edit/edit-course
     StudentComponent,
     AddCourseComponent,
     CourseDetailComponent,
+    EditCourseComponent
   ],
   imports: [
     MatTabsModule,

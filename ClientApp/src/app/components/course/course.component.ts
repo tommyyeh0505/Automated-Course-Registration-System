@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { MatDialog } from '@angular/material/dialog';
 import { first } from 'rxjs/operators';
+import { EditCourseComponent } from '../modals/course/edit/edit-course.component';
 
 export interface DialogData {
   course: Course;
@@ -69,8 +70,9 @@ export class CourseComponent implements OnInit {
     });
   }
 
-  openEditDialog() {
-    this.editCourse = new Course();
+  openEditDialog(course: Course) {
+    this.editCourse = course;
+    console.log(this.editCourse);
     let dialogRef = this.dialog.open(EditCourseComponent, {
       width: '65vw',
       minWidth: '300px',

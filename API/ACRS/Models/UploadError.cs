@@ -9,5 +9,6 @@ namespace ACRS.Models
     {
         public string FileName { get; set; }
         public string Reason { get; set; }
+        public int? Row { get; set; }
     }
 }

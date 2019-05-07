@@ -1,41 +1,26 @@
-
-
-
-import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
-
-
-
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { startWith, map } from 'rxjs/operators';
-import { Prerequisite } from 'src/app/models/prerequisite';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
 import { StudentDialogData } from 'src/app/components/student/student.component';
 
 
-
-
-
 @Component({
-    selector: 'add-student',
-    styleUrls: ['./add-student.component.css'],
-    templateUrl: './add-student.component.html'
+    selector: 'edit-student',
+    styleUrls: ['./edit-student.component.css'],
+    templateUrl: './edit-student.component.html'
 })
+export class EditStudentComponent implements OnInit {
 
-
-
-export class AddStudentComponent implements OnInit {
-
-    public addStudentForm: FormGroup;
-
+    public editStudentForm: FormGroup;
     public students: Student[] = [];
-
     public validStudentId: boolean = true;
+    public editStudent: Student = new Student();
 
     constructor(
         private fb: FormBuilder,
-        public dialogRef: MatDialogRef<AddStudentComponent>,
+        public dialogRef: MatDialogRef<EditStudentComponent>,
         public studentService: StudentService,
         @Inject(MAT_DIALOG_DATA) public data: StudentDialogData) {
 
@@ -45,15 +30,12 @@ export class AddStudentComponent implements OnInit {
         this.createForm();
     }
 
-
     private createForm() {
-        this.addStudentForm = this.fb.group({
-            studentId: new FormControl('', [Validators.required]),
-            studentName: new FormControl('', [Validators.required]),
-
+        this.editStudentForm = this.fb.group({
+            studentId: new FormControl({ value: this.data.student.studentId, disabled: true }, [Validators.required]),
+            studentName: new FormControl(this.data.student.studentName, [Validators.required]),
         });
         this.getStudents();
-
     }
 
     public isTakenStudentId(studentId: string) {
@@ -62,18 +44,11 @@ export class AddStudentComponent implements OnInit {
         this.validStudentId = studentIdList.indexOf(studentId) === -1;
     }
 
-
-
-
     public submit() {
-        let studentId = this.addStudentForm.value.studentId;
-        let studentName = this.addStudentForm.value.studentName;
-
-        this.data.student.studentId = studentId;
+        let studentName = this.editStudentForm.value.studentName;
         this.data.student.studentName = studentName;
-
-
     }
+
     async getStudents() {
         await this.studentService.getStudents().subscribe((data: Student[]) => {
             this.students = data;

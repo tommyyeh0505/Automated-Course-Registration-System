@@ -1,7 +1,7 @@
 <mat-dialog-content class="container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Edit Student</mat-card-title>
+      <mat-card-title>Add Course</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="editStudentForm">
@@ -11,10 +11,9 @@
           <mat-label>Student ID</mat-label>
           <input type="text" matInput placeholder="Student ID" formControlName="studentId" required autofocus
             (input)="isTakenStudentId($event.target.value)">
-          <mat-error>Please enter a student ID</mat-error>
+
 
         </mat-form-field>
-        <span *ngIf="!this.validStudentId" style="color:red">This Student ID has been taken</span>
 
 
 

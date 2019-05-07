@@ -11,6 +11,7 @@ import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { Course } from 'src/app/models/course';
 import { AddStudentComponent } from '../modals/student/add/add-student.component';
 import { first } from 'rxjs/operators';
+import { EditStudentComponent } from '../modals/student/edit/edit-student.component';
 
 export interface StudentDialogData {
   student: Student;
@@ -30,6 +31,7 @@ export class StudentComponent implements OnInit {
   dataSource: MatTableDataSource<Student>;
   students: Student[] = [];
   newStudent: Student;
+  editStudent: Student;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -56,12 +58,33 @@ export class StudentComponent implements OnInit {
         student: this.newStudent
       }
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.addStudent(this.newStudent);
       }
       this.newStudent = new Student();
+    });
+  }
+
+  openEditDialog(student: Student) {
+    this.editStudent = student;
+
+    let dialogRef = this.dialog.open(EditStudentComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        student: this.editStudent
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        let newEditStudent = result.student;
+        this.updateStudent(newEditStudent.studentId, newEditStudent);
+      }
+
+      this.editStudent = new Student();
     });
   }
 
@@ -98,6 +121,11 @@ export class StudentComponent implements OnInit {
   }
 
 
+  updateStudent(studentId: string, student: Student) {
+    this.studentService.updateStudent(studentId, student).pipe(first()).subscribe((response: any) => {
+      this.refresh();
+    });
+  }
 
 
   applyFilter(filterValue: string) {

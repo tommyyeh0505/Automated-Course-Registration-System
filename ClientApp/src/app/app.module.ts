@@ -25,6 +25,7 @@ import { ClassDetailComponent } from './components/class-detail/class-detail.com
 import { AddStudentComponent } from './components/modals/student/add/add-student.component';
 import { EditStudentComponent } from './components/modals/student/edit/edit-student.component';
 import { StudentDetailComponent } from './components/student-detail/student-detail.component';
+import { WaitlistComponent } from './components/waitlist/waitlist.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { StudentDetailComponent } from './components/student-detail/student-deta
     ClassDetailComponent,
     AddStudentComponent,
     EditStudentComponent,
-    StudentDetailComponent
+    StudentDetailComponent,
+    WaitlistComponent
   ],
   imports: [
     MatTabsModule,

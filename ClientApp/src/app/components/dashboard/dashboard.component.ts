@@ -26,7 +26,7 @@ export class DashboardComponent {
 
 
   colorScheme = {
-    domain: ['#f7ff26', '#AB28F7', '#2F72ED', '#28F78C']
+    domain: ['#5AA454', '#A10A28', '#C7B42C', 'pink']
   };
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -78,8 +78,6 @@ export class DashboardComponent {
       }]
     ]
       ;
-
-
 
 
 

@@ -1,9 +1,10 @@
-export interface Grade {
-    gradeId: number;
-    studentId: string;
-    crn: string;
-    courseId: string;
-    term: string;
-    finalGrade: number;
-    attempts: number;
+export class Grade {
+    public gradeId: number;
+    public studentId: string;
+    public crn: string;
+    public courseId: string;
+    public term: string;
+    public startDate: Date;
+    public endDate: Date;
+    public finalGrade; double;
 }

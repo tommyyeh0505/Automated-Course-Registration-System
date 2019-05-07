@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-
 const endpoint = environment.apiEndpoint + "Auth/";
 
 @Injectable({
@@ -12,9 +11,12 @@ const endpoint = environment.apiEndpoint + "Auth/";
 })
 export class AuthenticationService {
 
+
+
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string) {
+
     return this.http.post<any>(endpoint + "login", { username: username, password: password })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
@@ -23,9 +25,7 @@ export class AuthenticationService {
           localStorage.setItem('currentUser', JSON.stringify(user));
           return user;
         }
-
-
-
+        return Error;
       }));
   }
 

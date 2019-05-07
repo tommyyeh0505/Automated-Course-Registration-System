@@ -30,6 +30,8 @@ export class LoginComponent {
 
   ngOnInit() {
 
+    this.authenticationService.logout();
+
     if (this.route.snapshot.paramMap.get('expired')) {
       this.fromExpiration = true;
     }
@@ -73,6 +75,9 @@ export class LoginComponent {
       );
   }
 
+  hasError() {
+    return this.authFailed;
+  }
   getErrorMessage() {
     return "Invalid Username or Password";
   }

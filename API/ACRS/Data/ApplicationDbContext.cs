@@ -19,6 +19,7 @@ namespace ACRS.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
         }
 
         public DbSet<Course> Courses { get; set; }

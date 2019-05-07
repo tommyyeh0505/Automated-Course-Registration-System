@@ -72,4 +72,3 @@ export class GradeComponent implements OnInit {
     }
   }
 }
-

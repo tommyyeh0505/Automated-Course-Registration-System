@@ -10,8 +10,9 @@ import { StudentService } from 'src/app/services/student.service';
 import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { Course } from 'src/app/models/course';
 import { AddStudentComponent } from '../modals/student/add/add-student.component';
+import { first } from 'rxjs/operators';
 
-export interface DialogData {
+export interface StudentDialogData {
   student: Student;
 }
 
@@ -52,7 +53,7 @@ export class StudentComponent implements OnInit {
       minWidth: '300px',
       maxWidth: '600px',
       data: {
-        course: this.newStudent
+        student: this.newStudent
       }
     });
 
@@ -70,6 +71,12 @@ export class StudentComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  refresh() {
+    this.studentService.getStudents().subscribe((data: Student[]) => {
+      this.students = data;
+      this.initTable(this.students);
+    });
+  }
   viewStudent(student: Student) {
     this.router.navigate([`/student/${student.studentId}`]);
   }
@@ -83,8 +90,11 @@ export class StudentComponent implements OnInit {
 
   }
 
-  addStudent(student: Student) {
 
+  addStudent(student: Student) {
+    this.studentService.addStudent(student).pipe(first()).subscribe((response: Response) => {
+      this.refresh();
+    })
   }
 
 

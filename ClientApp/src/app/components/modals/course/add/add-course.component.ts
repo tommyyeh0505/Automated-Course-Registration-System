@@ -37,6 +37,7 @@ export class AddCourseComponent implements OnInit {
     public validCourseId: boolean = true;
     public validPreq: boolean = true;
 
+
     public selectedPreq: string;
     constructor(
         private fb: FormBuilder,

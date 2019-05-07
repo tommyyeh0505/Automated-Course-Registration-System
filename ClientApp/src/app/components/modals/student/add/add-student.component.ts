@@ -16,6 +16,7 @@ import { DialogData } from 'src/app/components/course/course.component';
 import { Prerequisite } from 'src/app/models/prerequisite';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
+import { StudentDialogData } from 'src/app/components/student/student.component';
 
 
 
@@ -43,7 +44,7 @@ export class AddStudentComponent implements OnInit {
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<AddStudentComponent>,
         public studentService: StudentService,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+        @Inject(MAT_DIALOG_DATA) public data: StudentDialogData) {
 
     }
 
@@ -78,7 +79,9 @@ export class AddStudentComponent implements OnInit {
         let studentId = this.addStudentForm.value.studentId;
         let firstName = this.addStudentForm.value.firstName;
         let lastName = this.addStudentForm.value.lastName;
-        console.log({ studentId, firstName, lastName });
+        this.data.student.studentId = studentId;
+        this.data.student.studentName = firstName + ' ' + lastName;
+
 
     }
     async getStudents() {
@@ -86,7 +89,6 @@ export class AddStudentComponent implements OnInit {
             this.students = data;
         });
     }
-
 
 }
 

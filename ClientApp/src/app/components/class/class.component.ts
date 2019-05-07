@@ -40,7 +40,9 @@ export class ClassComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
+  viewClass(obj: Class) {
+    this.router.navigate([`/class/${obj.courseId}-${obj.crn}-${obj.term}`]);
+  }
   getClasses() {
     this.gradeService.getGrades().subscribe((data: Grade[]) => {
       this.classes = data.reduce((acc, cur) => {

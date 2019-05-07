@@ -17,16 +17,19 @@ export class CourseDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       let id = params.id;
-      this.courseService.getCourse(id).subscribe((data: Course) => {
-        this.course = data;
-      }, err => {
-        this.router.navigate(['/error']);
-      }
-
-      );
+      this.getCourseById(id);
     });
   }
 
+  getCourseById(id: string) {
+    this.courseService.getCourse(id).subscribe((data: Course) => {
+      this.course = data;
+    }, err => {
+      this.router.navigate(['/error']);
+    }
+
+    );
+  }
 
 
 }

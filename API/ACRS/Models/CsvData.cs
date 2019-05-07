@@ -11,42 +11,30 @@ namespace ACRS.Models
     {
         public string CRN { get; set; }
         public string CourseId { get; set; }
-        public string CourseTitle { get; set; }
         public string Term { get; set; }
         public string StudentName { get; set; }
         public string StudentId { get; set; }
         public int FinalGrade { get; set; }
-        public int PassingGrade { get; set; }
 
         public CsvData(CsvReader reader)
         {
             Term = reader[0];
             CRN = reader[1];
-            CourseTitle = reader[6];
             CourseId = reader[8];
             StudentName = reader[14];
             StudentId = reader[15];
-            FinalGrade = int.Parse(reader[33]);
-            PassingGrade = ExtractPassingGrade(reader[40]);
-        }
 
-        private int ExtractPassingGrade(string str)
-        {
-            string[] numbers = Regex.Split(str, @"\D+");
+            string finalGradeString = reader[33].Trim();
 
-            if (numbers.Length == 0)
+            if (finalGradeString.Equals("V", StringComparison.OrdinalIgnoreCase))
             {
-                return 65; // Default passing grade
+                FinalGrade = 0;
+            }
+            else
+            {
+                FinalGrade = int.Parse(finalGradeString);
             }
 
-            try
-            {
-                return int.Parse(numbers.First());
-            }
-            catch (Exception)
-            {
-                return 65;
-            }
         }
     }
 }

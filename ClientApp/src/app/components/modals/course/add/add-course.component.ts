@@ -5,7 +5,7 @@ import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 
 
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 // Used for importing lists from the html.
 import { Course } from '../../../../models/course';
@@ -16,6 +16,7 @@ import { Course } from '../../../../models/course';
 
 @Component({
     selector: 'add-course',
+    styleUrls: ['./add-course.component.css'],
     templateUrl: './add-course.component.html'
 })
 
@@ -50,7 +51,7 @@ export class AddCourseComponent implements OnInit {
 
 
     ngOnInit() {
-        // this.createForm();
+        this.createForm();
         // Set the initial user name validation trigger to false - no message.
 
     }
@@ -61,8 +62,8 @@ export class AddCourseComponent implements OnInit {
     private createForm() {
         this.addCourseForm = this.fb.group({
 
-            courseId: ['', Validators.required],
-            passingGrade: ['', Validators.required],
+            courseId: new FormControl('', [Validators.required]),
+            passingGrade: new FormControl('', [Validators.required]),
 
         });
     }

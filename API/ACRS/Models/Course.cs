@@ -13,6 +13,12 @@ namespace ACRS.Models
         [Key, Column(Order = 0)]
         public string CourseId { get; set; }
 
+        [Required]
+        public string CRN { get; set; }
+
+        [Required]
+        public string Term { get; set; }
+
         public int PassingGrade { get; set; }
 
         public List<Prerequisite> Prerequisites { get; set; }

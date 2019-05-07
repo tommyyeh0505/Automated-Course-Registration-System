@@ -1,38 +1,34 @@
-<mat-card-content>
-  <form [formGroup]="addCourseForm" (ngSubmit)="onSubmit(addCourseForm.value)"
-    [class.error]="!addCourseForm.valid && addCourseForm.touched">
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Add Course</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="addCourseForm" (ngSubmit)="submit()">
+        <p>
+          <mat-form-field color="accent">
+            <mat-label>Course ID</mat-label>
+            <input type="text" matInput placeholder="Username" formControlName="courseId" required autofocus>
+            <mat-error>Please enter a course ID</mat-error>
+          </mat-form-field>
+        </p>
 
-    <ul class="items">
-
-
-
-      <li><label class="label-pad">Course ID: </label>
-        <mat-form-field class="inputBackground">
-          <input matInput #userName maxlength="30" class="inputField" type="text" id="courseId"
-            formControlName="courseId" [errorStateMatcher]="matcher" required>
-
-
-
-          <mat-error>{{ errors.required }}</mat-error>
-
-        </mat-form-field>
-      </li>
-      <br>
-
-      <!-- <li><label class="label-pad">Country of current legal residence: </label>
-        <mat-form-field>
-          <mat-select placeholder="Select one" type="text" id="country" formControlName="country" required>
-            <mat-option *ngFor="let country of countries" [value]="country">{{country}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </li> -->
+        <p>
+          <mat-form-field color="accent">
+            <mat-label>Passing Grade</mat-label>
+            <input type="text" matInput placeholder="Passing Grade" formControlName="passingGrade" required>
+            <mat-error>Please enter a passing grade</mat-error>
+          </mat-form-field>
+        </p>
 
 
-    </ul>
 
-    <!-- <div *ngIf="!addEditMemberForm.valid" class="ui error message">All fields require information.</div> -->
+        <div class="button">
+          <button style="margin-top:15px" type="submit" class="pulse waves-effect waves-light" [disabled]="isLoading"
+            mat-raised-button color="accent">Submit</button>
+        </div>
 
-  </form>
-
-</mat-card-content>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -16,7 +16,6 @@ export class LoginComponent {
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
-  isLoading: boolean = false;
   authFailed: boolean = false;
   fromExpiration: boolean = false;
 
@@ -57,7 +56,7 @@ export class LoginComponent {
       return;
     }
 
-    this.isLoading = true;
+
 
     this.authenticationService.login(username, password)
       .pipe(first())
@@ -69,7 +68,6 @@ export class LoginComponent {
           this.router.navigate(['/']); //navigate to home
         },
         error => {
-          console.log(123);
           this.authFailed = true;
 
 

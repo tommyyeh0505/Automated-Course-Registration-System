@@ -6,32 +6,23 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
   selector: '[appDropFile]'
 })
 export class DropFileDirective {
-
   @Output()
-  public progressEvent: EventEmitter<any>;
+  public fileDropEvent: EventEmitter<FileList>;
 
-  @Input()
-  public defaultColor: string;
-
-  @Input()
-  public hoverColor: string;
-
-  constructor(private element: ElementRef, private uploadService: UploadService) {
-    this.progressEvent = new EventEmitter();
+  constructor(private element: ElementRef) {
+    this.fileDropEvent = new EventEmitter();
   }
 
   @HostListener('dragover', ['$event'])
   onDragOver(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.setBackgroundColor(this.hoverColor);
   }
 
   @HostListener('dragleave', ['$event'])
   onDragLeave(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.setBackgroundColor(this.defaultColor);
   }
 
   @HostListener('drop', ['$event'])
@@ -39,23 +30,6 @@ export class DropFileDirective {
     event.preventDefault();
     event.stopPropagation();
 
-    let files = event.dataTransfer.files;
-
-    this.uploadService.upload(files)
-      .subscribe((event: HttpEvent<any>) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progressEvent.emit(Math.round(100 * event.loaded / event.total));
-        } else if (event.type === HttpEventType.Response) {
-          console.log(event.body);
-        }
-      }, error => {
-        console.log(error);
-      });
-
-    this.setBackgroundColor(this.defaultColor);
-  }
-
-  private setBackgroundColor(color: string) {
-    this.element.nativeElement.style.backgroundColor = color;
+    this.fileDropEvent.emit(event.dataTransfer.files);
   }
 }

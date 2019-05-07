@@ -72,7 +72,7 @@ export class CourseComponent implements OnInit {
 
   openEditDialog(course: Course) {
     this.editCourse = course;
-    console.log(this.editCourse);
+   
     let dialogRef = this.dialog.open(EditCourseComponent, {
       width: '65vw',
       minWidth: '300px',

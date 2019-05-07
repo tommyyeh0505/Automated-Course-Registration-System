@@ -44,20 +44,6 @@ export class EditCourseComponent implements OnInit {
 
 
 
-    // // Used on form html.
-    // public countries = countries;
-
-
-
-    // public formErrors = {
-    //     first_name: '',
-    //     last_name: '',
-    //     user_name: '',
-    //     country: '',
-    // };
-
-
-
     constructor(
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<EditCourseComponent>,
@@ -83,13 +69,14 @@ export class EditCourseComponent implements OnInit {
 
     private createForm() {
         this.editCourseForm = this.fb.group({
-            courseId: new FormControl('', [Validators.required]),
-            passingGrade: new FormControl('', [Validators.required]),
+            courseId: new FormControl(this.data.course.courseId, [Validators.required]),
+            passingGrade: new FormControl(this.data.course.passingGrade, [Validators.required]),
 
         });
         this.courseAutoComplete.reset();
+        this.prereqList = this.data.course.prerequisites.map(c => c.prerequisiteCourseId);
+        console.log(this.data.course.prerequisites);
         this.getCourses();
-
     }
 
     public isTakenCourseId(courseId: string) {

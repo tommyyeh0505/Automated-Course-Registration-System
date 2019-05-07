@@ -35,6 +35,7 @@ export class LoginComponent {
     if (this.route.snapshot.paramMap.get('expired')) {
       this.fromExpiration = true;
     }
+
     if (localStorage.getItem('currentUser')) {
       let token = JSON.parse(localStorage.getItem('currentUser')).token;
 

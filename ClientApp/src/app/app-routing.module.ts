@@ -9,6 +9,8 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { ErrorComponent } from './components/error/error.component';
 import { CourseComponent } from './components/course/course.component';
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
+import { StudentComponent } from './components/student/student.component';
+import { ClassDetailComponent } from './components/class-detail/class-detail.component';
 
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
@@ -16,9 +18,11 @@ const routes: Routes = [
     path: '', component: LayoutComponent, canActivate: [AuthGuard],
     children: [
       { path: '', component: DashboardComponent, },
+      { path: 'student', component: StudentComponent },
       { path: 'index', component: DashboardComponent },
       { path: 'upload', component: UploadComponent, },
       { path: 'class', component: ClassComponent },
+      { path: 'class/:id', component: ClassDetailComponent },
       { path: 'course', component: CourseComponent },
       { path: 'course/:id', component: CourseDetailComponent },
     ]

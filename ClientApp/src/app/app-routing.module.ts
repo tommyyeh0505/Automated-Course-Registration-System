@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: '', component: LayoutComponent,
     children: [
-      { path: '', component: DashboardComponent },
+      { path: '', component: DashboardComponent, },
       { path: 'index', component: DashboardComponent },
       { path: 'upload', component: UploadComponent, },
       { path: 'grade', component: GradeComponent },

@@ -39,9 +39,7 @@ export class CourseService {
    */
   public getCourses(): Observable<any> {
     return this.http.get<any>(endpoint, this.getHttpHeaders())
-      .pipe(map((response: Response) => {
-        return response;
-      }));
+      .pipe(map((response: Response) => response || {}));
   }
 
   public getCourse(course: Course) {
@@ -58,7 +56,9 @@ export class CourseService {
   }
 
   public addCourse(course: Course) {
-    this.http.post(endpoint, this.getHttpHeaders()).subscribe();
+
+    return this.http.post<any>(endpoint, course, this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {}));
 
   }
 

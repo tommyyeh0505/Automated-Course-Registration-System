@@ -13,6 +13,7 @@ import { CourseService } from 'src/app/services/course.service';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { DialogData } from 'src/app/components/course/course.component';
+import { Prerequisite } from 'src/app/models/prerequisite';
 
 
 
@@ -130,9 +131,17 @@ export class AddCourseComponent implements OnInit {
 
         let courseId = this.addCourseForm.value.courseId;
         let passingGrade = parseInt(this.addCourseForm.value.passingGrade);
-       this.data.course.courseId = courseId;
-       this.data.course.passingGrade = passingGrade;
+        this.data.course.courseId = courseId;
+        this.data.course.passingGrade = passingGrade;
+        this.data.course.prerequisites = this.prereqList.map(e => {
+            let preq = new Prerequisite();
+            preq.courseId = courseId;
+            preq.prerequisiteCourseId = e;
+            return preq;
+        })
 
+        this.data.course.crn = "12345";
+        this.data.course.term = "201930";
 
 
     }

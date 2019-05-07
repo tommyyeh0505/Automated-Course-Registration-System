@@ -6,6 +6,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { MatDialog } from '@angular/material/dialog';
+import { first } from 'rxjs/operators';
 
 export interface DialogData {
   course: Course;
@@ -49,6 +50,7 @@ export class CourseComponent implements OnInit {
 
 
   openAddDialog() {
+    this.newCourse = new Course();
     const dialogRef = this.dialog.open(AddCourseComponent, {
       width: '65vw',
       minWidth: '300px',
@@ -59,7 +61,9 @@ export class CourseComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      if (result) {
+        this.addCourse(this.newCourse);
+      }
       this.newCourse = new Course();
     });
   }
@@ -75,11 +79,18 @@ export class CourseComponent implements OnInit {
       this.courses = data;
       this.initTable(this.courses);
     });
-
   }
 
   getCourse(course: Course) {
 
+  }
+
+  addCourse(course: Course) {
+    this.courseService.addCourse(course).pipe(first()).subscribe((response: any) => {
+      console.log(response)
+      this.dataSource.data.push(response);
+      this.initTable(this.dataSource.data);
+    });
   }
 
 
@@ -87,8 +98,7 @@ export class CourseComponent implements OnInit {
     this.courseService.deleteCourse(course);
     let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
     this.dataSource.data.splice(itemIndex, 1);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.initTable(this.dataSource.data);
   }
 
 

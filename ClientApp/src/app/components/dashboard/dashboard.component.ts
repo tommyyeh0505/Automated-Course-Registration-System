@@ -4,16 +4,26 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { Router } from '@angular/router';
+import { DashboardService } from 'src/app/services/dashboard.service';
+import { Course } from 'src/app/models/course';
+import { Student } from 'src/app/models/student';
+import { Waitlist } from 'src/app/models/waitlist';
+import { User } from 'src/app/models/user';
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  single: any[];
+  single: any[] = [];
   multi: any[];
+  public studentCount: number = 0;
+  public courseCount: number = 0;
+  public waitlistCount: number = 0;
+  public accountCount: number = 0;
 
-  view: any[] = [500, 250];
+
 
   colorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', 'pink']
@@ -39,39 +49,91 @@ export class DashboardComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private service: DashboardService) {
+  }
+  async ngOnInit() {
+
+
+    await this.getStudents();
+    await this.getCourses();
+    await this.getWaitlists();
+    await this.getAccounts();
+
     this.single = [
       [{
         "name": "Students ",
-        "value": 3510
+        "value": this.studentCount
       }],
       [{
         "name": "Courses ",
-        "value": 259
+        "value": this.courseCount
       }],
       [{
         "name": "Waitlists ",
-        "value": 1512
+        "value": this.waitlistCount
       }],
       [{
         "name": "Accounts ",
-        "value": 15
+        "value": this.accountCount
       }]
     ]
       ;
 
-  }
-  ngOnInit(): void {
+
+
+
+    /** 
+     * This is to fix the responsive view for ng charts
+     */
+
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-    }); // BUGFIX:
+    });
+
+
+
   }
 
   onSelect(event) {
-    console.log(event);
-    window.alert("henlo")
+    let name = event.name.trim();
+    if (name === 'Students')
+      this.router.navigate(['student'])
+    else if (name === 'Courses')
+      this.router.navigate(['course'])
+    else if (name === 'Waitlists')
+      this.router.navigate(['waitlist'])
+    else if (name === 'Accounts') {
+      this.router.navigate(['account'])
+    }
+
+
+  }
+
+  async getStudents() {
+    await this.service.getStudents().toPromise().then(data => {
+      this.studentCount = data.length;
+    })
+  }
+  async getCourses() {
+    await this.service.getCourses().toPromise().then(data => {
+      this.courseCount = data.length;
+    })
+  }
+  async getWaitlists() {
+    await this.service.getWaitlists().toPromise().then(data => {
+      this.waitlistCount = data.length;
+    })
+  }
+  async getAccounts() {
+    await this.service.getAccounts().toPromise().then(data => {
+      this.accountCount = data.length;
+    })
   }
 
 
 
 }
+
+
+
+

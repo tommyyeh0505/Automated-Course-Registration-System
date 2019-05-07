@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
 import { Course } from 'src/app/models/course';
@@ -13,12 +12,12 @@ import { MatDialog } from '@angular/material/dialog';
  * @title Data table with sorting, pagination, and filtering.
  */
 @Component({
-  selector: 'app-course',
-  templateUrl: './course.component.html',
-  styleUrls: ['./course.component.css']
+  selector: 'course',
+  styleUrls: ['course.component.css'],
+  templateUrl: 'course.component.html',
 })
-export class CourseComponent implements OnInit {
 
+export class CourseComponent implements OnInit {
   displayedColumns: string[] = ['courseId', 'crn', 'term', 'passingGrade', 'view', 'delete'];
   dataSource: MatTableDataSource<Course>;
   courses: Course[] = [];
@@ -39,11 +38,16 @@ export class CourseComponent implements OnInit {
 
 
   }
+  ngOnInit() {
+    this.getCourses();
+  }
 
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddCourseComponent, {
-      width: '250px',
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
       data: { data: this.courses }
     });
 
@@ -88,4 +92,3 @@ export class CourseComponent implements OnInit {
     }
   }
 }
-

@@ -88,7 +88,6 @@ export class CourseComponent implements OnInit {
       //   this.addCourse(this.newCourse);
       // }
       let newEditCourse = result.course;
-      console.log(this.editCourse);
 
       if (this.editCourse.courseId !== newEditCourse.courseId) {
         this.addCourse(newEditCourse);
@@ -113,7 +112,7 @@ export class CourseComponent implements OnInit {
   getCourses() {
     this.courseService.getCourses().subscribe((data: Course[]) => {
       this.courses = data;
-      this.refresh();
+      this.initTable(data);
     });
   }
 
@@ -141,7 +140,7 @@ export class CourseComponent implements OnInit {
     this.courseService.deleteCourse(course);
     let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
     this.dataSource.data.splice(itemIndex, 1);
-    this.refresh();
+    this.initTable(this.dataSource.data);
   }
 
 

@@ -129,14 +129,12 @@ export class DashboardComponent {
     await this.service.getGrades().toPromise().then(data => {
 
       let classes = data.reduce((acc, cur) => {
-
         let c = {
           courseId: cur.courseId,
           term: cur.term,
           crn: cur.crn
 
         }
-
 
 
         if (acc.filter(el => el.courseId === c.courseId && el.term === c.term && el.crn === c.crn).length === 0) {

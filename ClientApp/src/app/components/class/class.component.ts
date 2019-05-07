@@ -5,6 +5,7 @@ import { Grade } from 'src/app/models/grade';
 import { GradeService } from 'src/app/services/grade.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { Class } from 'src/app/models/class';
 
 
 
@@ -18,18 +19,18 @@ import { Router } from '@angular/router';
 })
 
 export class ClassComponent implements OnInit {
-  displayedColumns: string[] = ['gradeId', 'studentId', 'finalGrade', 'attempts', 'delete'];
-  dataSource: MatTableDataSource<Grade>;
-  grades: Grade[] = [];
+  displayedColumns: string[] = ['courseId', 'crn', 'term', 'view', 'edit', 'delete'];
+  dataSource: MatTableDataSource<Class>;
+  classes: Class[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private gradeServce: GradeService,
+    private gradeService: GradeService,
     private authService: AuthenticationService,
     private router: Router
   ) {
-    this.getGrades();
+    this.getClasses();
     // Create 100 users
 
 
@@ -38,7 +39,7 @@ export class ClassComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.getGrades();
+    this.getClasses();
   }
 
   initTable(data) {
@@ -46,24 +47,46 @@ export class ClassComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  getGrades() {
-    this.gradeServce.getGrades().subscribe((data: Grade[]) => {
-      this.grades = data;
-      this.initTable(this.grades);
+
+  getClasses() {
+    this.gradeService.getGrades().subscribe((data: Grade[]) => {
+      this.classes = data.reduce((acc, cur) => {
+        let c = {
+          courseId: cur.courseId,
+          term: cur.term,
+          crn: cur.crn
+        }
+        if (acc.filter(el => el.courseId === c.courseId && el.term === c.term && el.crn === c.crn).length === 0) {
+          acc.push(c);
+        }
+        return acc;
+      }, []);
+
+      this.initTable(this.classes);
     });
 
   }
 
 
-  deleteGrade(grade: Grade) {
-    this.gradeServce.deleteGrade(grade);
-    let itemIndex = this.dataSource.data.findIndex(obj => obj.gradeId === grade.gradeId);
-    this.dataSource.data.splice(itemIndex, 1);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
 
+
+  refresh() {
+    this.gradeService.getGrades().subscribe((data: Grade[]) => {
+      this.classes = data.reduce((acc, cur) => {
+        let c = {
+          courseId: cur.courseId,
+          term: cur.term,
+          crn: cur.crn
+        }
+        if (acc.filter(el => el.courseId === c.courseId && el.term === c.term && el.crn === c.crn).length === 0) {
+          acc.push(c);
+        }
+        return acc;
+      }, []);
+
+      this.initTable(this.classes);
+    });
   }
-
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

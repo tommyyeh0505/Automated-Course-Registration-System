@@ -1,5 +1,5 @@
 <div class="grid-container">
-  <h1 class="mat-h1">Course</h1>
+  <h1 class="mat-h1">Class</h1>
   <mat-form-field style="margin-top:20px; width:80%; margin-right:15px; " color="accent">
     <span matPrefix style="margin-right:5px">
 
@@ -14,23 +14,21 @@
   <div class="mat-elevation-z8" style="margin-top:15px">
     <table mat-table [dataSource]="dataSource" matSort>
 
-
+      <!-- ID Column -->
       <ng-container matColumnDef="courseId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Course ID </th>
         <td mat-cell *matCellDef="let row"> {{row.courseId}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="passingGrade">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Passing Grade </th>
-        <td mat-cell *matCellDef="let row"> {{row.passingGrade}}% </td>
+      <ng-container matColumnDef="crn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> CRN </th>
+        <td mat-cell *matCellDef="let row"> {{row.crn}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="prerequisite">
-        <th mat-header-cell *matHeaderCellDef> Prerequisite </th>
-        <td mat-cell *matCellDef="let row">
-          {{row.prerequisites.length}} Course(s)
-
-        </td>
+      <!-- Progress Column -->
+      <ng-container matColumnDef="term">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Term </th>
+        <td mat-cell *matCellDef="let row"> {{row.term}} </td>
       </ng-container>
 
 
@@ -53,18 +51,14 @@
         </td>
       </ng-container>
 
-
       <ng-container matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef> Delete</th>
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
         <td mat-cell *matCellDef="let row">
-          <button matTooltip="Delete Course" mat-icon-button style="color:#ff6b6b" (click)="deleteCourse(row)">
+          <button matTooltip="Delete Grade" mat-icon-button style="color:#ff6b6b" (click)="deleteGrade(row)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
       </ng-container>
-
-
-
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;">
@@ -72,8 +66,9 @@
 
 
     </table>
-
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" color="accent"></mat-paginator>
+
+
   </div>
 
 

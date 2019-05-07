@@ -1,10 +1,10 @@
 <mat-dialog-content class="container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Add Course</mat-card-title>
+      <mat-card-title>Edit Course</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="addCourseForm">
+      <form [formGroup]="editCourseForm">
 
         <mat-form-field color="accent">
 
@@ -21,8 +21,8 @@
 
         <mat-form-field color="accent">
           <mat-label>Passing Grade</mat-label>
-          <input value="65" type="number" min="0" max="100" matInput placeholder="Passing Grade"
-            formControlName="passingGrade" required>
+          <input type="number" min="0" max="100" matInput placeholder="Passing Grade" formControlName="passingGrade"
+            required>
           <mat-error>Please enter a passing grade</mat-error>
 
         </mat-form-field>

@@ -4,5 +4,4 @@ export class Student {
 
     public studentId: string;
 
-    public email: string;
 }

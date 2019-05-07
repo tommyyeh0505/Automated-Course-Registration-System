@@ -5,11 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule, MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule, MatDialogModule, MatSnackBarModule, MatSelectModule, MatAutocompleteModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { GradeComponent } from './components/grade/grade.component';
+import { ClassComponent } from './components/class/class.component';
 import { LoginComponent } from './components/login/login.component';
 import { DropFileDirective } from './directives/drop-file.directive';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -19,13 +19,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StudentComponent } from './components/student/student.component';
 import { AddCourseComponent } from './components/modals/course/add/add-course.component';
+import { CourseDetailComponent } from './components/course-detail/course-detail.component';
+import { EditCourseComponent } from './components/modals/course/edit/edit-course.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
     DashboardComponent,
-    GradeComponent,
+    ClassComponent,
     LoginComponent,
     DropFileDirective,
     LayoutComponent,
@@ -33,6 +35,8 @@ import { AddCourseComponent } from './components/modals/course/add/add-course.co
     CourseComponent,
     StudentComponent,
     AddCourseComponent,
+    CourseDetailComponent,
+    EditCourseComponent
   ],
   imports: [
     MatTabsModule,
@@ -60,12 +64,15 @@ import { AddCourseComponent } from './components/modals/course/add/add-course.co
     NgxChartsModule,
     MatToolbarModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    AddCourseComponent
+    AddCourseComponent,
+    EditCourseComponent
   ]
 })
 export class AppModule { }

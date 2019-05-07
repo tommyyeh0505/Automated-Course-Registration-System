@@ -6,10 +6,10 @@ background-position: center;  ">
     <mat-card-header>
       <mat-card-title>Login</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content color="accent">
       <form [formGroup]="form" (ngSubmit)="submit()">
         <p>
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" color="accent">
             <mat-label>Username</mat-label>
             <input type="text" matInput placeholder="Username" formControlName="username" required autofocus>
             <mat-error>Please enter a username</mat-error>
@@ -17,7 +17,7 @@ background-position: center;  ">
         </p>
 
         <p>
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" color="accent">
             <mat-label>Password</mat-label>
             <input type="password" matInput placeholder="Password" formControlName="password" required>
             <mat-error>Please enter a password</mat-error>

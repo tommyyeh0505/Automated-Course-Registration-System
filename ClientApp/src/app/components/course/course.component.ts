@@ -66,13 +66,14 @@ export class CourseComponent implements OnInit {
       if (result) {
         this.addCourse(this.newCourse);
       }
+
       this.newCourse = new Course();
     });
   }
 
   openEditDialog(course: Course) {
     this.editCourse = course;
-   
+
     let dialogRef = this.dialog.open(EditCourseComponent, {
       width: '65vw',
       minWidth: '300px',
@@ -86,6 +87,16 @@ export class CourseComponent implements OnInit {
       // if (result) {
       //   this.addCourse(this.newCourse);
       // }
+      let newEditCourse = result.course;
+      console.log(this.editCourse);
+
+      if (this.editCourse.courseId !== newEditCourse.courseId) {
+        this.addCourse(newEditCourse);
+        this.deleteCourse(this.editCourse);
+      }
+      else {
+        this.updateCourse(newEditCourse.courseId, newEditCourse);
+      }
       this.editCourse = new Course();
     });
   }
@@ -102,28 +113,35 @@ export class CourseComponent implements OnInit {
   getCourses() {
     this.courseService.getCourses().subscribe((data: Course[]) => {
       this.courses = data;
-      this.initTable(this.courses);
+      this.refresh();
     });
   }
 
-  getCourse(course: Course) {
 
-  }
 
   addCourse(course: Course) {
     this.courseService.addCourse(course).pipe(first()).subscribe((response: any) => {
-      console.log(response)
-      this.dataSource.data.push(response);
-      this.initTable(this.dataSource.data);
+      this.refresh();
     });
   }
 
+  updateCourse(courseId: string, editCourse: Course) {
+    this.courseService.updateCourse(courseId, editCourse).pipe(first()).subscribe((response: any) => {
+      this.refresh();
+    });
+  }
+  refresh() {
+    this.courseService.getCourses().subscribe((data: Course[]) => {
+      this.courses = data;
+      this.initTable(this.courses);
+    });
+  }
 
   deleteCourse(course: Course) {
     this.courseService.deleteCourse(course);
     let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
     this.dataSource.data.splice(itemIndex, 1);
-    this.initTable(this.dataSource.data);
+    this.refresh();
   }
 
 

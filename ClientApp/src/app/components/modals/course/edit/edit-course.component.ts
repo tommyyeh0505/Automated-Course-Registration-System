@@ -42,6 +42,7 @@ export class EditCourseComponent implements OnInit {
 
     public selectedPreq: string;
 
+    public editCourse: Course = new Course();
 
 
     constructor(
@@ -75,11 +76,14 @@ export class EditCourseComponent implements OnInit {
         });
         this.courseAutoComplete.reset();
         this.prereqList = this.data.course.prerequisites.map(c => c.prerequisiteCourseId);
-        console.log(this.data.course.prerequisites);
+
         this.getCourses();
     }
 
     public isTakenCourseId(courseId: string) {
+        if (courseId === this.data.course.courseId) {
+            return false;
+        }
         courseId = courseId.trim();
         let courseIdList = this.courses.map(c => c.courseId);
         this.validCourseId = courseIdList.indexOf(courseId) === -1;
@@ -91,9 +95,8 @@ export class EditCourseComponent implements OnInit {
 
     }
 
-    public editPrerequisite() {
+    public addPrerequisite() {
         if (this.selectedPreq) {
-
             if (this.prereqList.indexOf(this.selectedPreq) === -1) {
                 this.prereqList.push(this.selectedPreq);
                 this.validPreq = true;
@@ -108,8 +111,6 @@ export class EditCourseComponent implements OnInit {
     public removePreq(courseId: string) {
 
         let index = this.prereqList.indexOf(courseId);
-        console.log(this.prereqList, courseId);
-        console.log(index);
 
         this.prereqList.splice(index, 1);
     }
@@ -118,18 +119,19 @@ export class EditCourseComponent implements OnInit {
 
         let courseId = this.editCourseForm.value.courseId;
         let passingGrade = parseInt(this.editCourseForm.value.passingGrade);
-        this.data.course.courseId = courseId;
-        this.data.course.passingGrade = passingGrade;
-        this.data.course.prerequisites = this.prereqList.map(e => {
+        this.editCourse.courseId = courseId;
+        this.editCourse.passingGrade = passingGrade;
+        this.editCourse.prerequisites = this.prereqList.map(e => {
             let preq = new Prerequisite();
             preq.courseId = courseId;
             preq.prerequisiteCourseId = e;
             return preq;
         })
 
-
+        this.data.course = this.editCourse;
 
     }
+
     async  getCourses() {
         await this.courseService.getCourses().subscribe((data: Course[]) => {
             this.courses = data;

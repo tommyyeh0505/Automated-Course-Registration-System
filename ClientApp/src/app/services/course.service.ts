@@ -48,11 +48,14 @@ export class CourseService {
   }
   public deleteCourse(course: Course) {
     let id = course.courseId;
-    this.http.delete<any>(endpoint + id, this.getHttpHeaders())
+    return this.http.delete<any>(endpoint + id, this.getHttpHeaders())
       .subscribe();
     return course;
   }
 
+  public updateCourse(courseId: string, editCourse: Course) {
+    return this.http.put<any>(endpoint + courseId, editCourse, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+  }
   public addCourse(course: Course) {
 
     return this.http.post<any>(endpoint, course, this.getHttpHeaders())

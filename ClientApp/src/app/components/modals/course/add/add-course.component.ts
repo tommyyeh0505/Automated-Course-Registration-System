@@ -84,7 +84,7 @@ export class AddCourseComponent implements OnInit {
     private createForm() {
         this.addCourseForm = this.fb.group({
             courseId: new FormControl('', [Validators.required]),
-            passingGrade: new FormControl('', [Validators.required]),
+            passingGrade: new FormControl(65, [Validators.required]),
 
         });
         this.courseAutoComplete.reset();
@@ -139,6 +139,7 @@ export class AddCourseComponent implements OnInit {
             preq.prerequisiteCourseId = e;
             return preq;
         })
+
 
 
 

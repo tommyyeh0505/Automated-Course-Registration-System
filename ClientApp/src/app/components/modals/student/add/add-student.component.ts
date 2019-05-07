@@ -14,6 +14,8 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { DialogData } from 'src/app/components/course/course.component';
 import { Prerequisite } from 'src/app/models/prerequisite';
+import { Student } from 'src/app/models/student';
+import { StudentService } from 'src/app/services/student.service';
 
 
 
@@ -29,21 +31,19 @@ import { Prerequisite } from 'src/app/models/prerequisite';
 
 export class AddStudentComponent implements OnInit {
 
-    public addCourseForm: FormGroup;
-    courseAutoComplete = new FormControl();
-    filteredCourses: Observable<Course[]>;
-    public courses: Course[] = [];
-    public prereqList: string[] = [];
-    public validCourseId: boolean = true;
+    public addStudentForm: FormGroup;
+
+    public students: Student[] = [];
+
+    public validStudentId: boolean = true;
     public validPreq: boolean = true;
 
     public selectedPreq: string;
     constructor(
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<AddStudentComponent>,
-        public courseService: CourseService,
+        public studentService: StudentService,
         @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-
 
     }
 
@@ -53,70 +53,38 @@ export class AddStudentComponent implements OnInit {
 
 
     private createForm() {
-        this.addCourseForm = this.fb.group({
-            courseId: new FormControl('', [Validators.required]),
-            passingGrade: new FormControl(65, [Validators.required]),
+        this.addStudentForm = this.fb.group({
+            studentId: new FormControl('', [Validators.required]),
+            firstName: new FormControl('', [Validators.required]),
+            lastName: new FormControl('', [Validators.required]),
         });
-        this.courseAutoComplete.reset();
-        this.getCourses();
+        this.getStudents();
+
     }
 
-    public isTakenCourseId(courseId: string) {
-        courseId = courseId.trim();
-        let courseIdList = this.courses.map(c => c.courseId);
-        this.validCourseId = courseIdList.indexOf(courseId) === -1;
+    public isTakenStudentId(studentId: string) {
+        studentId = studentId.trim();
+        let studentIdList = this.students.map(s => s.studentId);
+        this.validStudentId = studentIdList.indexOf(studentId) === -1;
     }
 
     public selectPreq(courseId: string) {
         this.selectedPreq = courseId;
     }
 
-    public addPrerequisite() {
-        if (this.selectedPreq) {
-            if (this.prereqList.indexOf(this.selectedPreq) === -1) {
-                this.prereqList.push(this.selectedPreq);
-                this.validPreq = true;
-            }
-            else {
-                this.validPreq = false;
-            }
-        }
-        this.courseAutoComplete.reset();
-    }
 
-    public removePreq(courseId: string) {
-        let index = this.prereqList.indexOf(courseId);
-        this.prereqList.splice(index, 1);
-    }
 
     public submit() {
-        let courseId = this.addCourseForm.value.courseId;
-        let passingGrade = parseInt(this.addCourseForm.value.passingGrade);
-        this.data.course.courseId = courseId;
-        this.data.course.passingGrade = passingGrade;
-        this.data.course.prerequisites = this.prereqList.map(e => {
-            let preq = new Prerequisite();
-            preq.courseId = courseId;
-            preq.prerequisiteCourseId = e;
-            return preq;
-        })
-    }
-    async  getCourses() {
-        await this.courseService.getCourses().subscribe((data: Course[]) => {
-            this.courses = data;
+        let studentId = this.addStudentForm.value.studentId;
+        let firstName = this.addStudentForm.value.firstName;
+        let lastName = this.addStudentForm.value.lastName;
+        console.log({ studentId, firstName, lastName });
 
-            this.filteredCourses = this.courseAutoComplete.valueChanges
-                .pipe(
-                    startWith(''),
-                    map(course => course ? this._filterCourses(course) : this.courses.slice())
-                );
+    }
+    async getStudents() {
+        await this.studentService.getStudents().subscribe((data: Student[]) => {
+            this.students = data;
         });
-
-    }
-
-    private _filterCourses(value: string): Course[] {
-        const filterValue = value.toLowerCase();
-        return this.courses.filter(course => course.courseId.toLowerCase().indexOf(filterValue) === 0);
     }
 
 

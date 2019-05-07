@@ -9,6 +9,7 @@ import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
 import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { Course } from 'src/app/models/course';
+import { AddStudentComponent } from '../modals/student/add/add-student.component';
 
 export interface DialogData {
   student: Student;
@@ -46,7 +47,7 @@ export class StudentComponent implements OnInit {
 
   openAddDialog() {
     this.newStudent = new Student();
-    let dialogRef = this.dialog.open(AddCourseComponent, {
+    let dialogRef = this.dialog.open(AddStudentComponent, {
       width: '65vw',
       minWidth: '300px',
       maxWidth: '600px',

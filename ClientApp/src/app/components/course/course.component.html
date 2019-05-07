@@ -1,13 +1,15 @@
 <div class="grid-container">
 
-  <mat-form-field style="margin-top:40px; width:85%; margin-right:15px" color="accent">
-    <span matPrefix>
-      <mat-icon>search</mat-icon>
-    </span><input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  <mat-form-field style="margin-top:40px; width:80%; margin-right:15px; " color="accent">
+    <span matPrefix style="margin-right:5px">
 
+    </span><input matInput (keyup)="applyFilter($event.target.value)">
+    <mat-label>
+      <mat-icon>search</mat-icon> Filter
+    </mat-label>
   </mat-form-field>
 
-  <button style="position:absoulute; left:0" mat-raised-button color="accent" (click)="openAddDialog()">Add</button>
+  <button mat-raised-button color="accent" (click)="openAddDialog()">Add</button>
 
   <div class="mat-elevation-z8" style="margin-top:15px">
     <table mat-table [dataSource]="dataSource" matSort>

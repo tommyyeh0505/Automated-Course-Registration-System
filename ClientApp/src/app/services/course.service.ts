@@ -51,13 +51,18 @@ export class CourseService {
     return course;
   }
   public deleteCourse(course: Course) {
-
     let id = course.courseId;
-    console.log(endpoint + id);
     this.http.delete<any>(endpoint + id, this.getHttpHeaders())
       .subscribe();
     return course;
   }
+
+  public addCourse(course: Course) {
+    this.http.post(endpoint, this.getHttpHeaders()).subscribe();
+
+  }
+
+
 
   // HTTP headers
   private getHttpHeaders(): {} {

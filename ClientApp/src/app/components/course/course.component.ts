@@ -7,7 +7,9 @@ import { Router } from '@angular/router';
 import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { MatDialog } from '@angular/material/dialog';
 
-
+export interface DialogData {
+  course: Course;
+}
 /**
  * @title Data table with sorting, pagination, and filtering.
  */
@@ -17,10 +19,13 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: 'course.component.html',
 })
 
+
+
 export class CourseComponent implements OnInit {
   displayedColumns: string[] = ['courseId', 'passingGrade', 'prerequisite', 'view', 'delete'];
   dataSource: MatTableDataSource<Course>;
   courses: Course[] = [];
+  newCourse: Course = new Course();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -48,11 +53,14 @@ export class CourseComponent implements OnInit {
       width: '65vw',
       minWidth: '300px',
       maxWidth: '600px',
-      data: { data: this.courses }
+      data: {
+        course: this.newCourse
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      this.newCourse = new Course();
     });
   }
 
@@ -81,8 +89,9 @@ export class CourseComponent implements OnInit {
     this.dataSource.data.splice(itemIndex, 1);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
+
+
 
 
   applyFilter(filterValue: string) {

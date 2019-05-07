@@ -32,7 +32,7 @@ namespace ACRS.Controllers
         [HttpPost, DisableRequestSizeLimit]
         public ActionResult Upload()
         {
-            List<UploadError> failed = new List<UploadError>();
+            List<UploadError> totalErrors = new List<UploadError>();
 
             var files = Request.Form.Files;
 
@@ -45,95 +45,174 @@ namespace ACRS.Controllers
             {
                 if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
-                    if (!ParseCsv(file))
+                    List<CsvData> data = ParseCsv(file);
+                    List<UploadError> errors = IsValidCsvFile(data, file.FileName);
+
+                    if (errors.Count == 0)
                     {
-                        failed.Add(new UploadError { FileName = file.Name, Reason = "Invalid record or course may not have been created yet" });
-                    }
-                }
-                else
-                {
-                    failed.Add(new UploadError { FileName = file.Name, Reason = "File has 0 bytes or is not a .csv file" });
-                }
-            }
-
-            return Accepted(failed);
-        }
-
-        private bool ParseCsv(IFormFile file)
-        {
-            bool status = false;
-
-            using (var stream = file.OpenReadStream())
-            {
-                using (var reader = new StreamReader(stream))
-                {
-
-                    var csv = new CsvReader(reader);
-
-                    // Skip headers
-                    csv.Read();
-                    csv.ReadHeader();
-
-                    while (csv.Read())
-                    {
-                        try
-                        {
-                            CsvData data = new CsvData(csv);
-                            status = UpdateDatabase(data);
-                        }
-                        catch (Exception)
-                        {
-                            return false;
-                        }
-                    }
-
-                    if (!status)
-                    {
-                        return false;
+                        UpdateDatabase(data);
                     }
                     else
                     {
-                        _context.SaveChanges();
+                        totalErrors.AddRange(errors);
+                    }
+                }
+                else
+                {
+                    totalErrors.Add(new UploadError { FileName = file.FileName, Reason = "File is not a .csv or has 0 bytes", Row = null });
+                }
+            }
+
+            return Accepted(totalErrors);
+        }
+
+        private List<CsvData> ParseCsv(IFormFile file)
+        {
+            List<CsvData> data = new List<CsvData>();
+
+            using (var stream = file.OpenReadStream())
+            {
+                using (var streamReader = new StreamReader(stream))
+                {
+                    using (var csvReader = new CsvReader(streamReader))
+                    {
+                        csvReader.Read();
+                        csvReader.ReadHeader();
+
+                        while (csvReader.Read())
+                        {
+                            CsvData r = null;
+
+                            try
+                            {
+                                r = new CsvData(csvReader);
+                            }
+                            catch (Exception)
+                            {
+                                r = null;
+                            }
+
+                            data.Add(r);
+                        }
                     }
                 }
             }
 
-            return true;
+            return data;
         }
 
-        private bool UpdateDatabase(CsvData data)
+        private List<UploadError> IsValidCsvFile(List<CsvData> data, string fileName)
         {
-            if (!_context.Students.Any(s => s.StudentId == data.StudentId))
-            {
-                _context.Students.Add(CreateStudent(data.StudentName, data.StudentId));
-            }
+            List<UploadError> errors = new List<UploadError>();
 
-            if (!_context.Courses.Any(c => c.CourseId == data.CourseId))
+            // Row adds 2 to i due to offset of header, and row indices starting at 1 not 0
+            for (int i = 0; i < data.Count; i++)
             {
-                return false;
-            }
+                CsvData r = data[i];
 
-            Grade uploadedGrade = CreateGrade(data.StudentId, data.CRN, data.CourseId, data.Term, data.FinalGrade);
-
-            // If exception is thrown on this line, then there is more than one entry
-            // At most there should only be 1 entry in the database for the conditions below
-            Grade currentGrade = _context.Grades.Where(g => g.CourseId == data.CourseId &&
-                                                            g.StudentId == data.StudentId).SingleOrDefault();
-            if (currentGrade != null)
-            {
-                if (currentGrade.FinalGrade < uploadedGrade.FinalGrade)
+                if (r == null)
                 {
-                    _context.Grades.Remove(currentGrade);
+                    errors.Add(new UploadError
+                    {
+                        FileName = fileName,
+                        Reason = "Parsing of row failed due to incorrect" +
+                        " data format in a column (most likely the grade column)",
+                        Row = i + 2
+                    });
+                    continue;
+                }
+
+                if (AnyNullEmptyOrWhitespace(
+                      r.CRN,
+                      r.CourseId,
+                      r.Term,
+                      r.StudentName,
+                      r.StudentId))
+                {
+                    errors.Add(new UploadError
+                    {
+                        FileName = fileName,
+                        Reason = "Empty or invalid column",
+                        Row = i + 2
+                    });
+                }
+
+                if (!_context.Courses.Any(c => c.CourseId == r.CourseId))
+                {
+                    errors.Add(new UploadError
+                    {
+                        FileName = fileName,
+                        Reason = "Course does not exist",
+                        Row = i + 2
+                    });
+                }
+            }
+
+            return errors;
+        }
+
+        private bool AnyNullEmptyOrWhitespace(params string[] strings)
+        {
+            return strings.Any(s => string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s));
+        }
+
+        private void UpdateDatabase(List<CsvData> data)
+        {
+            foreach (CsvData r in data)
+            {
+                if (!_context.Students.Any(s => s.StudentId == r.StudentId))
+                {
+                    _context.Students.Add(CreateStudent(r.StudentName, r.StudentId));
+                }
+
+                Course course = _context.Courses.Find(r.CourseId);
+                Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade);
+                Grade dbGrade = _context.Grades.Where(g => g.CourseId == r.CourseId &&
+                                                           g.StudentId == r.StudentId).SingleOrDefault();
+
+                Grade gradeToUpload = null;
+
+                if (dbGrade != null)
+                {
+                    double uploadedFinalGrade = uploadedGrade.FinalGrade;
+                    double dbFinalGrade = dbGrade.FinalGrade;
+
+                    if (uploadedFinalGrade > dbFinalGrade)
+                    {
+                        gradeToUpload = uploadedGrade;
+                        gradeToUpload.Attempts = dbGrade.Attempts;
+
+                        if (gradeToUpload.FinalGrade < 65)
+                        {
+                            gradeToUpload.Attempts++;
+                        }
+
+                        _context.Remove(dbGrade);
+                        _context.Add(gradeToUpload);
+                    }
+                    else if (uploadedFinalGrade < dbFinalGrade)
+                    {
+                        // Do nothing, keep the higher grade
+                    }
+                    else
+                    {
+                        // Same grade, what do we want to do?
+                    }
                 }
                 else
                 {
-                    return true;
+                    gradeToUpload = uploadedGrade;
+
+                    if (gradeToUpload.FinalGrade < 65)
+                    {
+                        gradeToUpload.Attempts++;
+                    }
+
+                    _context.Add(gradeToUpload);
                 }
             }
 
-            _context.Grades.Add(uploadedGrade);
-
-            return true;
+            _context.SaveChanges();
         }
 
         private Student CreateStudent(string name, string id)
@@ -156,6 +235,5 @@ namespace ACRS.Controllers
                 FinalGrade = grade
             };
         }
-
     }
 }

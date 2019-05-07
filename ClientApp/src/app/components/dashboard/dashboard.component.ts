@@ -103,8 +103,8 @@ export class DashboardComponent {
       this.router.navigate(['course'])
     else if (name === 'Waitlists')
       this.router.navigate(['waitlist'])
-    else if (name === 'Accounts') {
-      this.router.navigate(['account'])
+    else if (name === 'Classes') {
+      this.router.navigate(['class'])
     }
 
 
@@ -127,16 +127,12 @@ export class DashboardComponent {
   }
   async getClasses() {
     await this.service.getGrades().toPromise().then(data => {
-
       let classes = data.reduce((acc, cur) => {
         let c = {
           courseId: cur.courseId,
           term: cur.term,
           crn: cur.crn
-
         }
-
-
         if (acc.filter(el => el.courseId === c.courseId && el.term === c.term && el.crn === c.crn).length === 0) {
           acc.push(c);
 

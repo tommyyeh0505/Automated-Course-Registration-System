@@ -140,8 +140,6 @@ export class AddCourseComponent implements OnInit {
             return preq;
         })
 
-        this.data.course.crn = "12345";
-        this.data.course.term = "201930";
 
 
     }

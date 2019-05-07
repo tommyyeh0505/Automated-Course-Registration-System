@@ -9,7 +9,7 @@ import { Course } from 'src/app/models/course';
   styleUrls: ['./course-detail.component.css']
 })
 export class CourseDetailComponent implements OnInit {
-  course: Course;
+  course: Course = new Course();
   constructor(private route: ActivatedRoute,
     private router: Router,
     private courseService: CourseService) { }

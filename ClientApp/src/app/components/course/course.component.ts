@@ -74,6 +74,9 @@ export class CourseComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  viewCourse(course: Course) {
+    this.router.navigate(['/course/' + course.courseId]);
+  }
   getCourses() {
     this.courseService.getCourses().subscribe((data: Course[]) => {
       this.courses = data;

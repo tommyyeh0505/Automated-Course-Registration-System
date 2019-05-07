@@ -42,11 +42,9 @@ export class CourseService {
       .pipe(map((response: Response) => response || {}));
   }
 
-  public getCourse(course: Course) {
-    let id = course.courseId;
-    this.http.get<any>(endpoint + id, this.getHttpHeaders())
-      .subscribe();
-    return course;
+  public getCourse(courseId: string) {
+    return this.http.get<any>(endpoint + courseId, this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {}));
   }
   public deleteCourse(course: Course) {
     let id = course.courseId;

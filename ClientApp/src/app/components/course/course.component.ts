@@ -23,7 +23,7 @@ export interface DialogData {
 
 
 export class CourseComponent implements OnInit {
-  displayedColumns: string[] = ['courseId', 'passingGrade', 'prerequisite', 'view', 'delete'];
+  displayedColumns: string[] = ['courseId', 'passingGrade', 'prerequisite', 'view', 'edit', 'delete'];
   dataSource: MatTableDataSource<Course>;
   courses: Course[] = [];
   newCourse: Course = new Course();

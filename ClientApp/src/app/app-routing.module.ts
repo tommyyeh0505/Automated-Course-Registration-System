@@ -8,6 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { ErrorComponent } from './components/error/error.component';
 import { CourseComponent } from './components/course/course.component';
+import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
@@ -18,7 +19,8 @@ const routes: Routes = [
       { path: 'index', component: DashboardComponent },
       { path: 'upload', component: UploadComponent, },
       { path: 'grade', component: GradeComponent },
-      { path: 'course', component: CourseComponent }
+      { path: 'course', component: CourseComponent },
+      { path: 'course/:id', component: CourseDetailComponent },
     ]
   },
   { path: 'login', component: LoginComponent },

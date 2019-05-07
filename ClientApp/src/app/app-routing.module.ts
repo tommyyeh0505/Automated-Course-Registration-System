@@ -11,6 +11,7 @@ import { CourseComponent } from './components/course/course.component';
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 import { StudentComponent } from './components/student/student.component';
 import { ClassDetailComponent } from './components/class-detail/class-detail.component';
+import { StudentDetailComponent } from './components/student-detail/student-detail.component';
 
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
@@ -19,6 +20,7 @@ const routes: Routes = [
     children: [
       { path: '', component: DashboardComponent, },
       { path: 'student', component: StudentComponent },
+      { path: 'student/:id', component: StudentDetailComponent },
       { path: 'index', component: DashboardComponent },
       { path: 'upload', component: UploadComponent, },
       { path: 'class', component: ClassComponent },

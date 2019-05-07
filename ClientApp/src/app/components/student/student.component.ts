@@ -107,7 +107,6 @@ export class StudentComponent implements OnInit {
   getStudents() {
     this.studentService.getStudents().subscribe((data: Student[]) => {
       this.students = data;
-
       this.initTable(this.students);
     });
 

@@ -44,6 +44,30 @@ namespace ACRS.Controllers
             return grade;
         }
 
+        [HttpGet("filter/{courseId?}/{term?}/{crn?}")]
+        public async Task<ActionResult<IEnumerable<Grade>>> GetGradesByParams(string courseId = null, string term = null, string crn = null)
+        {
+            if (courseId != null && term == null && crn == null)
+            {
+                return await _context.Grades.Where(g => g.CourseId == courseId).ToListAsync();
+            }
+            else if (courseId != null && term != null && crn == null)
+            {
+                return await _context.Grades.Where(g => g.CourseId == courseId &&
+                                                   g.Term == term).ToListAsync();
+            }
+            else if (courseId != null && term != null && crn != null)
+            {
+                return await _context.Grades.Where(g => g.CourseId == courseId &&
+                                                   g.Term == term &&
+                                                   g.CRN == crn).ToListAsync();
+            }
+            else
+            {
+                return await _context.Grades.ToListAsync();
+            }
+        }
+
         // PUT: api/Grades/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGrade(int id, Grade grade)

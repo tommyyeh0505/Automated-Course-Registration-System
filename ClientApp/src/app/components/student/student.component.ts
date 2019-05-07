@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule, MatDialog } from '@angular/material';
 import { Grade } from 'src/app/models/grade';
 import { GradeService } from 'src/app/services/grade.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -7,8 +7,12 @@ import { Router } from '@angular/router';
 import { Class } from 'src/app/models/class';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
+import { AddCourseComponent } from '../modals/course/add/add-course.component';
+import { Course } from 'src/app/models/course';
 
-
+export interface DialogData {
+  student: Student;
+}
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -23,18 +27,40 @@ export class StudentComponent implements OnInit {
   displayedColumns: string[] = ['studentId', 'studentName', 'view', 'edit'];
   dataSource: MatTableDataSource<Student>;
   students: Student[] = [];
+  newStudent: Student;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
 
   constructor(
     private studentService: StudentService,
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.getStudents();
   }
   ngOnInit() {
     this.getStudents();
+  }
+
+  openAddDialog() {
+    this.newStudent = new Student();
+    let dialogRef = this.dialog.open(AddCourseComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        course: this.newStudent
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addStudent(this.newStudent);
+      }
+      this.newStudent = new Student();
+    });
   }
 
   initTable(data) {
@@ -53,6 +79,10 @@ export class StudentComponent implements OnInit {
 
       this.initTable(this.students);
     });
+
+  }
+
+  addStudent(student: Student) {
 
   }
 

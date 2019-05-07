@@ -22,6 +22,7 @@ import { AddCourseComponent } from './components/modals/course/add/add-course.co
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 import { EditCourseComponent } from './components/modals/course/edit/edit-course.component';
 import { ClassDetailComponent } from './components/class-detail/class-detail.component';
+import { AddStudentComponent } from './components/modals/student/add/add-student.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ClassDetailComponent } from './components/class-detail/class-detail.com
     AddCourseComponent,
     CourseDetailComponent,
     EditCourseComponent,
-    ClassDetailComponent
+    ClassDetailComponent,
+    AddStudentComponent,
   ],
   imports: [
     MatTabsModule,
@@ -74,7 +76,8 @@ import { ClassDetailComponent } from './components/class-detail/class-detail.com
   bootstrap: [AppComponent],
   entryComponents: [
     AddCourseComponent,
-    EditCourseComponent
+    EditCourseComponent,
+    AddStudentComponent
   ]
 })
 export class AppModule { }

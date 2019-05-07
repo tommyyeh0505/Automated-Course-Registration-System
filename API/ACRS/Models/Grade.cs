@@ -18,7 +18,6 @@ namespace ACRS.Models
 
         public string Term { get; set; }
 
-        [Range(0, 100, ErrorMessage = "Value must be between 0 and 100")]
         public double FinalGrade { get; set; }
 
         public int Attempts { get; set; }

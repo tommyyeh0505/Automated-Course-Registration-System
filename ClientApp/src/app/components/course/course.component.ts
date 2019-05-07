@@ -27,6 +27,7 @@ export class CourseComponent implements OnInit {
   dataSource: MatTableDataSource<Course>;
   courses: Course[] = [];
   newCourse: Course = new Course();
+  editCourse: Course = new Course();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -51,7 +52,7 @@ export class CourseComponent implements OnInit {
 
   openAddDialog() {
     this.newCourse = new Course();
-    const dialogRef = this.dialog.open(AddCourseComponent, {
+    let dialogRef = this.dialog.open(AddCourseComponent, {
       width: '65vw',
       minWidth: '300px',
       maxWidth: '600px',
@@ -65,6 +66,25 @@ export class CourseComponent implements OnInit {
         this.addCourse(this.newCourse);
       }
       this.newCourse = new Course();
+    });
+  }
+
+  openEditDialog() {
+    this.editCourse = new Course();
+    let dialogRef = this.dialog.open(EditCourseComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        course: this.editCourse
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // if (result) {
+      //   this.addCourse(this.newCourse);
+      // }
+      this.editCourse = new Course();
     });
   }
 

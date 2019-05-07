@@ -20,6 +20,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StudentComponent } from './components/student/student.component';
 import { AddCourseComponent } from './components/modals/course/add/add-course.component';
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
+import { EditCourseComponent } from './components/modals/course/edit/edit-course.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { CourseDetailComponent } from './components/course-detail/course-detail.
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    AddCourseComponent
+    AddCourseComponent,
+    EditCourseComponent
   ]
 })
 export class AppModule { }

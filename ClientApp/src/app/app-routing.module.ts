@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UploadComponent } from './components/upload/upload.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { GradeComponent } from './components/grade/grade.component';
+import { ClassComponent } from './components/class/class.component';
 import { AuthGuard } from './guard/guard.guard';
 import { LoginComponent } from './components/login/login.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: '', component: DashboardComponent, },
       { path: 'index', component: DashboardComponent },
       { path: 'upload', component: UploadComponent, },
-      { path: 'grade', component: GradeComponent },
+      { path: 'class', component: ClassComponent },
       { path: 'course', component: CourseComponent },
       { path: 'course/:id', component: CourseDetailComponent },
     ]

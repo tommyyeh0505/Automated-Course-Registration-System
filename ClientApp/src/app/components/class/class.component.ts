@@ -12,12 +12,12 @@ import { Router } from '@angular/router';
  * @title Data table with sorting, pagination, and filtering.
  */
 @Component({
-  selector: 'grade',
-  styleUrls: ['grade.component.css'],
-  templateUrl: 'grade.component.html',
+  selector: 'class',
+  styleUrls: ['class.component.css'],
+  templateUrl: 'class.component.html',
 })
 
-export class GradeComponent implements OnInit {
+export class ClassComponent implements OnInit {
   displayedColumns: string[] = ['gradeId', 'studentId', 'finalGrade', 'attempts', 'delete'];
   dataSource: MatTableDataSource<Grade>;
   grades: Grade[] = [];

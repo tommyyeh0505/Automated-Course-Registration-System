@@ -43,6 +43,7 @@ export class DashboardService {
     }
 
 
+
     public getStudents() {
         return this.http.get<any>(endpoint + 'students', this.getHttpHeaders());
     }
@@ -54,8 +55,8 @@ export class DashboardService {
     }
 
 
-    public getAccounts() {
-        return this.http.get<any>(endpoint + 'auth/users', this.getHttpHeaders())
+    public getGrades() {
+        return this.http.get<any>(endpoint + 'grades', this.getHttpHeaders())
     }
 
 

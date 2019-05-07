@@ -9,7 +9,7 @@ import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButt
 import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { GradeComponent } from './components/grade/grade.component';
+import { ClassComponent } from './components/class/class.component';
 import { LoginComponent } from './components/login/login.component';
 import { DropFileDirective } from './directives/drop-file.directive';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -27,7 +27,7 @@ import { EditCourseComponent } from './components/modals/course/edit/edit-course
     AppComponent,
     UploadComponent,
     DashboardComponent,
-    GradeComponent,
+    ClassComponent,
     LoginComponent,
     DropFileDirective,
     LayoutComponent,

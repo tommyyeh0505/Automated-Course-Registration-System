@@ -18,14 +18,14 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class CourseComponent implements OnInit {
-  displayedColumns: string[] = ['courseId', 'crn', 'term', 'passingGrade', 'view', 'delete'];
+  displayedColumns: string[] = ['courseId', 'passingGrade', 'prerequisite', 'view', 'delete'];
   dataSource: MatTableDataSource<Course>;
   courses: Course[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private courseServce: CourseService,
+    private courseService: CourseService,
     private authService: AuthenticationService,
     private router: Router,
     public dialog: MatDialog
@@ -63,7 +63,7 @@ export class CourseComponent implements OnInit {
   }
 
   getCourses() {
-    this.courseServce.getCourses().subscribe((data: Course[]) => {
+    this.courseService.getCourses().subscribe((data: Course[]) => {
       this.courses = data;
       this.initTable(this.courses);
     });
@@ -76,7 +76,7 @@ export class CourseComponent implements OnInit {
 
 
   deleteCourse(course: Course) {
-    this.courseServce.deleteCourse(course);
+    this.courseService.deleteCourse(course);
     let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
     this.dataSource.data.splice(itemIndex, 1);
     this.dataSource.paginator = this.paginator;

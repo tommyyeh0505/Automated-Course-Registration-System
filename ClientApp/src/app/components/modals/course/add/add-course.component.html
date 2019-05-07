@@ -22,6 +22,19 @@
         </p>
 
 
+        <p>
+          <mat-form-field color="accent">
+            <input matInput placeholder="Course" aria-label="Course" [matAutocomplete]="auto"
+              [formControl]="courseAutoComplete">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let course of filteredCourses | async" [value]="course.courseId">
+                <span>{{course.courseId}}</span> |
+                <small>Passing Grade: {{course.passingGrade}} %</small>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </p>
+
 
         <div class="button">
           <button style="margin-top:15px" type="submit" class="pulse waves-effect waves-light" [disabled]="isLoading"

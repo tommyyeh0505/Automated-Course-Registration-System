@@ -33,9 +33,7 @@ namespace ACRS.Models
             }
             else if (Regex.IsMatch(finalGradeString.Trim(), @"^\d{1,3}\S{1,2}")) // 40F, 10SL
             {
-                string trimmed = finalGradeString.Trim();
-
-                string grade = new string(trimmed.TakeWhile(char.IsDigit).ToArray());
+                string grade = new string(finalGradeString.Trim().TakeWhile(char.IsDigit).ToArray());
 
                 FinalGrade = int.Parse(grade);
             }
@@ -46,6 +44,10 @@ namespace ACRS.Models
             else if (finalGradeString.Equals("ATT", StringComparison.OrdinalIgnoreCase))
             {
                 FinalGrade = 100;
+            }
+            else if (finalGradeString.Equals("AUD", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = 0;
             }
             else if (finalGradeString.Equals("RTD", StringComparison.OrdinalIgnoreCase))
             {
@@ -60,6 +62,10 @@ namespace ACRS.Models
                 FinalGrade = 100;
             }
             else if (finalGradeString.Equals("U", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = 0;
+            }
+            else if (finalGradeString.Equals("INC", StringComparison.OrdinalIgnoreCase))
             {
                 FinalGrade = 0;
             }

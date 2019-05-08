@@ -12,7 +12,7 @@ import { Course } from '../../../../models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { DialogData } from 'src/app/components/course/course.component';
+import { CourseDialogData } from 'src/app/components/course/course.component';
 import { Prerequisite } from 'src/app/models/prerequisite';
 
 
@@ -37,12 +37,13 @@ export class AddCourseComponent implements OnInit {
     public validCourseId: boolean = true;
     public validPreq: boolean = true;
 
+
     public selectedPreq: string;
     constructor(
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<AddCourseComponent>,
         public courseService: CourseService,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+        @Inject(MAT_DIALOG_DATA) public data: CourseDialogData) {
 
 
     }

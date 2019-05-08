@@ -21,6 +21,11 @@ import { StudentComponent } from './components/student/student.component';
 import { AddCourseComponent } from './components/modals/course/add/add-course.component';
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 import { EditCourseComponent } from './components/modals/course/edit/edit-course.component';
+import { ClassDetailComponent } from './components/class-detail/class-detail.component';
+import { AddStudentComponent } from './components/modals/student/add/add-student.component';
+import { EditStudentComponent } from './components/modals/student/edit/edit-student.component';
+import { StudentDetailComponent } from './components/student-detail/student-detail.component';
+import { WaitlistComponent } from './components/waitlist/waitlist.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +41,12 @@ import { EditCourseComponent } from './components/modals/course/edit/edit-course
     StudentComponent,
     AddCourseComponent,
     CourseDetailComponent,
-    EditCourseComponent
+    EditCourseComponent,
+    ClassDetailComponent,
+    AddStudentComponent,
+    EditStudentComponent,
+    StudentDetailComponent,
+    WaitlistComponent
   ],
   imports: [
     MatTabsModule,
@@ -72,7 +82,9 @@ import { EditCourseComponent } from './components/modals/course/edit/edit-course
   bootstrap: [AppComponent],
   entryComponents: [
     AddCourseComponent,
-    EditCourseComponent
+    EditCourseComponent,
+    AddStudentComponent,
+    EditStudentComponent
   ]
 })
 export class AppModule { }

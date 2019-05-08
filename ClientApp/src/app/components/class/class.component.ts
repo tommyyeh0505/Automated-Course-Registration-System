@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
-import { NgModule } from '@angular/core';
 import { Grade } from 'src/app/models/grade';
 import { GradeService } from 'src/app/services/grade.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -19,7 +18,7 @@ import { Class } from 'src/app/models/class';
 })
 
 export class ClassComponent implements OnInit {
-  displayedColumns: string[] = ['courseId', 'crn', 'term', 'view', 'edit', 'delete'];
+  displayedColumns: string[] = ['courseId', 'crn', 'term', 'view'];
   dataSource: MatTableDataSource<Class>;
   classes: Class[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -31,12 +30,6 @@ export class ClassComponent implements OnInit {
     private router: Router
   ) {
     this.getClasses();
-    // Create 100 users
-
-
-    // Assign the data to the data source for the table to render
-
-
   }
   ngOnInit() {
     this.getClasses();
@@ -47,7 +40,9 @@ export class ClassComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
+  viewClass(obj: Class) {
+    this.router.navigate([`/class/${obj.courseId}-${obj.crn}-${obj.term}`]);
+  }
   getClasses() {
     this.gradeService.getGrades().subscribe((data: Grade[]) => {
       this.classes = data.reduce((acc, cur) => {
@@ -69,24 +64,6 @@ export class ClassComponent implements OnInit {
 
 
 
-
-  refresh() {
-    this.gradeService.getGrades().subscribe((data: Grade[]) => {
-      this.classes = data.reduce((acc, cur) => {
-        let c = {
-          courseId: cur.courseId,
-          term: cur.term,
-          crn: cur.crn
-        }
-        if (acc.filter(el => el.courseId === c.courseId && el.term === c.term && el.crn === c.crn).length === 0) {
-          acc.push(c);
-        }
-        return acc;
-      }, []);
-
-      this.initTable(this.classes);
-    });
-  }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { first } from 'rxjs/operators';
 import { EditCourseComponent } from '../modals/course/edit/edit-course.component';
 
-export interface DialogData {
+export interface CourseDialogData {
   course: Course;
 }
 /**

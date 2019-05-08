@@ -134,8 +134,8 @@ export class ClassDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // let newEditStudent = result.student;
-        // this.updateGrade(newEditStudent.studentId, newEditStudent);
+
+        this.updateGrade(result.grade.gradeId, result.grade);
       }
 
       this.initNewGrade();
@@ -156,6 +156,13 @@ export class ClassDetailComponent implements OnInit {
     }, err => {
 
     });
+  }
+
+  updateGrade(gradeId: number, grade: Grade) {
+    this.gradeService.updateGrade(gradeId, grade).pipe(first()).subscribe((response: Response) => {
+      this.refresh();
+    })
+
   }
 
   initNewGrade() {

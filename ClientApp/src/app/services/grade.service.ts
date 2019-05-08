@@ -64,7 +64,7 @@ export class GradeService {
 
   }
 
-  public updateGrade(gradeId: string, editGrade: Grade) {
+  public updateGrade(gradeId: number, editGrade: Grade) {
     return this.http.put<any>(endpoint + gradeId, editGrade, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
   }
 

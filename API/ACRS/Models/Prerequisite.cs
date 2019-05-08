@@ -15,6 +15,6 @@ namespace ACRS.Models
 
         public string CourseId { get; set; }
 
-        public string PrerequisiteCourseID { get; set; }
+        public string PrerequisiteCourseId { get; set; }
     }
 }

@@ -50,7 +50,6 @@ export class GradeService {
       .pipe(map((response: Response) => response || {}))
   }
   public deleteGrade(grade: Grade) {
-
     let id = grade.gradeId;
     this.http.delete<any>(endpoint + id, this.getHttpHeaders())
       .subscribe();

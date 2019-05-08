@@ -115,8 +115,7 @@ namespace ACRS.Controllers
                     errors.Add(new UploadError
                     {
                         FileName = fileName,
-                        Reason = "Parsing of row failed due to incorrect" +
-                        " data format in a column (most likely the grade column)",
+                        Reason = "Parsing of row failed due to incorrect data format in column",
                         Row = i + 2
                     });
                     continue;
@@ -160,58 +159,56 @@ namespace ACRS.Controllers
         {
             foreach (CsvData r in data)
             {
-                if (!_context.Students.Any(s => s.StudentId == r.StudentId))
+                if (r.FinalGrade != -1)
                 {
-                    _context.Students.Add(CreateStudent(r.StudentName, r.StudentId));
-                }
-
-                Course course = _context.Courses.Find(r.CourseId);
-                Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade);
-                Grade dbGrade = _context.Grades.Where(g => g.CourseId == r.CourseId &&
-                                                           g.StudentId == r.StudentId).SingleOrDefault();
-
-                Grade gradeToUpload = null;
-
-                if (dbGrade != null)
-                {
-                    double uploadedFinalGrade = uploadedGrade.FinalGrade;
-                    double dbFinalGrade = dbGrade.FinalGrade;
-
-                    if (uploadedFinalGrade > dbFinalGrade)
+                    if (!_context.Students.Any(s => s.StudentId == r.StudentId))
                     {
-                        gradeToUpload = uploadedGrade;
-                        gradeToUpload.Attempts = dbGrade.Attempts;
-
-                        if (gradeToUpload.FinalGrade < 65)
-                        {
-                            gradeToUpload.Attempts++;
-                        }
-
-                        _context.Remove(dbGrade);
-                        _context.Add(gradeToUpload);
+                        _context.Students.Add(CreateStudent(r.StudentName, r.StudentId));
                     }
-                    else if (uploadedFinalGrade < dbFinalGrade)
+
+                    Course course = _context.Courses.Find(r.CourseId);
+                    Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade);
+                    Grade dbGrade = _context.Grades.Where(g => g.CourseId == r.CourseId &&
+                                                               g.StudentId == r.StudentId).SingleOrDefault();
+
+                    if (dbGrade != null)
                     {
-                        // Do nothing, keep the higher grade
+                        double uploadedFinalGrade = uploadedGrade.FinalGrade;
+                        double dbFinalGrade = dbGrade.FinalGrade;
+
+                        if (uploadedFinalGrade > dbFinalGrade)
+                        {
+                            uploadedGrade.Attempts = dbGrade.Attempts;
+
+                            if (uploadedGrade.FinalGrade < 65)
+                            {
+                                uploadedGrade.Attempts++;
+                            }
+
+                            _context.Remove(dbGrade);
+                            _context.Add(uploadedGrade);
+                        }
+                        else if (uploadedFinalGrade < dbFinalGrade)
+                        {
+                            // Do nothing, keep the higher
+                        }
+                        else
+                        {
+                            // Same grade, what do we want to do?
+                        }
                     }
                     else
                     {
-                        // Same grade, what do we want to do?
-                    }
-                }
-                else
-                {
-                    gradeToUpload = uploadedGrade;
+                        if (uploadedGrade.FinalGrade < 65)
+                        {
+                            uploadedGrade.Attempts++;
+                        }
 
-                    if (gradeToUpload.FinalGrade < 65)
-                    {
-                        gradeToUpload.Attempts++;
+                        _context.Add(uploadedGrade);
                     }
 
-                    _context.Add(gradeToUpload);
                 }
             }
-
             _context.SaveChanges();
         }
 

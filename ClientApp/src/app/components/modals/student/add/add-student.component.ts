@@ -48,8 +48,8 @@ export class AddStudentComponent implements OnInit {
 
     private createForm() {
         this.addStudentForm = this.fb.group({
-            studentId: new FormControl('', [Validators.required]),
-            studentName: new FormControl('', [Validators.required]),
+            studentId: new FormControl(this.data.student.studentId, [Validators.required]),
+            studentName: new FormControl(this.data.student.studentName, [Validators.required]),
 
         });
         this.getStudents();

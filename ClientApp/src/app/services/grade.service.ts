@@ -45,6 +45,10 @@ export class GradeService {
       }));
   }
 
+  public getGradesByKey(courseId: string, crn: string, term: string) {
+    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`, this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {}))
+  }
   public deleteGrade(grade: Grade) {
 
     let id = grade.gradeId;

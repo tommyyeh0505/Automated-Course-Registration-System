@@ -5,7 +5,7 @@ import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Course } from '../models/course';
 const endpoint = environment.apiEndpoint + 'courses/';
 @Injectable({
@@ -43,8 +43,12 @@ export class CourseService {
   }
 
   public getCourse(courseId: string) {
+
     return this.http.get<any>(endpoint + courseId, this.getHttpHeaders())
-      .pipe(map((response: Response) => response || {}));
+      .pipe(map((response: Response) => response || {})
+      );
+
+
   }
   public deleteCourse(course: Course) {
     let id = course.courseId;

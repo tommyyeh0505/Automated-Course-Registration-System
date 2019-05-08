@@ -59,7 +59,7 @@ export class AddCourseComponent implements OnInit {
             passingGrade: new FormControl(65, [Validators.required]),
         });
         this.courseAutoComplete.reset();
-        this.getCourses();
+        this.courses = this.data.courses;
     }
 
     public isTakenCourseId(courseId: string) {
@@ -102,18 +102,7 @@ export class AddCourseComponent implements OnInit {
             return preq;
         })
     }
-    async  getCourses() {
-        await this.courseService.getCourses().subscribe((data: Course[]) => {
-            this.courses = data;
 
-            this.filteredCourses = this.courseAutoComplete.valueChanges
-                .pipe(
-                    startWith(''),
-                    map(course => course ? this._filterCourses(course) : this.courses.slice())
-                );
-        });
-
-    }
 
     private _filterCourses(value: string): Course[] {
         const filterValue = value.toLowerCase();

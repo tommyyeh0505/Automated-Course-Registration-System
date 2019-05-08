@@ -26,6 +26,7 @@ import { AddStudentComponent } from './components/modals/student/add/add-student
 import { EditStudentComponent } from './components/modals/student/edit/edit-student.component';
 import { StudentDetailComponent } from './components/student-detail/student-detail.component';
 import { WaitlistComponent } from './components/waitlist/waitlist.component';
+import { AddGradeComponent } from './components/modals/grade/add/add-grade.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { WaitlistComponent } from './components/waitlist/waitlist.component';
     AddStudentComponent,
     EditStudentComponent,
     StudentDetailComponent,
-    WaitlistComponent
+    WaitlistComponent,
+    AddGradeComponent
   ],
   imports: [
     MatTabsModule,
@@ -85,7 +87,8 @@ import { WaitlistComponent } from './components/waitlist/waitlist.component';
     AddCourseComponent,
     EditCourseComponent,
     AddStudentComponent,
-    EditStudentComponent
+    EditStudentComponent,
+    AddGradeComponent,
   ]
 })
 export class AppModule { }

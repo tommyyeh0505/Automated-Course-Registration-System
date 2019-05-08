@@ -52,7 +52,7 @@ export class AddStudentComponent implements OnInit {
             studentName: new FormControl(this.data.student.studentName, [Validators.required]),
 
         });
-        this.getStudents();
+        this.students = this.data.students;
 
     }
 
@@ -74,11 +74,7 @@ export class AddStudentComponent implements OnInit {
 
 
     }
-    async getStudents() {
-        await this.studentService.getStudents().subscribe((data: Student[]) => {
-            this.students = data;
-        });
-    }
+
 
 }
 

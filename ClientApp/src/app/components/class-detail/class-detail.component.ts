@@ -7,7 +7,12 @@ import { Course } from 'src/app/models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { first } from 'rxjs/operators';
+import { AddGradeComponent } from '../modals/grade/add/add-grade.component';
 
+export interface GradeDialogData {
+  grade: Grade;
+  grades: Grade[];
+}
 
 @Component({
   selector: 'app-class-detail',
@@ -20,6 +25,8 @@ export class ClassDetailComponent implements OnInit {
   crn: string;
   term: string;
   courseCreated: boolean;
+  newGrade: Grade;
+  editGrade: Grade;
   displayedColumns: string[] = ['studentId', 'finalGrade', 'attempts', 'viewStudent', 'edit', 'delete'];
   dataSource: MatTableDataSource<Grade>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -67,7 +74,6 @@ export class ClassDetailComponent implements OnInit {
   }
 
   createCourse() {
-
     let dialogRef = this.dialog.open(AddCourseComponent, {
       width: '65vw',
       minWidth: '300px',
@@ -84,12 +90,29 @@ export class ClassDetailComponent implements OnInit {
     });
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  openAddDialog() {
+    this.initNewGrade();
+
+    let dialogRef = this.dialog.open(AddGradeComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        grade: this.newGrade,
+        grades: this.grades,
+      }
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addGrade(this.newGrade);
+      }
+      this.initNewGrade();
+    });
+
   }
+
   addCourse(course: Course) {
     this.courseService.addCourse(course).pipe(first()).subscribe((response: any) => {
       this.getCourseByCourseId(course.courseId);
@@ -97,5 +120,21 @@ export class ClassDetailComponent implements OnInit {
     });
   }
 
+  addGrade(grade: Grade) {
+
+  }
+
+  initNewGrade() {
+    this.newGrade = new Grade();
+    this.newGrade.courseId = this.course.courseId;
+    this.newGrade.crn = this.crn;
+    this.newGrade.term = this.term;
+  }
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
 }

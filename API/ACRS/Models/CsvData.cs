@@ -26,7 +26,40 @@ namespace ACRS.Models
 
             string finalGradeString = reader[33].Trim();
 
+            // If FinalGrade = -1, then row will be skipped
             if (finalGradeString.Equals("V", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = 0;
+            }
+            else if (Regex.IsMatch(finalGradeString.Trim(), @"^\d{1,3}\S{1,2}")) // 40F, 10SL
+            {
+                string trimmed = finalGradeString.Trim();
+
+                string grade = new string(trimmed.TakeWhile(char.IsDigit).ToArray());
+
+                FinalGrade = int.Parse(grade);
+            }
+            else if (finalGradeString.Equals("W", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = -1;
+            }
+            else if (finalGradeString.Equals("ATT", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = 100;
+            }
+            else if (finalGradeString.Equals("RTD", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = -1;
+            }
+            else if (finalGradeString.Equals("LW", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = -1;
+            }
+            else if (finalGradeString.Equals("S", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = 100;
+            }
+            else if (finalGradeString.Equals("U", StringComparison.OrdinalIgnoreCase))
             {
                 FinalGrade = 0;
             }
@@ -34,7 +67,6 @@ namespace ACRS.Models
             {
                 FinalGrade = int.Parse(finalGradeString);
             }
-
         }
     }
 }

@@ -8,6 +8,7 @@ import { CourseService } from 'src/app/services/course.service';
 import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { first } from 'rxjs/operators';
 import { AddGradeComponent } from '../modals/grade/add/add-grade.component';
+import { EditGradeComponent } from '../modals/grade/edit/edit-grade.component';
 
 export interface GradeDialogData {
   grade: Grade;
@@ -54,6 +55,7 @@ export class ClassDetailComponent implements OnInit {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.initNewGrade();
   }
 
   refresh() {
@@ -110,15 +112,34 @@ export class ClassDetailComponent implements OnInit {
       }
     });
 
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result) {
         this.addGrade(result.grade);
       }
-      this.initNewGrade();
+    });
+  }
+
+  openEditDialog(grade: Grade) {
+    this.editGrade = grade;
+
+    let dialogRef = this.dialog.open(EditGradeComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        grade: this.editGrade,
+        grades: this.grades
+      }
     });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // let newEditStudent = result.student;
+        // this.updateGrade(newEditStudent.studentId, newEditStudent);
+      }
+
+      this.initNewGrade();
+    });
   }
 
   addCourse(course: Course) {

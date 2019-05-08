@@ -58,8 +58,14 @@ export class AddCourseComponent implements OnInit {
             courseId: new FormControl(this.data.course.courseId, [Validators.required]),
             passingGrade: new FormControl(65, [Validators.required]),
         });
+        this.filteredCourses = this.courseAutoComplete.valueChanges
+            .pipe(
+                startWith(''),
+                map(state => state ? this._filterCourses(state) : this.courses.slice())
+            );
         this.courseAutoComplete.reset();
         this.courses = this.data.courses;
+
     }
 
     public isTakenCourseId(courseId: string) {

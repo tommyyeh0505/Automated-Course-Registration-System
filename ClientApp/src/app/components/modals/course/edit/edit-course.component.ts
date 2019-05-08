@@ -56,6 +56,11 @@ export class EditCourseComponent implements OnInit {
             passingGrade: new FormControl(this.data.course.passingGrade, [Validators.required]),
 
         });
+        this.filteredCourses = this.courseAutoComplete.valueChanges
+            .pipe(
+                startWith(''),
+                map(state => state ? this._filterCourses(state) : this.courses.slice())
+            );
         this.courseAutoComplete.reset();
         this.prereqList = this.data.course.prerequisites.map(c => c.prerequisiteCourseId);
         this.courses = this.data.courses;

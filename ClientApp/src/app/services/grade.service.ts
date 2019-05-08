@@ -57,6 +57,17 @@ export class GradeService {
     return grade;
   }
 
+  public addGrade(grade: Grade) {
+
+    return this.http.post<any>(endpoint, grade, this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {}));
+
+  }
+
+  public updateGrade(gradeId: string, editGrade: Grade) {
+    return this.http.put<any>(endpoint + gradeId, editGrade, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+  }
+
   // HTTP headers
   private getHttpHeaders(): {} {
     return {

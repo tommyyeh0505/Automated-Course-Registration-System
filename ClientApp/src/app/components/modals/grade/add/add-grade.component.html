@@ -1,31 +1,47 @@
-<!-- 
 <mat-dialog-content class="container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Add Student</mat-card-title>
+      <mat-card-title>Add Student Grade</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="addStudentForm">
+      <form [formGroup]="addGradeForm">
 
         <mat-form-field color="accent">
+          <mat-label>Course ID</mat-label>
+          <input type="text" matInput placeholder="Course ID" formControlName="courseId" required>
+        </mat-form-field>
 
+
+        <mat-form-field color="accent">
+          <mat-label>CRN</mat-label>
+          <input type="text" matInput placeholder="CRN" formControlName="crn" required>
+        </mat-form-field>
+
+
+        <mat-form-field color="accent">
+          <mat-label>Term</mat-label>
+          <input type="text" matInput placeholder="Term" formControlName="term" required>
+        </mat-form-field>
+
+        <mat-form-field color="accent">
           <mat-label>Student ID</mat-label>
           <input type="text" matInput placeholder="Student ID" formControlName="studentId" required autofocus
             (input)="isTakenStudentId($event.target.value)">
           <mat-error>Please enter a student ID</mat-error>
-
         </mat-form-field>
         <span *ngIf="!this.validStudentId" style="color:red">This Student ID has been taken</span>
 
 
-
-
         <mat-form-field color="accent">
-          <mat-label>Student Name</mat-label>
-          <input type="text" matInput placeholder="Student Name" formControlName="studentName" required>
-          <mat-error>Please enter a student name</mat-error>
+          <mat-label>Student Grade</mat-label>
+          <input value="65" type="number" min="0" max="100" matInput placeholder="Student Grade"
+            formControlName="finalGrade" required>
+          <mat-error>Please enter a student grade</mat-error>
 
         </mat-form-field>
+
+
+
 
 
         <div class="button">
@@ -36,4 +52,4 @@
       </form>
     </mat-card-content>
   </mat-card>
-</mat-dialog-content> -->
+</mat-dialog-content>

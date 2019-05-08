@@ -64,21 +64,21 @@ export class AddGradeComponent implements OnInit {
 
     }
 
-    // public isTakenStudentId(studentId: string) {
-    //     studentId = studentId.trim();
-    //     let studentIdList = this.students.map(s => s.studentId);
-    //     this.validStudentId = studentIdList.indexOf(studentId) === -1;
-    // }
+    public isTakenStudentId(studentId: string) {
+        studentId = studentId.trim();
+        let studentIdList = this.grades.map(g => g.studentId);
+        this.validStudentId = studentIdList.indexOf(studentId) === -1;
+    }
 
 
 
 
     public submit() {
-        // let studentId = this.addStudentForm.value.studentId;
-        // let studentName = this.addStudentForm.value.studentName;
+        let studentId = this.addGradeForm.value.studentId;
+        let finalGrade = this.addGradeForm.value.finalGrade;
 
-        // this.data.student.studentId = studentId;
-        // this.data.student.studentName = studentName;
+        this.data.grade.studentId = studentId;
+        this.data.grade.finalGrade = finalGrade;
 
 
     }

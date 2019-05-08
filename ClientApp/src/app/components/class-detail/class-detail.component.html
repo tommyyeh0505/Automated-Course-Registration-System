@@ -15,7 +15,7 @@
         <mat-card-content>
           <mat-list>
             <mat-list-item *ngFor="let course of course.prerequisites"> <button matTooltip="View Prerequisite Course"
-                mat-raised-button color="primary"
+                mat-raised-button color="accent" style="width:100px; text-align: left"
                 [routerLink]="['/course/',course.prerequisiteCourseId]">{{course.prerequisiteCourseId}} </button>
             </mat-list-item>
 

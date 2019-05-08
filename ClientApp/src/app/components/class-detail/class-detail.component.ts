@@ -56,6 +56,13 @@ export class ClassDetailComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  refresh() {
+    this.gradeService.getGrades().subscribe((data: Grade[]) => {
+      this.grades = data;
+      this.initTable(this.grades);
+    });
+  }
+
   getGradesByKey(courseId: string, crn: string, term: string) {
     this.gradeService.getGradesByKey(courseId, crn, term).subscribe((data: Grade[]) => {
       this.getCourseByCourseId(courseId);
@@ -105,8 +112,9 @@ export class ClassDetailComponent implements OnInit {
 
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
       if (result) {
-        this.addGrade(this.newGrade);
+        this.addGrade(result.grade);
       }
       this.initNewGrade();
     });
@@ -121,7 +129,12 @@ export class ClassDetailComponent implements OnInit {
   }
 
   addGrade(grade: Grade) {
+    this.gradeService.addGrade(grade).pipe(first()).subscribe((response: any) => {
+      this.refresh();
 
+    }, err => {
+
+    });
   }
 
   initNewGrade() {

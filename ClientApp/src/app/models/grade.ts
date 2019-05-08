@@ -4,6 +4,6 @@ export class Grade {
     public crn: string;
     public courseId: string;
     public term: string;
-    public finalGrade: number;
-    public attempts: number;
+    public finalGrade: number = 65;
+    public attempts: number = 0;
 }

@@ -6,6 +6,7 @@ import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/m
 import { Course } from 'src/app/models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { AddCourseComponent } from '../modals/course/add/add-course.component';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -76,13 +77,11 @@ export class ClassDetailComponent implements OnInit {
       }
     });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     this.addCourse(this.newCourse);
-    //   }
-
-    //   this.newCourse = new Course();
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addCourse(this.course);
+      }
+    });
   }
 
   applyFilter(filterValue: string) {
@@ -90,6 +89,12 @@ export class ClassDetailComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+  addCourse(course: Course) {
+    this.courseService.addCourse(course).pipe(first()).subscribe((response: any) => {
+      this.getCourseByCourseId(course.courseId);
+      this.courseCreated = true;
+    });
   }
 
 

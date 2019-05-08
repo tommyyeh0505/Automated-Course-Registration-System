@@ -8,9 +8,13 @@
       <mat-card-subtitle>CRN: {{crn}}</mat-card-subtitle>
       <mat-card-subtitle>Term: {{term}}</mat-card-subtitle>
     </mat-card-header>
+    <mat-card-content *ngIf="courseCreated">
 
+
+    </mat-card-content>
 
     <mat-card-actions>
+
       <div id="error" *ngIf="!courseCreated">
         <p>This course hasn't been created in the database yet.</p>
         <button mat-raised-button color="primary" (click)="createCourse()">Create</button><span> a new

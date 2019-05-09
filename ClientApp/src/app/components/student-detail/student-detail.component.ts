@@ -6,6 +6,7 @@ import { Grade } from 'src/app/models/grade';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { AddGradeComponent } from '../modals/grade/add/add-grade.component';
 import { GradeService } from 'src/app/services/grade.service';
+import { AddStudentGradeComponent } from '../modals/student-grade/add/add-student-grade.component';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class StudentDetailComponent implements OnInit {
   openAddDialog() {
     this.newGrade = new Grade();
     this.newGrade.studentId = this.student.studentId;
-    let dialogRef = this.dialog.open(AddGradeComponent, {
+    let dialogRef = this.dialog.open(AddStudentGradeComponent, {
       width: '65vw',
       minWidth: '300px',
       maxWidth: '600px',

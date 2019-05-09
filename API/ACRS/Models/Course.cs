@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,10 +16,7 @@ namespace ACRS.Models
         public int PassingGrade { get; set; }
 
         public List<Prerequisite> Prerequisites { get; set; }
-		
-		public string Term { get; set; }
-		
-		public string CRN { get; set; }
+
 
     }
 }

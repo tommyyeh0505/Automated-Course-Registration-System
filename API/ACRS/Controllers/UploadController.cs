@@ -76,6 +76,8 @@ namespace ACRS.Controllers
                 {
                     using (var csvReader = new CsvReader(streamReader))
                     {
+                        csvReader.Configuration.IgnoreBlankLines = true;
+
                         csvReader.Read();
                         csvReader.ReadHeader();
 
@@ -161,7 +163,7 @@ namespace ACRS.Controllers
             {
                 if (r.FinalGrade != -1)
                 {
-                    if (!_context.Students.Any(s => s.StudentId == r.StudentId))
+                    if (_context.Students.Find(r.StudentId) == null)
                     {
                         _context.Students.Add(CreateStudent(r.StudentName, r.StudentId));
                     }

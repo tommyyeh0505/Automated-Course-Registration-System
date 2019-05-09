@@ -15,6 +15,7 @@ namespace ACRS.Models
         public string StudentName { get; set; }
         public string StudentId { get; set; }
         public int FinalGrade { get; set; }
+        public string RawGrade { get; set; }
 
         public CsvData(CsvReader reader)
         {
@@ -25,6 +26,8 @@ namespace ACRS.Models
             StudentId = reader[15];
 
             string finalGradeString = reader[33].Trim();
+
+            RawGrade = finalGradeString;
 
             // If FinalGrade = -1, then row will be skipped
             if (finalGradeString.Equals("V", StringComparison.OrdinalIgnoreCase))

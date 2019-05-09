@@ -20,6 +20,8 @@ namespace ACRS.Models
 
         public double FinalGrade { get; set; }
 
+        public string RawGrade { get; set; }
+
         public int Attempts { get; set; }
     }
 }

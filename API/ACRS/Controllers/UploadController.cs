@@ -138,15 +138,15 @@ namespace ACRS.Controllers
                     });
                 }
 
-                if (!_context.Courses.Any(c => c.CourseId == r.CourseId))
-                {
-                    errors.Add(new UploadError
-                    {
-                        FileName = fileName,
-                        Reason = "Course does not exist",
-                        Row = i + 2
-                    });
-                }
+                //if (!_context.Courses.Any(c => c.CourseId == r.CourseId))
+                //{
+                //    errors.Add(new UploadError
+                //    {
+                //        FileName = fileName,
+                //        Reason = "Course does not exist",
+                //        Row = i + 2
+                //    });
+                //}
             }
 
             return errors;
@@ -169,9 +169,20 @@ namespace ACRS.Controllers
                     }
 
                     Course course = _context.Courses.Find(r.CourseId);
-                    Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade);
+                    Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade, r.RawGrade);
                     Grade dbGrade = _context.Grades.Where(g => g.CourseId == r.CourseId &&
                                                                g.StudentId == r.StudentId).SingleOrDefault();
+
+                    if (course == null)
+                    {
+                        course = new Course
+                        {
+                            CourseId = r.CourseId,
+                            PassingGrade = 65
+                        };
+
+                        _context.Add(course);
+                    }
 
                     if (dbGrade != null)
                     {
@@ -223,7 +234,7 @@ namespace ACRS.Controllers
             };
         }
 
-        private Grade CreateGrade(string id, string crn, string courseId, string term, int grade)
+        private Grade CreateGrade(string id, string crn, string courseId, string term, int grade, string rawGrade)
         {
             return new Grade()
             {
@@ -231,7 +242,8 @@ namespace ACRS.Controllers
                 CRN = crn,
                 CourseId = courseId,
                 Term = term,
-                FinalGrade = grade
+                FinalGrade = grade,
+                RawGrade = rawGrade
             };
         }
     }

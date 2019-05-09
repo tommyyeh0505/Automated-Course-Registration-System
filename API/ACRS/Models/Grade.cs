@@ -8,7 +8,7 @@ namespace ACRS.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int GradeId { get; set; }
+        public long GradeId { get; set; }
 
         public string StudentId { get; set; }
 

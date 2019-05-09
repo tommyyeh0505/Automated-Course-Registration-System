@@ -93,7 +93,7 @@ namespace ACRS.Data
             return new Prerequisite()
             {
                 CourseId = "COMP1000",
-                PrerequisiteCourseID = "COMP2000"
+                PrerequisiteCourseId = "COMP2000"
             };
         }
 
@@ -104,17 +104,17 @@ namespace ACRS.Data
                 new Prerequisite()
                 {
                     CourseId = "COMP2000",
-                    PrerequisiteCourseID = "COMP1000"
+                    PrerequisiteCourseId = "COMP1000"
                 },
                 new Prerequisite()
                 {
                     CourseId = "COMP3000",
-                    PrerequisiteCourseID = "COMP2000"
+                    PrerequisiteCourseId = "COMP2000"
                 },
                 new Prerequisite()
                 {
                     CourseId = "COMP2000",
-                    PrerequisiteCourseID = "COMP1000"
+                    PrerequisiteCourseId = "COMP1000"
                 },
             };
         }

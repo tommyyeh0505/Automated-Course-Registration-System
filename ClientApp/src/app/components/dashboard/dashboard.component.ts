@@ -10,6 +10,7 @@ import { Course } from 'src/app/models/course';
 import { Student } from 'src/app/models/student';
 import { Waitlist } from 'src/app/models/waitlist';
 import { User } from 'src/app/models/user';
+import { Class } from 'src/app/models/class';
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
@@ -21,12 +22,12 @@ export class DashboardComponent {
   public studentCount: number = 0;
   public courseCount: number = 0;
   public waitlistCount: number = 0;
-  public accountCount: number = 0;
+  public classCount: number = 0;
 
 
 
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', 'pink']
+    domain: ['#F74385', '#AB28F7', '#028c0d', '#2F72ED']
   };
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -57,24 +58,24 @@ export class DashboardComponent {
     await this.getStudents();
     await this.getCourses();
     await this.getWaitlists();
-    await this.getAccounts();
+    await this.getClasses();
 
     this.single = [
       [{
-        "name": "Students ",
+        "name": "Students",
         "value": this.studentCount
       }],
       [{
-        "name": "Courses ",
+        "name": "Courses",
         "value": this.courseCount
       }],
       [{
-        "name": "Waitlists ",
-        "value": this.waitlistCount
+        "name": "Classes",
+        "value": this.classCount
       }],
       [{
-        "name": "Accounts ",
-        "value": this.accountCount
+        "name": "Waitlists",
+        "value": this.waitlistCount
       }]
     ]
       ;
@@ -102,8 +103,8 @@ export class DashboardComponent {
       this.router.navigate(['course'])
     else if (name === 'Waitlists')
       this.router.navigate(['waitlist'])
-    else if (name === 'Accounts') {
-      this.router.navigate(['account'])
+    else if (name === 'Classes') {
+      this.router.navigate(['class'])
     }
 
 
@@ -124,9 +125,23 @@ export class DashboardComponent {
       this.waitlistCount = data.length;
     })
   }
-  async getAccounts() {
-    await this.service.getAccounts().toPromise().then(data => {
-      this.accountCount = data.length;
+  async getClasses() {
+    await this.service.getGrades().toPromise().then(data => {
+      let classes = data.reduce((acc, cur) => {
+        let c = {
+          courseId: cur.courseId,
+          term: cur.term,
+          crn: cur.crn
+        }
+        if (acc.filter(el => el.courseId === c.courseId && el.term === c.term && el.crn === c.crn).length === 0) {
+          acc.push(c);
+
+        }
+        return acc;
+      }, [])
+      this.classCount = classes.length;
+
+
     })
   }
 

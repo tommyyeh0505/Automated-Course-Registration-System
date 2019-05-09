@@ -5,7 +5,7 @@ import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Course } from '../models/course';
 const endpoint = environment.apiEndpoint + 'courses/';
 @Injectable({
@@ -39,25 +39,35 @@ export class CourseService {
    */
   public getCourses(): Observable<any> {
     return this.http.get<any>(endpoint, this.getHttpHeaders())
-      .pipe(map((response: Response) => {
-        return response;
-      }));
+      .pipe(map((response: Response) => response || {}));
   }
 
-  public getCourse(course: Course) {
-    let id = course.courseId;
-    this.http.get<any>(endpoint + id, this.getHttpHeaders())
-      .subscribe();
-    return course;
+  public getCourse(courseId: string) {
+
+    return this.http.get<any>(endpoint + courseId, this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {})
+      );
+
+
   }
   public deleteCourse(course: Course) {
-
     let id = course.courseId;
-    console.log(endpoint + id);
-    this.http.delete<any>(endpoint + id, this.getHttpHeaders())
+    return this.http.delete<any>(endpoint + id, this.getHttpHeaders())
       .subscribe();
     return course;
   }
+
+  public updateCourse(courseId: string, editCourse: Course) {
+    return this.http.put<any>(endpoint + courseId, editCourse, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+  }
+  public addCourse(course: Course) {
+
+    return this.http.post<any>(endpoint, course, this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {}));
+
+  }
+
+
 
   // HTTP headers
   private getHttpHeaders(): {} {

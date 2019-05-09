@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
-import { NgModule } from '@angular/core';
 import { Grade } from 'src/app/models/grade';
 import { GradeService } from 'src/app/services/grade.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { Class } from 'src/app/models/class';
 
 
 
@@ -12,33 +12,26 @@ import { Router } from '@angular/router';
  * @title Data table with sorting, pagination, and filtering.
  */
 @Component({
-  selector: 'grade',
-  styleUrls: ['grade.component.css'],
-  templateUrl: 'grade.component.html',
+  selector: 'class',
+  styleUrls: ['class.component.css'],
+  templateUrl: 'class.component.html',
 })
 
-export class GradeComponent implements OnInit {
-  displayedColumns: string[] = ['gradeId', 'studentId', 'finalGrade', 'attempts', 'delete'];
-  dataSource: MatTableDataSource<Grade>;
-  grades: Grade[] = [];
+export class ClassComponent implements OnInit {
+  displayedColumns: string[] = ['courseId', 'crn', 'term', 'view'];
+  dataSource: MatTableDataSource<Class>;
+  classes: Class[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private gradeServce: GradeService,
-    private authService: AuthenticationService,
+    private gradeService: GradeService,
     private router: Router
   ) {
-    this.getGrades();
-    // Create 100 users
-
-
-    // Assign the data to the data source for the table to render
-
-
+    this.getClasses();
   }
   ngOnInit() {
-    this.getGrades();
+    this.getClasses();
   }
 
   initTable(data) {
@@ -46,23 +39,29 @@ export class GradeComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  getGrades() {
-    this.gradeServce.getGrades().subscribe((data: Grade[]) => {
-      this.grades = data;
-      this.initTable(this.grades);
+  viewClass(obj: Class) {
+    this.router.navigate([`/class/${obj.courseId}-${obj.crn}-${obj.term}`]);
+  }
+  getClasses() {
+    this.gradeService.getGrades().subscribe((data: Grade[]) => {
+      this.classes = data.reduce((acc, cur) => {
+        let c = {
+          courseId: cur.courseId,
+          term: cur.term,
+          crn: cur.crn
+        }
+        if (acc.filter(el => el.courseId === c.courseId && el.term === c.term && el.crn === c.crn).length === 0) {
+          acc.push(c);
+        }
+        return acc;
+      }, []);
+
+      this.initTable(this.classes);
     });
 
   }
 
 
-  deleteGrade(grade: Grade) {
-    this.gradeServce.deleteGrade(grade);
-    let itemIndex = this.dataSource.data.findIndex(obj => obj.gradeId === grade.gradeId);
-    this.dataSource.data.splice(itemIndex, 1);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-
-  }
 
 
   applyFilter(filterValue: string) {

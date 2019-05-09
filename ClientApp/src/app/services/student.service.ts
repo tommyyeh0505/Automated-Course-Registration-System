@@ -57,9 +57,12 @@ export class StudentService {
 
     return this.http.post<any>(endpoint, student, this.getHttpHeaders())
       .pipe(map((response: Response) => response || {}));
-
   }
 
+  public getStudentGrades(studentId: string) {
+    return this.http.get<any>(endpoint + studentId + '/grades/', this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {}));
+  }
 
 
   // HTTP headers

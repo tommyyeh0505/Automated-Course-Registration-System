@@ -1,0 +1,76 @@
+<mat-dialog-content class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Add Student Grade</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="editStudentGradeForm">
+
+        <mat-form-field color="accent">
+          <input matInput placeholder="Choose Course ID" aria-label="Choose Course" [matAutocomplete]="auto"
+            [formControl]="courseAutoComplete" style="width:80%;" required>
+
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)='chooseCourseId($event.option.value)'>
+            <mat-option *ngFor="let course of filteredCourses | async" [value]="course.courseId">
+              <span>{{course.courseId}}</span> |
+              <small>Passing Grade: {{course.passingGrade}} %</small>
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error>Please enter a Course Id</mat-error>
+        </mat-form-field>
+
+        <span *ngIf="!validGrade" style="color:red">Student already has final grade for this class</span>
+
+
+        <mat-form-field color="accent">
+          <mat-label>CRN</mat-label>
+          <input type="text" matInput placeholder="CRN" formControlName="crn" required
+            (input)="chooseCRN($event.target.value)">
+          <mat-error>Please enter a CRN</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field color="accent">
+          <mat-label>Term</mat-label>
+          <input type="text" matInput placeholder="Term" formControlName="term" required
+            (input)="chooseTerm($event.target.value)">
+          <mat-error>Please enter a term</mat-error>
+        </mat-form-field>
+
+        <mat-form-field color="accent">
+          <mat-label>Student ID</mat-label>
+          <input type="text" matInput placeholder="Student ID" formControlName="studentId" required>
+          <mat-error>Please enter a student ID</mat-error>
+        </mat-form-field>
+
+
+
+        <mat-form-field color="accent">
+          <mat-label>Student Grade</mat-label>
+          <input autofocus type="number" min="0" max="100" matInput placeholder="Student Grade"
+            formControlName="finalGrade" required>
+          <mat-error>Please enter a student grade</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field color="accent">
+          <mat-label>Student Attempts</mat-label>
+          <input type="number" min="0" max="100" matInput placeholder="Student Attempts" formControlName="attempts"
+            required>
+          <mat-error>Please enter an attempt number</mat-error>
+
+        </mat-form-field>
+
+
+
+
+
+        <div class="button">
+          <button [disabled]="!validGrade" style="margin-top:25px" class="pulse waves-effect waves-light"
+            (click)="submit()" [mat-dialog-close]="data" mat-raised-button color="accent">Submit</button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>

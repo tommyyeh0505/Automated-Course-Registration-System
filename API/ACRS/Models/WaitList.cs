@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,5 +21,8 @@ namespace ACRS.Models
         [Required]
         public string CourseId { get; set; }
 
+		public string Term { get; set; }
+		
+		public string CRN { get; set; }
     }
 }

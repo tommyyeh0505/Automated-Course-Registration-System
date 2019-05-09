@@ -25,28 +25,28 @@ import { CourseService } from 'src/app/services/course.service';
 
 
 @Component({
-    selector: 'add-student-grade',
-    styleUrls: ['./add-student-grade.component.css'],
-    templateUrl: './add-student-grade.component.html'
+    selector: 'edit-student-grade',
+    styleUrls: ['./edit-student-grade.component.css'],
+    templateUrl: './edit-student-grade.component.html'
 })
 
 
 
-export class AddStudentGradeComponent implements OnInit {
+export class EditStudentGradeComponent implements OnInit {
 
-    public addStudentGradeForm: FormGroup;
+    public editStudentGradeForm: FormGroup;
     courseAutoComplete = new FormControl();
     filteredCourses: Observable<Course[]>;
-    courseId: string;
-    crn: string;
-    term: string;
+    courseId: string = this.data.grade.courseId;
+    crn: string = this.data.grade.crn;
+    term: string = this.data.grade.term;
     public grades: Grade[] = [];
     public courses: Course[] = [];
     public validGrade: boolean = true;
 
     constructor(
         private fb: FormBuilder,
-        public dialogRef: MatDialogRef<AddStudentGradeComponent>,
+        public dialogRef: MatDialogRef<EditStudentGradeComponent>,
         public gradeService: GradeService,
         public courseService: CourseService,
         @Inject(MAT_DIALOG_DATA) public data: GradeDialogData) {
@@ -59,7 +59,7 @@ export class AddStudentGradeComponent implements OnInit {
 
 
     private createForm() {
-        this.addStudentGradeForm = this.fb.group({
+        this.editStudentGradeForm = this.fb.group({
             courseId: new FormControl(this.data.grade.courseId, [Validators.required]),
             crn: new FormControl(this.data.grade.crn, [Validators.required]),
             term: new FormControl(this.data.grade.term, [Validators.required]),
@@ -74,8 +74,8 @@ export class AddStudentGradeComponent implements OnInit {
                     startWith(''),
                     map(state => state ? this._filterCourses(state) : this.courses.slice())
                 );
-            this.courseAutoComplete = new FormControl(this.data.grade.courseId, [Validators.required])
 
+            this.courseAutoComplete = new FormControl(this.courseId, [Validators.required]);
             this.grades = this.data.grades;
 
         });
@@ -86,6 +86,7 @@ export class AddStudentGradeComponent implements OnInit {
 
     public isTakenClass(courseId: string, crn: string, term: string) {
         this.validGrade = this.grades.filter(g => g.courseId === courseId && g.crn === crn && g.term === term).length === 0;
+
     }
 
     public chooseCourseId(courseId: string) {
@@ -107,12 +108,10 @@ export class AddStudentGradeComponent implements OnInit {
 
 
     public submit() {
-
         this.data.grade.courseId = this.courseId;
         this.data.grade.crn = this.crn;
         this.data.grade.term = this.term;
-        this.data.grade.finalGrade = this.addStudentGradeForm.value.finalGrade;
-
+        this.data.grade.finalGrade = this.editStudentGradeForm.value.finalGrade;
 
     }
 

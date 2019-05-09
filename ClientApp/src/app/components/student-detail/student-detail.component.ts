@@ -8,6 +8,7 @@ import { AddGradeComponent } from '../modals/grade/add/add-grade.component';
 import { GradeService } from 'src/app/services/grade.service';
 import { AddStudentGradeComponent } from '../modals/student-grade/add/add-student-grade.component';
 import { first } from 'rxjs/operators';
+import { EditStudentGradeComponent } from '../modals/student-grade/edit/edit-student-grade.component';
 
 
 @Component({
@@ -60,6 +61,30 @@ export class StudentDetailComponent implements OnInit {
 
     });
   }
+
+  openEditDialog(grade: Grade) {
+    this.editGrade = grade;
+    let dialogRef = this.dialog.open(EditStudentGradeComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        grade: this.editGrade,
+        grades: this.grades
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.updateGrade(result.grade.gradeId, result.grade);
+        // console.log(result);
+      }
+
+      this.editGrade = new Grade();
+    });
+  }
+
+
   initTable(data) {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
@@ -81,8 +106,13 @@ export class StudentDetailComponent implements OnInit {
       this.refresh();
 
     }, err => {
-
     });
+  }
+
+  updateGrade(gradeId: number, grade: Grade) {
+    this.gradeService.updateGrade(gradeId, grade).pipe(first()).subscribe((response: Response) => {
+      this.refresh();
+    })
   }
   getStudentById(studentId: string) {
     this.studentService.getStudent(studentId).subscribe((data: Student) => {

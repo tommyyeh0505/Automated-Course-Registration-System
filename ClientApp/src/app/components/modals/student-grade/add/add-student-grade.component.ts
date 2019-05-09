@@ -37,6 +37,9 @@ export class AddStudentGradeComponent implements OnInit {
     public addStudentGradeForm: FormGroup;
     courseAutoComplete = new FormControl();
     filteredCourses: Observable<Course[]>;
+    courseId:string;
+    crn:string;
+    term:string;
     public grades: Grade[] = [];
     public courses: Course[] = [];
     public validGrade: boolean = true;

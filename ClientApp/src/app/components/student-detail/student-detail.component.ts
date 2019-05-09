@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StudentService } from 'src/app/services/student.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Student } from 'src/app/models/student';
+import { Grade } from 'src/app/models/grade';
 
 @Component({
   selector: 'app-student-detail',
@@ -10,6 +11,7 @@ import { Student } from 'src/app/models/student';
 })
 export class StudentDetailComponent implements OnInit {
   student: Student = new Student();
+  // studentGrades: Grade[] = new Grade();
   constructor(private route: ActivatedRoute,
     private router: Router,
     private studentService: StudentService) { }
@@ -18,15 +20,14 @@ export class StudentDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       let id = params.id;
       this.getStudentById(id);
-
     })
   }
 
   getStudentById(studentId: string) {
     this.studentService.getStudent(studentId).subscribe((data: Student) => {
-      console.log(data);
+      this.student = data;
     }, err => {
-      this.router.navigate(['/error'])
+      this.router.navigate(['/error']);
     })
   }
 

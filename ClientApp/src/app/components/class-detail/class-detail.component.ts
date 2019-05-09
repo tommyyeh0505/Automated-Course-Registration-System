@@ -71,6 +71,8 @@ export class ClassDetailComponent implements OnInit {
       this.getCourseByCourseId(courseId);
       this.grades = data;
       this.initTable(data);
+    }, err => {
+      this.router.navigate(['/error']);
     })
   }
 

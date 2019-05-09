@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule, MatDialogModule, MatSnackBarModule, MatSelectModule, MatAutocompleteModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule, MatDialogModule, MatSnackBarModule, MatSelectModule, MatAutocompleteModule, MatTooltipModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -26,6 +26,8 @@ import { AddStudentComponent } from './components/modals/student/add/add-student
 import { EditStudentComponent } from './components/modals/student/edit/edit-student.component';
 import { StudentDetailComponent } from './components/student-detail/student-detail.component';
 import { WaitlistComponent } from './components/waitlist/waitlist.component';
+import { AddGradeComponent } from './components/modals/grade/add/add-grade.component';
+import { EditGradeComponent } from './components/modals/grade/edit/edit-grade.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { WaitlistComponent } from './components/waitlist/waitlist.component';
     AddStudentComponent,
     EditStudentComponent,
     StudentDetailComponent,
-    WaitlistComponent
+    WaitlistComponent,
+    AddGradeComponent,
+    EditGradeComponent
   ],
   imports: [
     MatTabsModule,
@@ -76,7 +80,8 @@ import { WaitlistComponent } from './components/waitlist/waitlist.component';
     MatDialogModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent],
@@ -84,7 +89,9 @@ import { WaitlistComponent } from './components/waitlist/waitlist.component';
     AddCourseComponent,
     EditCourseComponent,
     AddStudentComponent,
-    EditStudentComponent
+    EditStudentComponent,
+    AddGradeComponent,
+    EditGradeComponent
   ]
 })
 export class AppModule { }

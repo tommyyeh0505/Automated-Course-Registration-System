@@ -1,0 +1,29 @@
+table {
+  
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+  
+  .grid-container {
+    margin: 30px;
+  }
+  
+  .mat-tab-group {
+    margin-bottom: 40px;
+  }
+  
+  .class-card{
+    width:50%;
+    min-width: 300px;
+    max-width: 450px;
+    margin-bottom: 25px;
+    
+  }

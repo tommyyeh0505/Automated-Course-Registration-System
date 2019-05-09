@@ -26,7 +26,6 @@ export class ClassComponent implements OnInit {
 
   constructor(
     private gradeService: GradeService,
-    private authService: AuthenticationService,
     private router: Router
   ) {
     this.getClasses();

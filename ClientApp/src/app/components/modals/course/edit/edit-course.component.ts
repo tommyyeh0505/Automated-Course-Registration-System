@@ -56,9 +56,14 @@ export class EditCourseComponent implements OnInit {
             passingGrade: new FormControl(this.data.course.passingGrade, [Validators.required]),
 
         });
+        this.filteredCourses = this.courseAutoComplete.valueChanges
+            .pipe(
+                startWith(''),
+                map(state => state ? this._filterCourses(state) : this.courses.slice())
+            );
         this.courseAutoComplete.reset();
         this.prereqList = this.data.course.prerequisites.map(c => c.prerequisiteCourseId);
-        this.getCourses();
+        this.courses = this.data.courses;
     }
 
     public isTakenCourseId(courseId: string) {
@@ -109,17 +114,7 @@ export class EditCourseComponent implements OnInit {
         this.data.course = this.editCourse;
     }
 
-    async  getCourses() {
-        await this.courseService.getCourses().subscribe((data: Course[]) => {
-            this.courses = data;
-            this.filteredCourses = this.courseAutoComplete.valueChanges
-                .pipe(
-                    startWith(''),
-                    map(course => course ? this._filterCourses(course) : this.courses.slice())
-                );
-        });
 
-    }
 
 
     private _filterCourses(value: string): Course[] {

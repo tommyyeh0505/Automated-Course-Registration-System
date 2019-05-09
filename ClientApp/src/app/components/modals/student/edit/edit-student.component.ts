@@ -35,7 +35,7 @@ export class EditStudentComponent implements OnInit {
             studentId: new FormControl({ value: this.data.student.studentId, disabled: true }, [Validators.required]),
             studentName: new FormControl(this.data.student.studentName, [Validators.required]),
         });
-        this.getStudents();
+        this.students = this.data.students;
     }
 
     public isTakenStudentId(studentId: string) {
@@ -49,11 +49,7 @@ export class EditStudentComponent implements OnInit {
         this.data.student.studentName = studentName;
     }
 
-    async getStudents() {
-        await this.studentService.getStudents().subscribe((data: Student[]) => {
-            this.students = data;
-        });
-    }
+
 
 }
 

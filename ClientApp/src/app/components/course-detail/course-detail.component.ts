@@ -27,7 +27,6 @@ export class CourseDetailComponent implements OnInit {
     }, err => {
       this.router.navigate(['/error']);
     }
-
     );
   }
 

@@ -44,7 +44,7 @@ namespace ACRS.Controllers
             return grade;
         }
 
-        [HttpGet("filter/{courseId?}/{term?}/{crn?}")]
+        [HttpGet("filter/{courseId?}/{crn?}/{term?}")]
         public async Task<ActionResult<IEnumerable<Grade>>> GetGradesByParams(string courseId = null, string term = null, string crn = null)
         {
             if (courseId != null && term == null && crn == null)

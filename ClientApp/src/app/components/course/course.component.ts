@@ -11,6 +11,7 @@ import { EditCourseComponent } from '../modals/course/edit/edit-course.component
 
 export interface CourseDialogData {
   course: Course;
+  courses: Course[];
 }
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -58,7 +59,8 @@ export class CourseComponent implements OnInit {
       minWidth: '300px',
       maxWidth: '600px',
       data: {
-        course: this.newCourse
+        course: this.newCourse,
+        courses: this.courses
       }
     });
 
@@ -79,22 +81,22 @@ export class CourseComponent implements OnInit {
       minWidth: '300px',
       maxWidth: '600px',
       data: {
-        course: this.editCourse
+        course: this.editCourse,
+        courses: this.courses
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // if (result) {
-      //   this.addCourse(this.newCourse);
-      // }
-      let newEditCourse = result.course;
+      if (result) {
+        let newEditCourse = result.course;
 
-      if (this.editCourse.courseId !== newEditCourse.courseId) {
-        this.addCourse(newEditCourse);
-        this.deleteCourse(this.editCourse);
-      }
-      else {
-        this.updateCourse(newEditCourse.courseId, newEditCourse);
+        if (this.editCourse.courseId !== newEditCourse.courseId) {
+          this.addCourse(newEditCourse);
+          this.deleteCourse(this.editCourse);
+        }
+        else {
+          this.updateCourse(newEditCourse.courseId, newEditCourse);
+        }
       }
       this.editCourse = new Course();
     });

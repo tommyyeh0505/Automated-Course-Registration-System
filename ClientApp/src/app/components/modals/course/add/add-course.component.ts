@@ -55,11 +55,17 @@ export class AddCourseComponent implements OnInit {
 
     private createForm() {
         this.addCourseForm = this.fb.group({
-            courseId: new FormControl('', [Validators.required]),
+            courseId: new FormControl(this.data.course.courseId, [Validators.required]),
             passingGrade: new FormControl(65, [Validators.required]),
         });
+        this.filteredCourses = this.courseAutoComplete.valueChanges
+            .pipe(
+                startWith(''),
+                map(state => state ? this._filterCourses(state) : this.courses.slice())
+            );
         this.courseAutoComplete.reset();
-        this.getCourses();
+        this.courses = this.data.courses;
+
     }
 
     public isTakenCourseId(courseId: string) {
@@ -102,18 +108,7 @@ export class AddCourseComponent implements OnInit {
             return preq;
         })
     }
-    async  getCourses() {
-        await this.courseService.getCourses().subscribe((data: Course[]) => {
-            this.courses = data;
 
-            this.filteredCourses = this.courseAutoComplete.valueChanges
-                .pipe(
-                    startWith(''),
-                    map(course => course ? this._filterCourses(course) : this.courses.slice())
-                );
-        });
-
-    }
 
     private _filterCourses(value: string): Course[] {
         const filterValue = value.toLowerCase();

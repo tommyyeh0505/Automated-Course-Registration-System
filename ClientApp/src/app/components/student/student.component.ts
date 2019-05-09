@@ -15,11 +15,10 @@ import { EditStudentComponent } from '../modals/student/edit/edit-student.compon
 
 export interface StudentDialogData {
   student: Student;
+  students: Student[];
 }
 
-/**
- * @title Data table with sorting, pagination, and filtering.
- */
+
 @Component({
   selector: 'student',
   styleUrls: ['student.component.css'],
@@ -42,7 +41,6 @@ export class StudentComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog
   ) {
-    this.getStudents();
   }
   ngOnInit() {
     this.getStudents();
@@ -55,7 +53,8 @@ export class StudentComponent implements OnInit {
       minWidth: '300px',
       maxWidth: '600px',
       data: {
-        student: this.newStudent
+        student: this.newStudent,
+        students: this.students
       }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -74,7 +73,8 @@ export class StudentComponent implements OnInit {
       minWidth: '300px',
       maxWidth: '600px',
       data: {
-        student: this.editStudent
+        student: this.editStudent,
+        students: this.students
       }
     });
 

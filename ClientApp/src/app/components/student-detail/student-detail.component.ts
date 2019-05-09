@@ -16,7 +16,7 @@ export class StudentDetailComponent implements OnInit {
   studentGrades: Grade[];
   newGrade: Grade;
   editGrade: Grade;
-  displayedColumns: string[] = ['courseId', 'crn', 'term', 'finalGrade', 'attempts', 'view', 'edit', 'delete'];
+  displayedColumns: string[] = ['courseId', 'crn', 'term', 'finalGrade', 'attempts', 'edit', 'delete'];
   dataSource: MatTableDataSource<Grade>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -35,9 +35,17 @@ export class StudentDetailComponent implements OnInit {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.initNewGrade();
+
   }
 
+  refresh() {
+    this.studentService.getStudentGrades(this.student.studentId).subscribe((data: Grade[]) => {
+
+      this.studentGrades = data;
+      this.initTable(data);
+    })
+
+  }
 
   getStudentById(studentId: string) {
     this.studentService.getStudent(studentId).subscribe((data: Student) => {
@@ -50,10 +58,16 @@ export class StudentDetailComponent implements OnInit {
 
   getStudentsGrades(studentId: string) {
     this.studentService.getStudentGrades(studentId).subscribe((data: Grade[]) => {
-      console.log(data);
-
       this.studentGrades = data;
+      this.initTable(data);
     })
   }
 
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 }

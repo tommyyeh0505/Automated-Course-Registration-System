@@ -7,6 +7,7 @@ import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/m
 import { AddGradeComponent } from '../modals/grade/add/add-grade.component';
 import { GradeService } from 'src/app/services/grade.service';
 import { AddStudentGradeComponent } from '../modals/student-grade/add/add-student-grade.component';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -52,9 +53,11 @@ export class StudentDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // if (result) {
-      //   this.addGrade(result.grade);
-      // }
+      if (result) {
+        this.addGrade(result.grade);
+      }
+      this.newGrade = new Grade();
+
     });
   }
   initTable(data) {
@@ -64,6 +67,7 @@ export class StudentDetailComponent implements OnInit {
 
   }
 
+
   refresh() {
     this.gradeService.getGrades().subscribe((data: Grade[]) => {
       this.grades = data;
@@ -72,7 +76,14 @@ export class StudentDetailComponent implements OnInit {
     })
 
   }
+  addGrade(grade: Grade) {
+    this.gradeService.addGrade(grade).pipe(first()).subscribe((response: any) => {
+      this.refresh();
 
+    }, err => {
+
+    });
+  }
   getStudentById(studentId: string) {
     this.studentService.getStudent(studentId).subscribe((data: Student) => {
       this.student = data;
@@ -86,7 +97,6 @@ export class StudentDetailComponent implements OnInit {
     this.gradeService.getGrades().subscribe((data: Grade[]) => {
       this.grades = data;
       this.studentGrades = data.filter(e => e.studentId === this.student.studentId);
-
       this.initTable(this.studentGrades);
     })
   }

@@ -37,9 +37,9 @@ export class AddStudentGradeComponent implements OnInit {
     public addStudentGradeForm: FormGroup;
     courseAutoComplete = new FormControl();
     filteredCourses: Observable<Course[]>;
-    courseId:string;
-    crn:string;
-    term:string;
+    courseId: string;
+    crn: string;
+    term: string;
     public grades: Grade[] = [];
     public courses: Course[] = [];
     public validGrade: boolean = true;
@@ -55,7 +55,6 @@ export class AddStudentGradeComponent implements OnInit {
 
     ngOnInit() {
         this.createForm();
-        console.log(this.filteredCourses);
     }
 
 
@@ -92,16 +91,31 @@ export class AddStudentGradeComponent implements OnInit {
 
     }
 
+    public chooseCourseId(courseId: string) {
+        this.courseId = courseId;
+        this.isTakenClass(this.courseId, this.crn, this.term);
+    }
+
+    public chooseCRN(crn: string) {
+        this.crn = crn;
+        this.isTakenClass(this.courseId, this.crn, this.term);
+    }
+
+    public chooseTerm(term: string) {
+        this.term = term;
+        this.isTakenClass(this.courseId, this.crn, this.term);
+    }
+
 
 
 
     public submit() {
-        // let studentId = this.addGradeForm.value.studentId;
-        // let finalGrade = this.addGradeForm.value.finalGrade;
 
-        // this.data.grade.studentId = studentId;
-        // this.data.grade.finalGrade = finalGrade;
-        console.log(this.data.grade);
+        this.data.grade.courseId = this.courseId;
+        this.data.grade.crn = this.crn;
+        this.data.grade.term = this.term;
+        this.data.grade.finalGrade = this.addStudentGradeForm.value.finalGrade;
+
 
     }
 

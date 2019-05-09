@@ -10,7 +10,7 @@
           <input matInput placeholder="Choose Course ID" aria-label="Choose Course" [matAutocomplete]="auto"
             [formControl]="courseAutoComplete" style="width:80%;">
 
-          <mat-autocomplete #auto="matAutocomplete">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)='chooseCourseId($event.option.value)'>
             <mat-option *ngFor="let course of filteredCourses | async" [value]="course.courseId">
               <span>{{course.courseId}}</span> |
               <small>Passing Grade: {{course.passingGrade}} %</small>
@@ -24,14 +24,16 @@
 
         <mat-form-field color="accent">
           <mat-label>CRN</mat-label>
-          <input type="text" matInput placeholder="CRN" formControlName="crn" required>
+          <input type="text" matInput placeholder="CRN" formControlName="crn" required
+            (input)="chooseCRN($event.target.value)">
           <mat-error>Please enter a CRN</mat-error>
         </mat-form-field>
 
 
         <mat-form-field color="accent">
           <mat-label>Term</mat-label>
-          <input type="text" matInput placeholder="Term" formControlName="term" required>
+          <input type="text" matInput placeholder="Term" formControlName="term" required
+            (input)="chooseTerm($event.target.value)">
           <mat-error>Please enter a term</mat-error>
         </mat-form-field>
 
@@ -56,7 +58,7 @@
 
 
         <div class="button">
-          <button [disabled]="!validStudentId" style="margin-top:25px" class="pulse waves-effect waves-light"
+          <button [disabled]="!validGrade" style="margin-top:25px" class="pulse waves-effect waves-light"
             (click)="submit()" [mat-dialog-close]="data" mat-raised-button color="accent">Submit</button>
         </div>
 

@@ -20,7 +20,7 @@ namespace ACRS.Controllers
         }
 
         [HttpGet, Route("waitlist")]
-        public async Task<IActionResult> DownloadWailist()
+        public async Task<IActionResult> DownloadWaitlist()
         {
             List<List<StudentEligability>> waitlist = _coursesController.GetEligableStudentsAllCourses();
 

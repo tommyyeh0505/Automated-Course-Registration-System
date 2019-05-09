@@ -22,6 +22,7 @@ export interface GradeDialogData {
 })
 export class ClassDetailComponent implements OnInit {
   grades: Grade[];
+  courses: Course[];
   course: Course = new Course();
   crn: string;
   term: string;
@@ -45,7 +46,7 @@ export class ClassDetailComponent implements OnInit {
       this.crn = id[1];
       this.term = id[2];
       this.course.courseId = courseId;
-
+      this.getCourses();
       this.getGradesByKey(courseId, this.crn, this.term);
 
     })
@@ -88,7 +89,8 @@ export class ClassDetailComponent implements OnInit {
       minWidth: '300px',
       maxWidth: '600px',
       data: {
-        course: this.course
+        course: this.course,
+        courses: this.courses
       }
     });
 
@@ -141,6 +143,14 @@ export class ClassDetailComponent implements OnInit {
       this.initNewGrade();
     });
   }
+
+  getCourses() {
+    this.courseService.getCourses().subscribe((data: Course[]) => {
+      this.courses = data;
+      this.initTable(data);
+    });
+  }
+
 
   addCourse(course: Course) {
     this.courseService.addCourse(course).pipe(first()).subscribe((response: any) => {

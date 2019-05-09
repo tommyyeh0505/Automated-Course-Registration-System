@@ -7,5 +7,5 @@ mat-form-field {
     font-size:15px;
 }
 ::ng-deep .mat-autocomplete-panel {
-    max-height: 200px !important; 
+    max-height: 100px !important; 
    }

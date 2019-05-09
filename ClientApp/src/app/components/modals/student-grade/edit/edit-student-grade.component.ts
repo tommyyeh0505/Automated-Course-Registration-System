@@ -65,6 +65,7 @@ export class EditStudentGradeComponent implements OnInit {
             term: new FormControl(this.data.grade.term, [Validators.required]),
             studentId: new FormControl({ value: this.data.grade.studentId, disabled: true }),
             finalGrade: new FormControl(this.data.grade.finalGrade, [Validators.required]),
+            attempts: new FormControl(this.data.grade.attempts, [Validators.required]),
         });
 
         this.courseService.getCourses().pipe(first()).subscribe((data: Course[]) => {
@@ -112,7 +113,7 @@ export class EditStudentGradeComponent implements OnInit {
         this.data.grade.crn = this.crn;
         this.data.grade.term = this.term;
         this.data.grade.finalGrade = this.editStudentGradeForm.value.finalGrade;
-
+        this.data.grade.attempts = this.editStudentGradeForm.value.attempts;
     }
 
     private _filterCourses(value: string): Course[] {

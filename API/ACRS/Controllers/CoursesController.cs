@@ -102,5 +102,33 @@ namespace ACRS.Controllers
         {
             return _context.Courses.Any(e => e.CourseId == id);
         }
+
+        public List<StudentEligability> GetEligableStudents(string CourseID)
+        {
+            List<StudentEligability> students = new List<StudentEligability>();
+            students.Add(new StudentEligability("A00000001", "COMP1000", true));
+            students.Add(new StudentEligability("A00000002", "COMP1000", true));
+            students.Add(new StudentEligability("A00000003", "COMP2000", true));
+            return students;
+        }
+
+        public List<List<StudentEligability>> GetEligableStudentsAllCourses()
+        {
+            List<List<StudentEligability>> lists = new List<List<StudentEligability>>();
+            List<StudentEligability> students1 = new List<StudentEligability>();
+            students1.Add(new StudentEligability("A00000001", "COMP1000", true));
+            students1.Add(new StudentEligability("A00000002", "COMP1000", true));
+            students1.Add(new StudentEligability("A00000003", "COMP2000", true));
+
+            List<StudentEligability> students2 = new List<StudentEligability>();
+            students2.Add(new StudentEligability("A00000004", "COMP5000", true));
+            students2.Add(new StudentEligability("A00000005", "COMP5000", true));
+            students2.Add(new StudentEligability("A00000006", "COMP5000", true));
+
+            lists.Add(students1);
+            lists.Add(students2);
+            return lists;
+        }
+
     }
 }

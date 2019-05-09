@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Student } from 'src/app/models/student';
 import { Grade } from 'src/app/models/grade';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
+import { AddGradeComponent } from '../modals/grade/add/add-grade.component';
+import { GradeService } from 'src/app/services/grade.service';
 
 
 @Component({
@@ -13,7 +15,9 @@ import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/m
 })
 export class StudentDetailComponent implements OnInit {
   student: Student = new Student();
+  grades: Grade[];
   studentGrades: Grade[];
+
   newGrade: Grade;
   editGrade: Grade;
   displayedColumns: string[] = ['courseId', 'crn', 'term', 'finalGrade', 'attempts', 'edit', 'delete'];
@@ -23,6 +27,7 @@ export class StudentDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
+    private gradeService: GradeService,
     private studentService: StudentService) { }
 
   ngOnInit() {
@@ -30,6 +35,26 @@ export class StudentDetailComponent implements OnInit {
       let id = params.id;
       this.getStudentById(id);
     })
+  }
+
+  openAddDialog() {
+    this.newGrade = new Grade();
+    this.newGrade.studentId = this.student.studentId;
+    let dialogRef = this.dialog.open(AddGradeComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        grade: this.newGrade,
+        grades: this.grades,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // if (result) {
+      //   this.addGrade(result.grade);
+      // }
+    });
   }
   initTable(data) {
     this.dataSource = new MatTableDataSource(data);
@@ -39,10 +64,10 @@ export class StudentDetailComponent implements OnInit {
   }
 
   refresh() {
-    this.studentService.getStudentGrades(this.student.studentId).subscribe((data: Grade[]) => {
-
-      this.studentGrades = data;
-      this.initTable(data);
+    this.gradeService.getGrades().subscribe((data: Grade[]) => {
+      this.grades = data;
+      this.studentGrades = data.filter(e => e.studentId === this.student.studentId);
+      this.initTable(this.studentGrades);
     })
 
   }
@@ -57,9 +82,11 @@ export class StudentDetailComponent implements OnInit {
   }
 
   getStudentsGrades(studentId: string) {
-    this.studentService.getStudentGrades(studentId).subscribe((data: Grade[]) => {
-      this.studentGrades = data;
-      this.initTable(data);
+    this.gradeService.getGrades().subscribe((data: Grade[]) => {
+      this.grades = data;
+      this.studentGrades = data.filter(e => e.studentId === this.student.studentId);
+
+      this.initTable(this.studentGrades);
     })
   }
 

@@ -39,11 +39,7 @@ export class CourseComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog
   ) {
-    this.getCourses();
-    // Create 100 users
 
-
-    // Assign the data to the data source for the table to render
 
 
   }

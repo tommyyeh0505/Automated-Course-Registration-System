@@ -35,7 +35,7 @@ namespace ACRS.Data
                 context.SaveChanges();
 
                 var waitlists = GetWaitLists().ToArray();
-                context.WaitLists.AddRange(waitlists);
+                context.Waitlists.AddRange(waitlists);
                 context.SaveChanges();
 
                 const string roleAdmin = "Admin";
@@ -92,11 +92,11 @@ namespace ACRS.Data
             };
         }
 
-        private static List<WaitList> GetWaitLists()
+        private static List<Waitlist> GetWaitLists()
         {
-            return new List<WaitList>()
+            return new List<Waitlist>()
             {
-                new WaitList()
+                new Waitlist()
                 {
                     WaitListId = 1,
                     StudentId = "A00000001",
@@ -104,7 +104,7 @@ namespace ACRS.Data
                     Term = "2019W",
                     CRN = "61412321"
                 },
-                 new WaitList()
+                 new Waitlist()
                 {
                     WaitListId = 2,
                     StudentId = "A00000002",
@@ -112,7 +112,7 @@ namespace ACRS.Data
                     Term = "2019S",
                     CRN = "61412321"
                 },
-                 new WaitList()
+                 new Waitlist()
                 {
                     WaitListId = 3,
                     StudentId = "A00000003",
@@ -120,7 +120,7 @@ namespace ACRS.Data
                     Term = "2019S",
                     CRN = "61412321"
                 },
-                 new WaitList()
+                 new Waitlist()
                 {
                     WaitListId = 4,
                     StudentId = "A00000004",

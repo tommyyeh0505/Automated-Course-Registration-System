@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Grade } from '../models/grade';
+import { Waitlist } from '../models/waitlist';
 const endpoint = environment.apiEndpoint + 'waitlists/';
 @Injectable({
   providedIn: 'root'
@@ -45,26 +45,21 @@ export class WaitlistService {
       }));
   }
 
-  public getGradesByKey(courseId: string, crn: string, term: string) {
-    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`, this.getHttpHeaders())
-      .pipe(map((response: Response) => response || {}))
-  }
-  public deleteGrade(grade: Grade) {
-    let id = grade.gradeId;
+  public deleteWaitlist(waitlist: Waitlist) {
+    let id = waitlist.waitlistId;
     this.http.delete<any>(endpoint + id, this.getHttpHeaders())
       .subscribe();
-    return grade;
+    return waitlist;
   }
 
-  public addGrade(grade: Grade) {
-
-    return this.http.post<any>(endpoint, grade, this.getHttpHeaders())
+  public addWaitlist(waitlist: Waitlist) {
+    return this.http.post<any>(endpoint, waitlist, this.getHttpHeaders())
       .pipe(map((response: Response) => response || {}));
 
   }
 
-  public updateGrade(gradeId: number, editGrade: Grade) {
-    return this.http.put<any>(endpoint + gradeId, editGrade, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+  public updateWaitlist(waitlistId: number, editWaitlist: Waitlist) {
+    return this.http.put<any>(endpoint + waitlistId, editWaitlist, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
   }
 
   // HTTP headers

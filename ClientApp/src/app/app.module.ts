@@ -30,6 +30,7 @@ import { AddGradeComponent } from './components/modals/grade/add/add-grade.compo
 import { EditGradeComponent } from './components/modals/grade/edit/edit-grade.component';
 import { AddStudentGradeComponent } from './components/modals/student-grade/add/add-student-grade.component';
 import { EditStudentGradeComponent } from './components/modals/student-grade/edit/edit-student-grade.component';
+import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-detail.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { EditStudentGradeComponent } from './components/modals/student-grade/edi
     EditGradeComponent,
     AddStudentGradeComponent,
     EditStudentGradeComponent,
+    WaitlistDetailComponent,
 
   ],
   imports: [

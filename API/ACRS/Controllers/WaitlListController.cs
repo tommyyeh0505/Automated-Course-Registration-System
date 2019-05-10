@@ -83,6 +83,32 @@ namespace ACRS.Controllers
             return NoContent();
         }
 
+
+        [HttpGet("filter/{courseId?}/{crn?}/{term?}")]
+        public async Task<ActionResult<IEnumerable<WaitList>>> GetWaitlistsByParams(string courseId = null, string term = null, string crn = null)
+        {
+            if (courseId != null && term == null && crn == null)
+            {
+                return await _context.WaitLists.Where(g => g.CourseId == courseId).ToListAsync();
+            }
+            else if (courseId != null && term != null && crn == null)
+            {
+                return await _context.WaitLists.Where(g => g.CourseId == courseId &&
+                                                   g.Term == term).ToListAsync();
+            }
+            else if (courseId != null && term != null && crn != null)
+            {
+                return await _context.WaitLists.Where(g => g.CourseId == courseId &&
+                                                   g.Term == term &&
+                                                   g.CRN == crn).ToListAsync();
+            }
+            else
+            {
+                return await _context.WaitLists.ToListAsync();
+            }
+        }
+
+
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<WaitList>> DeleteWaitList(string id)

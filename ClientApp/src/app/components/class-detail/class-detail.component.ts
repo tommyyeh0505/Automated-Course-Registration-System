@@ -24,6 +24,7 @@ export class ClassDetailComponent implements OnInit {
   grades: Grade[];
   courses: Course[];
   course: Course = new Course();
+  courseId: string;
   crn: string;
   term: string;
   courseCreated: boolean;
@@ -42,12 +43,12 @@ export class ClassDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       let id = params.id.split('-');
-      let courseId = id[0];
+      this.courseId = id[0]
       this.crn = id[1];
       this.term = id[2];
-      this.course.courseId = courseId;
+      this.course.courseId = this.courseId;
       this.getCourses();
-      this.getGradesByKey(courseId, this.crn, this.term);
+      this.getGradesByKey(this.courseId, this.crn, this.term);
 
     })
   }
@@ -60,10 +61,7 @@ export class ClassDetailComponent implements OnInit {
   }
 
   refresh() {
-    this.gradeService.getGrades().subscribe((data: Grade[]) => {
-      this.grades = data;
-      this.initTable(this.grades);
-    });
+    this.getGradesByKey(this.courseId, this.crn, this.term);
   }
 
   getGradesByKey(courseId: string, crn: string, term: string) {

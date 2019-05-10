@@ -58,6 +58,11 @@ export class WaitlistService {
 
   }
 
+  public getWaitlistsByKey(courseId: string, crn: string, term: string) {
+    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`, this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {}))
+  }
+
   public updateWaitlist(waitlistId: number, editWaitlist: Waitlist) {
     return this.http.put<any>(endpoint + waitlistId, editWaitlist, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
   }

@@ -101,7 +101,6 @@ export class AddWaitlistComponent implements OnInit {
 
     public isTakenClass(courseId: string, crn: string, term: string, studentId: string) {
         this.validWaitlist = this.waitlists.filter(g => g.courseId === courseId && g.crn === crn && g.term === term && g.studentId === studentId).length === 0;
-        console.log({ courseId, crn, term, studentId });
     }
 
     public chooseCourseId(courseId: string) {
@@ -127,11 +126,10 @@ export class AddWaitlistComponent implements OnInit {
 
 
     public submit() {
-        // let studentId = this.addGradeForm.value.studentId;
-        // let finalGrade = this.addGradeForm.value.finalGrade;
-
-        // this.data.grade.studentId = studentId;
-        // this.data.grade.finalGrade = finalGrade;
+        this.data.waitlist.studentId = this.studentId;
+        this.data.waitlist.courseId = this.courseId;
+        this.data.waitlist.crn = this.crn;
+        this.data.waitlist.term = this.term;
 
 
     }

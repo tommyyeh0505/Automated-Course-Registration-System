@@ -8,6 +8,7 @@ import { Waitlist } from 'src/app/models/waitlist';
 import { Class } from 'src/app/models/class';
 import { WaitlistService } from 'src/app/services/waitlist.service';
 import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.component';
+import { first } from 'rxjs/operators';
 
 export interface WaitlistDialogData {
   waitlist: Waitlist;
@@ -50,8 +51,24 @@ export class WaitlistComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  viewWaitlist(obj: Class) {
-    this.router.navigate([`/waitlist/${obj.courseId}-${obj.crn}-${obj.term}`]);
+  refresh() {
+    this.waitlistService.getWaitlists().subscribe((data: Waitlist[]) => {
+      this.waitlists = data;
+      this.classes = data.reduce((acc, cur) => {
+        let c = {
+          courseId: cur.courseId,
+          term: cur.term,
+          crn: cur.crn
+        }
+        if (acc.filter(el => el.courseId === c.courseId && el.term === c.term && el.crn === c.crn).length === 0) {
+          acc.push(c);
+        }
+        return acc;
+      }, []);
+
+      this.initTable(this.classes);
+    });
+
   }
 
   getWaitlists() {
@@ -89,12 +106,25 @@ export class WaitlistComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
-        // this.addGrade(result.grade);
+        // console.log(result);
+        this.addWaitlist(result.waitlist);
       }
+      this.newWailist = new Waitlist();
     });
   }
 
+  viewWaitlist(obj: Class) {
+    this.router.navigate([`/waitlist/${obj.courseId}-${obj.crn}-${obj.term}`]);
+
+  }
+
+  addWaitlist(waitlist: Waitlist) {
+
+    this.waitlistService.addWaitlist(waitlist).pipe(first()).subscribe((response: Response) => {
+      console.log(waitlist, response);
+      this.refresh();
+    })
+  }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

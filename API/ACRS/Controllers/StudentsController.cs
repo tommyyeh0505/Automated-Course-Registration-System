@@ -28,6 +28,14 @@ namespace ACRS.Controllers
             return await _context.Students.ToListAsync();
         }
 
+        // GET: api/Student
+        [HttpGet("{id}/eligable")]
+        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetEligableCourseByStudentId(string id)
+        {
+            return await GetEligableCourseByStudentIdAsync(id);
+
+        }
+
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(string id)
@@ -115,5 +123,78 @@ namespace ACRS.Controllers
         {
             return _context.Students.Any(e => e.StudentId == id);
         }
+
+
+        public async Task<List<StudentEligability>> GetEligableCourseByStudentIdAsync(string StudentId)
+        {
+            List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
+            List<Grade> grades = await _context.Grades.Where(g => g.StudentId == StudentId).ToListAsync();
+            //List<Student> students = await _context.Students.ToListAsync();
+            var CourseMap = new Dictionary<string, double>();
+            List<StudentEligability> eligableStudents = new List<StudentEligability>();
+            var CoursePassingGradeMap = new Dictionary<string, int>();
+
+
+            //Course targetCourse = courses.FirstOrDefault(o => o.CourseId == CourseID);
+            foreach (Grade g in grades)
+            {
+                if (CourseMap.ContainsKey(g.CourseId) ==true)
+                {
+                   if (g.FinalGrade > CourseMap[g.CourseId])
+                    {
+                        CourseMap[g.CourseId] = g.FinalGrade;
+                    }
+                }
+                else
+                {
+                    CourseMap[g.CourseId] = g.FinalGrade;
+                }
+            }
+
+            foreach (Course c in courses)
+            {
+                int prerequisites = 0;
+                int count = 0;
+
+                if (c.Prerequisites == null)
+                {
+                    eligableStudents.Add(new StudentEligability(StudentId, c.CourseId, true));
+                }
+                else
+                {
+                    prerequisites = c.Prerequisites.Count();
+                    foreach (Prerequisite p in c.Prerequisites)
+                    {
+                        if (CourseMap.ContainsKey(p.CourseId))
+                        {
+                            Course temp = await _context.Courses.FindAsync(p.CourseId);
+
+                            if (CourseMap[p.CourseId] < temp.PassingGrade){
+                                eligableStudents.Add(new StudentEligability(StudentId, c.CourseId, false));
+                                break;
+                            }
+                            else
+                            {
+                                count++;
+                            }
+                        }
+                        else
+                        {
+                            eligableStudents.Add(new StudentEligability(StudentId, c.CourseId, false));
+                            break;
+                        }
+
+                    }
+
+                    if (count >= prerequisites)
+                    {
+                        eligableStudents.Add(new StudentEligability(StudentId, c.CourseId, true));
+                    }
+                }
+            }
+
+            return eligableStudents;
     }
+}
+
 }

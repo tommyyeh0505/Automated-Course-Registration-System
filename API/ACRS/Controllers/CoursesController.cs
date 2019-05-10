@@ -32,18 +32,18 @@ namespace ACRS.Controllers
         }
 
         // GET: api/Courses
-        [HttpGet("eligible/{id}")]
-        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetCourseEligability(string id)
+        [HttpGet("{id}/eligable")]
+        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetEligableCourseByCourseId(string id)
         {
-            return await GetEligableStudentsAsync(id);
+            return await GetEligableCourseByCourseIdAsync(id);
 
         }
 
         // GET: api/Courses
-        [HttpGet("ineligible/{id}")]
-        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetCourseInEligability(string id)
+        [HttpGet("{id}/eligable")]
+        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetCourseInEligabilityByCourseId(string id)
         {
-            return await GetInEligableStudentsAsync(id);
+            return await GetInEligableStudentByCourseIdAsync(id);
 
         }
 
@@ -121,7 +121,10 @@ namespace ACRS.Controllers
             return _context.Courses.Any(e => e.CourseId == id);
         }
 
-        public async Task<List<StudentEligability>> GetEligableStudentsAsync(string CourseID)
+
+
+
+        public async Task<List<StudentEligability>> GetEligableCourseByCourseIdAsync(string CourseID)
         {
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
             List<Grade> grades = await _context.Grades.ToListAsync();
@@ -164,7 +167,7 @@ namespace ACRS.Controllers
             return eligableStudents;
         }
 
-        public async Task<List<StudentEligability>> GetInEligableStudentsAsync(string CourseID)
+        public async Task<List<StudentEligability>> GetInEligableStudentByCourseIdAsync(string CourseID)
         {
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
             List<Grade> grades = await _context.Grades.ToListAsync();

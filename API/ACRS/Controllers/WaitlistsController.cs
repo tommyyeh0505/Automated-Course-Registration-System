@@ -14,27 +14,27 @@ namespace ACRS.Controllers
     [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
     [ApiController]
-    public class WaitListsController : ControllerBase
+    public class WaitlistsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public WaitListsController(ApplicationDbContext context)
+        public WaitlistsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/WaitLists
+        // GET: api/Waitlists
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WaitList>>> GetWaitLists()
+        public async Task<ActionResult<IEnumerable<Waitlist>>> GetWaitlists()
         {
-            return await _context.WaitLists.ToListAsync();
+            return await _context.Waitlists.ToListAsync();
         }
 
-        // GET: api/WaitLists/5
+        // GET: api/Waitlists/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<WaitList>> GetWaitList(int id)
+        public async Task<ActionResult<Waitlist>> GetWaitlist(int id)
         {
-            var waitlist = await _context.WaitLists.FindAsync(id);
+            var waitlist = await _context.Waitlists.FindAsync(id);
 
             if (waitlist == null)
             {
@@ -44,11 +44,11 @@ namespace ACRS.Controllers
             return waitlist;
         }
 
-        // PUT: api/WaitLists/5
+        // PUT: api/Waitlists/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWaitList(int id, WaitList waitlist)
+        public async Task<IActionResult> PutWaitlist(int id, Waitlist waitlist)
         {
-            if (id != waitlist.WaitListId)
+            if (id != waitlist.WaitlistId)
             {
                 return BadRequest();
             }
@@ -61,7 +61,7 @@ namespace ACRS.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WaitListExists(id))
+                if (!WaitlistExists(id))
                 {
                     return NotFound();
                 }
@@ -74,41 +74,65 @@ namespace ACRS.Controllers
             return NoContent();
         }
 
-        // POST: api/WaitLists
-        [HttpPost]
-        public async Task<ActionResult<WaitList>> PostWaitList(WaitList waitlist)
+        [HttpGet("filter/{courseId?}/{crn?}/{term?}")]
+        public async Task<ActionResult<IEnumerable<Waitlist>>> GetWaitlistsByParams(string courseId = null, string term = null, string crn = null)
         {
-            _context.WaitLists.Add(waitlist);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetWaitList", new { id = waitlist.WaitListId }, waitlist);
+            if (courseId != null && term == null && crn == null)
+            {
+                return await _context.Waitlists.Where(g => g.CourseId == courseId).ToListAsync();
+            }
+            else if (courseId != null && term != null && crn == null)
+            {
+                return await _context.Waitlists.Where(g => g.CourseId == courseId &&
+                                                   g.Term == term).ToListAsync();
+            }
+            else if (courseId != null && term != null && crn != null)
+            {
+                return await _context.Waitlists.Where(g => g.CourseId == courseId &&
+                                                   g.Term == term &&
+                                                   g.CRN == crn).ToListAsync();
+            }
+            else
+            {
+                return await _context.Waitlists.ToListAsync();
+            }
         }
 
-        // DELETE: api/WaitLists/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<WaitList>> DeleteWaitList(int id)
+        // POST: api/Waitlists
+        [HttpPost]
+        public async Task<ActionResult<Waitlist>> PostWaitlist(Waitlist waitlist)
         {
-            var waitlist = await _context.WaitLists.FindAsync(id);
+            _context.Waitlists.Add(waitlist);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetWaitlist", new { id = waitlist.WaitlistId }, waitlist);
+        }
+
+        // DELETE: api/Waitlists/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Waitlist>> DeleteWaitlist(int id)
+        {
+            var waitlist = await _context.Waitlists.FindAsync(id);
             if (waitlist == null)
             {
                 return NotFound();
             }
 
-            _context.WaitLists.Remove(waitlist);
+            _context.Waitlists.Remove(waitlist);
             await _context.SaveChangesAsync();
 
             return waitlist;
         }
 
         [HttpGet("students/{id}")]
-        public async Task<IEnumerable<WaitList>> GetWaitListByStudent(string id)
+        public async Task<IEnumerable<Waitlist>> GetWaitlistByStudent(string id)
         {
-            return await _context.WaitLists.Where(w => w.StudentId == id).ToListAsync();
+            return await _context.Waitlists.Where(w => w.StudentId == id).ToListAsync();
         }
 
-        private bool WaitListExists(int id)
+        private bool WaitlistExists(int id)
         {
-            return _context.WaitLists.Any(e => e.WaitListId == id);
+            return _context.Waitlists.Any(e => e.WaitlistId == id);
         }
     }
 }

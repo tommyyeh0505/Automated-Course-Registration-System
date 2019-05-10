@@ -18,16 +18,24 @@ namespace ACRS.Controllers
     public class DownloadController : Controller
     {
         private CoursesController _coursesController;
+        private readonly ApplicationDbContext _context;
 
-        public DownloadController(CoursesController coursesController)
+        public DownloadController(ApplicationDbContext context, CoursesController coursesController)
         {
+            _context = context;
             _coursesController = coursesController;
         }
 
         [HttpGet, Route("waitlist")]
-        public ActionResult DownloadWaitlist()
+        public async Task<ActionResult> DownloadWaitlistAsync()
         {
-            List<List<StudentEligability>> waitlist = _coursesController.GetEligableStudentsAllCourses();
+            List<Course> courses = _context.Courses.ToList();
+            List<List<StudentEligability>> allEligabilities = new List<List<StudentEligability>>();
+            
+            foreach (Course course in courses)
+            {
+                allEligabilities.Add(await _coursesController.GetEligableStudentsAsync(course.CourseId));
+            }
 
             List<string> headers = new List<string>
             {
@@ -39,16 +47,28 @@ namespace ACRS.Controllers
 
             List<List<string>> data = new List<List<string>>();
 
-            foreach (List<StudentEligability> course in waitlist)
+            foreach (List<StudentEligability> eligabilities in allEligabilities)
             {
-                foreach (StudentEligability studentChoice in course)
+                foreach(StudentEligability eligability in eligabilities)
                 {
-                    List<string> row = new List<string>();
+                    string studentId = eligability.StudentId;
+                    string courseId = eligability.CourseId;
 
-                    row.Add(studentChoice.CourseId);
-                    row.Add(studentChoice.StudentId);
+                    WaitList waitList = _context.WaitLists.Where(w => w.CourseId == courseId &&
+                                                                      w.StudentId == studentId).FirstOrDefault();
 
-                    data.Add(row);
+                    if (waitList != null)
+                    {
+                        List<string> row = new List<string>();
+
+                        string crn = waitList.CRN;
+                        string term = waitList.Term;
+
+                        row.Add(studentId);
+                        row.Add(courseId);
+                        row.Add(crn);
+                        row.Add(term);
+                    }
                 }
             }
 

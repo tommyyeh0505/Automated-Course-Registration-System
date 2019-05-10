@@ -206,14 +206,5 @@ namespace ACRS.Controllers
 
             return ineligableStudents;
         }
-
-        public List<List<StudentEligability>> GetEligableStudentsAllCourses()
-        {
-            List<List<StudentEligability>> lists = new List<List<StudentEligability>>();
-            List<StudentEligability> students1 = new List<StudentEligability>();
-
-            return lists;
-        }
-
     }
 }

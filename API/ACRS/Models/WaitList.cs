@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace ACRS.Models
 {
-    public class WaitList
+    public class Waitlist
     {
-
         [Required]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

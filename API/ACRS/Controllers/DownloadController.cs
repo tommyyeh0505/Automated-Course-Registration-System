@@ -54,7 +54,7 @@ namespace ACRS.Controllers
                     string studentId = eligability.StudentId;
                     string courseId = eligability.CourseId;
 
-                    WaitList waitList = _context.WaitLists.Where(w => w.CourseId == courseId &&
+                    Waitlist waitList = _context.Waitlists.Where(w => w.CourseId == courseId &&
                                                                       w.StudentId == studentId).FirstOrDefault();
 
                     if (waitList != null)

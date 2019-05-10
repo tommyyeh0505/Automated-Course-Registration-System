@@ -91,6 +91,7 @@ export class AddStudentGradeComponent implements OnInit {
     public chooseCourseId(courseId: string) {
         this.courseId = courseId;
         this.isTakenClass(this.courseId, this.crn, this.term);
+
     }
 
     public chooseCRN(crn: string) {
@@ -112,6 +113,7 @@ export class AddStudentGradeComponent implements OnInit {
         this.data.grade.crn = this.crn;
         this.data.grade.term = this.term;
         this.data.grade.finalGrade = this.addStudentGradeForm.value.finalGrade;
+
 
 
     }

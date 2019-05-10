@@ -33,7 +33,7 @@ namespace ACRS.Controllers
 
         // GET: api/Courses
         [HttpGet("{id}/eligable")]
-        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetEligableCourseByCourseId(string id)
+        public async Task<ActionResult<IEnumerable<StudentEligibility>>> GetEligableCourseByCourseId(string id)
         {
             return await GetEligableCourseByCourseIdAsync(id);
 
@@ -41,7 +41,7 @@ namespace ACRS.Controllers
 
         // GET: api/Courses
         [HttpGet("{id}/eligable")]
-        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetCourseInEligabilityByCourseId(string id)
+        public async Task<ActionResult<IEnumerable<StudentEligibility>>> GetCourseInEligabilityByCourseId(string id)
         {
             return await GetInEligableStudentByCourseIdAsync(id);
 
@@ -124,13 +124,13 @@ namespace ACRS.Controllers
 
 
 
-        public async Task<List<StudentEligability>> GetEligableCourseByCourseIdAsync(string CourseID)
+        public async Task<List<StudentEligibility>> GetEligableCourseByCourseIdAsync(string CourseID)
         {
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
             List<Grade> grades = await _context.Grades.ToListAsync();
             List<Student> students = await _context.Students.ToListAsync();
             var studentMap = new Dictionary<string, int>();
-            List<StudentEligability> eligableStudents = new List<StudentEligability>();
+            List<StudentEligibility> eligableStudents = new List<StudentEligibility>();
             Course targetCourse = courses.FirstOrDefault(o => o.CourseId == CourseID);
             int prereqs = 0;
             if (targetCourse.Prerequisites != null)
@@ -159,7 +159,7 @@ namespace ACRS.Controllers
             {
                 if (studentMap[s.StudentId] >= prereqs)
                 {
-                    eligableStudents.Add(new StudentEligability(s.StudentId, targetCourse.CourseId, true));
+                    eligableStudents.Add(new StudentEligibility(s.StudentId, targetCourse.CourseId, true));
                 } 
 
             }
@@ -167,13 +167,13 @@ namespace ACRS.Controllers
             return eligableStudents;
         }
 
-        public async Task<List<StudentEligability>> GetInEligableStudentByCourseIdAsync(string CourseID)
+        public async Task<List<StudentEligibility>> GetInEligableStudentByCourseIdAsync(string CourseID)
         {
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
             List<Grade> grades = await _context.Grades.ToListAsync();
             List<Student> students = await _context.Students.ToListAsync();
             var studentMap = new Dictionary<string, int>();
-            List<StudentEligability> ineligableStudents = new List<StudentEligability>();
+            List<StudentEligibility> ineligableStudents = new List<StudentEligibility>();
             Course targetCourse = courses.FirstOrDefault(o => o.CourseId == CourseID);
             int prereqs = 0;
             if (targetCourse.Prerequisites != null)
@@ -202,7 +202,7 @@ namespace ACRS.Controllers
             {
                 if (studentMap[s.StudentId] < prereqs)
                 {
-                    ineligableStudents.Add(new StudentEligability(s.StudentId, targetCourse.CourseId, false));
+                    ineligableStudents.Add(new StudentEligibility(s.StudentId, targetCourse.CourseId, false));
                 }
 
             }
@@ -210,10 +210,10 @@ namespace ACRS.Controllers
             return ineligableStudents;
         }
 
-        public List<List<StudentEligability>> GetEligableStudentsAllCourses()
+        public List<List<StudentEligibility>> GetEligableStudentsAllCourses()
         {
-            List<List<StudentEligability>> lists = new List<List<StudentEligability>>();
-            List<StudentEligability> students1 = new List<StudentEligability>();
+            List<List<StudentEligibility>> lists = new List<List<StudentEligibility>>();
+            List<StudentEligibility> students1 = new List<StudentEligibility>();
 
             return lists;
         }

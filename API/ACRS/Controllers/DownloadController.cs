@@ -27,7 +27,7 @@ namespace ACRS.Controllers
         [HttpGet, Route("waitlist")]
         public ActionResult DownloadWaitlist()
         {
-            List<List<StudentEligability>> waitlist = _coursesController.GetEligableStudentsAllCourses();
+            List<List<StudentEligibility>> waitlist = _coursesController.GetEligableStudentsAllCourses();
 
             List<string> headers = new List<string>
             {
@@ -39,9 +39,9 @@ namespace ACRS.Controllers
 
             List<List<string>> data = new List<List<string>>();
 
-            foreach (List<StudentEligability> course in waitlist)
+            foreach (List<StudentEligibility> course in waitlist)
             {
-                foreach (StudentEligability studentChoice in course)
+                foreach (StudentEligibility studentChoice in course)
                 {
                     List<string> row = new List<string>();
 

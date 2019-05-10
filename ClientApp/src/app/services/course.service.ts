@@ -67,6 +67,12 @@ export class CourseService {
 
   }
 
+  public getEligibleByCourseId(courseId: string) {
+    return this.http.get<any>(endpoint + courseId + '/eligible/', this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {})
+      );
+  }
+
 
 
   // HTTP headers

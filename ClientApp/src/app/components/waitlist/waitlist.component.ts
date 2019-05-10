@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule, MatDialog } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule, MatDialog, MatSnackBar } from '@angular/material';
 import { Grade } from 'src/app/models/grade';
 import { GradeService } from 'src/app/services/grade.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -9,6 +9,9 @@ import { Class } from 'src/app/models/class';
 import { WaitlistService } from 'src/app/services/waitlist.service';
 import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.component';
 import { first } from 'rxjs/operators';
+import { CourseService } from 'src/app/services/course.service';
+import { Course } from 'src/app/models/course';
+import { Eligibility } from 'src/app/models/Eligibility';
 
 export interface WaitlistDialogData {
   waitlist: Waitlist;
@@ -31,11 +34,14 @@ export class WaitlistComponent implements OnInit {
   classes: Class[] = [];
   newWailist: Waitlist;
   waitlists: Waitlist[];
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private waitlistService: WaitlistService,
+    private snackBar: MatSnackBar,
+    private courseService: CourseService,
     public dialog: MatDialog,
     private router: Router
   ) {
@@ -106,8 +112,8 @@ export class WaitlistComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // console.log(result);
-        this.addWaitlist(result.waitlist);
+        this.getEligibleByCourseId(result.waitlist.courseId, result.waitlist);
+
       }
       this.newWailist = new Waitlist();
     });
@@ -125,6 +131,29 @@ export class WaitlistComponent implements OnInit {
       this.refresh();
     })
   }
+
+  getEligibleByCourseId(courseId: string, waitlist: Waitlist) {
+    this.courseService.getEligibleByCourseId(courseId).subscribe((data: Eligibility[]) => {
+
+      let studentId = waitlist.studentId;
+      if (data.filter(d => d.studentId === studentId).length > 0) {
+        this.addWaitlist(waitlist);
+      }
+      else {
+        this.openSnackBar("Student is not qualified", "");
+      }
+
+    })
+  }
+
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition: 'top'
+    });
+  }
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

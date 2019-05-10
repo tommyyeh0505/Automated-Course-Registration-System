@@ -126,6 +126,9 @@ export class AddWaitlistComponent implements OnInit {
 
 
     public submit() {
+        if (!this.courseId) {
+            this.courseId = this.courseAutoComplete.value;
+        }
         this.data.waitlist.studentId = this.studentId;
         this.data.waitlist.courseId = this.courseId;
         this.data.waitlist.crn = this.crn;

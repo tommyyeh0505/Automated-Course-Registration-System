@@ -138,6 +138,7 @@ export class CourseComponent implements OnInit {
     this.courseService.deleteCourse(course);
     let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
     this.dataSource.data.splice(itemIndex, 1);
+    this.courses = this.dataSource.data;
     this.initTable(this.dataSource.data);
   }
 

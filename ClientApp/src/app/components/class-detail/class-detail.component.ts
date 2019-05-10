@@ -178,6 +178,7 @@ export class ClassDetailComponent implements OnInit {
     this.gradeService.deleteGrade(grade);
     let itemIndex = this.dataSource.data.findIndex(obj => obj.gradeId === grade.gradeId);
     this.dataSource.data.splice(itemIndex, 1);
+    this.grades = this.dataSource.data;
     this.initTable(this.dataSource.data);
   }
   initNewGrade() {

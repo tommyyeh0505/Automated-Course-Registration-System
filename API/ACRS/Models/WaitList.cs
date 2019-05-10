@@ -12,7 +12,7 @@ namespace ACRS.Models
         [Required]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int WaitListId { get; set; }
+        public int WaitlistId { get; set; }
 
         [Required]
         public string StudentId { get; set; }

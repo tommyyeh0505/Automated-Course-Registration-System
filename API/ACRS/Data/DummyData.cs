@@ -98,7 +98,7 @@ namespace ACRS.Data
             {
                 new Waitlist()
                 {
-                    WaitListId = 1,
+                    WaitlistId = 1,
                     StudentId = "A00000001",
                     CourseId = "COMMP4900",
                     Term = "2019W",
@@ -106,7 +106,7 @@ namespace ACRS.Data
                 },
                  new Waitlist()
                 {
-                    WaitListId = 2,
+                    WaitlistId = 2,
                     StudentId = "A00000002",
                     CourseId = "COMMP4900",
                     Term = "2019S",
@@ -114,7 +114,7 @@ namespace ACRS.Data
                 },
                  new Waitlist()
                 {
-                    WaitListId = 3,
+                    WaitlistId = 3,
                     StudentId = "A00000003",
                     CourseId = "COMMP4900",
                     Term = "2019S",
@@ -122,7 +122,7 @@ namespace ACRS.Data
                 },
                  new Waitlist()
                 {
-                    WaitListId = 4,
+                    WaitlistId = 4,
                     StudentId = "A00000004",
                     CourseId = "COMMP4900",
                     Term = "2019S",

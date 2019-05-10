@@ -6,12 +6,12 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Waitlist } from '../models/waitlist';
-const endpoint = environment.apiEndpoint + 'waitlists/';
+import { Grade } from '../models/grade';
+const endpoint = environment.apiEndpoint + 'grades/';
 @Injectable({
   providedIn: 'root'
 })
-export class WaitlistService {
+export class EligibilityService {
   private jwtHelper: JwtHelperService;
 
 
@@ -37,7 +37,7 @@ export class WaitlistService {
   /**
    * Http get, return a list of all grades
    */
-  public getWaitlists(): Observable<any> {
+  public getGrades(): Observable<any> {
     return this.http.get<any>(endpoint, this.getHttpHeaders())
       .pipe(map((response: Response) => {
 
@@ -45,26 +45,26 @@ export class WaitlistService {
       }));
   }
 
-  public deleteWaitlist(waitlist: Waitlist) {
-    let id = waitlist.waitlistId;
+  public getGradesByKey(courseId: string, crn: string, term: string) {
+    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`, this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {}))
+  }
+  public deleteGrade(grade: Grade) {
+    let id = grade.gradeId;
     this.http.delete<any>(endpoint + id, this.getHttpHeaders())
       .subscribe();
-    return waitlist;
+    return grade;
   }
 
-  public addWaitlist(waitlist: Waitlist) {
-    return this.http.post<any>(endpoint, waitlist, this.getHttpHeaders())
+  public addGrade(grade: Grade) {
+
+    return this.http.post<any>(endpoint, grade, this.getHttpHeaders())
       .pipe(map((response: Response) => response || {}));
 
   }
 
-  public getWaitlistsByKey(courseId: string, crn: string, term: string) {
-    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`, this.getHttpHeaders())
-      .pipe(map((response: Response) => response || {}))
-  }
-
-  public updateWaitlist(waitlistId: number, editWaitlist: Waitlist) {
-    return this.http.put<any>(endpoint + waitlistId, editWaitlist, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+  public updateGrade(gradeId: number, editGrade: Grade) {
+    return this.http.put<any>(endpoint + gradeId, editGrade, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
   }
 
   // HTTP headers

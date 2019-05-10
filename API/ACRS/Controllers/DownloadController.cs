@@ -30,8 +30,8 @@ namespace ACRS.Controllers
         public async Task<ActionResult> DownloadWaitlistAsync()
         {
             List<Course> courses = _context.Courses.ToList();
-            List<List<StudentEligability>> allEligabilities = new List<List<StudentEligability>>();
-            
+            List<List<StudentEligibility>> allEligabilities = new List<List<StudentEligibility>>();
+
             foreach (Course course in courses)
             {
                 allEligabilities.Add(await _coursesController.GetEligableCourseByCourseIdAsync(course.CourseId));
@@ -47,9 +47,9 @@ namespace ACRS.Controllers
 
             List<List<string>> data = new List<List<string>>();
 
-            foreach (List<StudentEligability> eligabilities in allEligabilities)
+            foreach (List<StudentEligibility> eligabilities in allEligabilities)
             {
-                foreach(StudentEligability eligability in eligabilities)
+                foreach (StudentEligibility eligability in eligabilities)
                 {
                     string studentId = eligability.StudentId;
                     string courseId = eligability.CourseId;

@@ -48,12 +48,18 @@
         <td mat-cell *matCellDef="let row"> {{row.finalGrade}}% </td>
       </ng-container>
 
+      <ng-container matColumnDef="rawGrade">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Raw Grade </th>
+        <td mat-cell *matCellDef="let row"> {{row.rawGrade}} </td>
+      </ng-container>
+
+
       <ng-container matColumnDef="attempts">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Attempts </th>
         <td mat-cell *matCellDef="let row"> {{row.attempts}} </td>
       </ng-container>
 
-   
+
 
 
       <ng-container matColumnDef="edit">

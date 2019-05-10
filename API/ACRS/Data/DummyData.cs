@@ -34,6 +34,10 @@ namespace ACRS.Data
                 context.Students.AddRange(students);
                 context.SaveChanges();
 
+                var waitlists = GetWaitLists().ToArray();
+                context.WaitLists.AddRange(waitlists);
+                context.SaveChanges();
+
                 const string roleAdmin = "Admin";
                 const string defaultPassword = "P@$$w0rd";
 
@@ -85,6 +89,45 @@ namespace ACRS.Data
                     PassingGrade = 50,
                     Prerequisites = new List<Prerequisite>(){GetPrerequisite1()}
                },
+            };
+        }
+
+        private static List<WaitList> GetWaitLists()
+        {
+            return new List<WaitList>()
+            {
+                new WaitList()
+                {
+                    WaitListId = 1,
+                    StudentId = "A00000001",
+                    CourseId = "COMMP4900",
+                    Term = "2019W",
+                    CRN = "61412321"
+                },
+                 new WaitList()
+                {
+                    WaitListId = 2,
+                    StudentId = "A00000002",
+                    CourseId = "COMMP4900",
+                    Term = "2019S",
+                    CRN = "61412321"
+                },
+                 new WaitList()
+                {
+                    WaitListId = 3,
+                    StudentId = "A00000003",
+                    CourseId = "COMMP4900",
+                    Term = "2019S",
+                    CRN = "61412321"
+                },
+                 new WaitList()
+                {
+                    WaitListId = 4,
+                    StudentId = "A00000004",
+                    CourseId = "COMMP4900",
+                    Term = "2019S",
+                    CRN = "61412321"
+                },
             };
         }
 

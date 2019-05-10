@@ -69,12 +69,14 @@ export class AddStudentGradeComponent implements OnInit {
 
         this.courseService.getCourses().pipe(first()).subscribe((data: Course[]) => {
             this.courses = data;
+            this.courseAutoComplete = new FormControl(this.data.grade.courseId, [Validators.required])
             this.filteredCourses = this.courseAutoComplete.valueChanges
                 .pipe(
                     startWith(''),
                     map(state => state ? this._filterCourses(state) : this.courses.slice())
                 );
-            this.courseAutoComplete = new FormControl(this.data.grade.courseId, [Validators.required])
+
+
 
             this.grades = this.data.grades;
 
@@ -91,6 +93,7 @@ export class AddStudentGradeComponent implements OnInit {
     public chooseCourseId(courseId: string) {
         this.courseId = courseId;
         this.isTakenClass(this.courseId, this.crn, this.term);
+
     }
 
     public chooseCRN(crn: string) {
@@ -112,6 +115,7 @@ export class AddStudentGradeComponent implements OnInit {
         this.data.grade.crn = this.crn;
         this.data.grade.term = this.term;
         this.data.grade.finalGrade = this.addStudentGradeForm.value.finalGrade;
+
 
 
     }

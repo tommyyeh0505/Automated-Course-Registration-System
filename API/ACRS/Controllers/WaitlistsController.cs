@@ -25,7 +25,7 @@ namespace ACRS.Controllers
 
         // GET: api/Waitlists
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Waitlist>>> GetWaitLists()
+        public async Task<ActionResult<IEnumerable<Waitlist>>> GetWaitlists()
         {
             return await _context.Waitlists.ToListAsync();
         }
@@ -48,7 +48,7 @@ namespace ACRS.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWaitlist(int id, Waitlist waitlist)
         {
-            if (id != waitlist.WaitListId)
+            if (id != waitlist.WaitlistId)
             {
                 return BadRequest();
             }
@@ -74,6 +74,30 @@ namespace ACRS.Controllers
             return NoContent();
         }
 
+        [HttpGet("filter/{courseId?}/{crn?}/{term?}")]
+        public async Task<ActionResult<IEnumerable<Waitlist>>> GetWaitlistsByParams(string courseId = null, string term = null, string crn = null)
+        {
+            if (courseId != null && term == null && crn == null)
+            {
+                return await _context.Waitlists.Where(g => g.CourseId == courseId).ToListAsync();
+            }
+            else if (courseId != null && term != null && crn == null)
+            {
+                return await _context.Waitlists.Where(g => g.CourseId == courseId &&
+                                                   g.Term == term).ToListAsync();
+            }
+            else if (courseId != null && term != null && crn != null)
+            {
+                return await _context.Waitlists.Where(g => g.CourseId == courseId &&
+                                                   g.Term == term &&
+                                                   g.CRN == crn).ToListAsync();
+            }
+            else
+            {
+                return await _context.Waitlists.ToListAsync();
+            }
+        }
+
         // POST: api/Waitlists
         [HttpPost]
         public async Task<ActionResult<Waitlist>> PostWaitlist(Waitlist waitlist)
@@ -81,7 +105,7 @@ namespace ACRS.Controllers
             _context.Waitlists.Add(waitlist);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWaitlist", new { id = waitlist.WaitListId }, waitlist);
+            return CreatedAtAction("GetWaitlist", new { id = waitlist.WaitlistId }, waitlist);
         }
 
         // DELETE: api/Waitlists/5
@@ -101,14 +125,14 @@ namespace ACRS.Controllers
         }
 
         [HttpGet("students/{id}")]
-        public async Task<IEnumerable<Waitlist>> GetWaitListByStudent(string id)
+        public async Task<IEnumerable<Waitlist>> GetWaitlistByStudent(string id)
         {
             return await _context.Waitlists.Where(w => w.StudentId == id).ToListAsync();
         }
 
         private bool WaitlistExists(int id)
         {
-            return _context.Waitlists.Any(e => e.WaitListId == id);
+            return _context.Waitlists.Any(e => e.WaitlistId == id);
         }
     }
 }

@@ -28,7 +28,7 @@ export class ClassComponent implements OnInit {
     private gradeService: GradeService,
     private router: Router
   ) {
-    this.getClasses();
+
   }
   ngOnInit() {
     this.getClasses();

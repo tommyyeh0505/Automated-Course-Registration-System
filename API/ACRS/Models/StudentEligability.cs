@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 
 namespace ACRS.Models
 {
-    public class StudentEligability
+    public class StudentEligibility
     {
 
         public string StudentId { get; set; }
         public string CourseId { get; set; }
-        public bool Eligability { get; set; }
+        public bool Eligibility { get; set; }
 
-        public StudentEligability(string a, string b, bool c)
+        public StudentEligibility(string a, string b, bool c)
         {
             StudentId = a;
             CourseId = b;
-            Eligability = c;
+            Eligibility = c;
         }
     }
 }

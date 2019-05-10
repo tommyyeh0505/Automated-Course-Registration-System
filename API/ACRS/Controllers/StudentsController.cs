@@ -29,8 +29,8 @@ namespace ACRS.Controllers
         }
 
         // GET: api/Student
-        [HttpGet("{id}/eligable")]
-        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetEligableCourseByStudentId(string id)
+        [HttpGet("{id}/eligible")]
+        public async Task<ActionResult<IEnumerable<StudentEligibility>>> GetEligableCourseByStudentId(string id)
         {
             return await GetEligableCourseByStudentIdAsync(id);
 
@@ -125,13 +125,13 @@ namespace ACRS.Controllers
         }
 
 
-        public async Task<List<StudentEligability>> GetEligableCourseByStudentIdAsync(string StudentId)
+        public async Task<List<StudentEligibility>> GetEligableCourseByStudentIdAsync(string StudentId)
         {
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
             List<Grade> grades = await _context.Grades.Where(g => g.StudentId == StudentId).ToListAsync();
             //List<Student> students = await _context.Students.ToListAsync();
             var CourseMap = new Dictionary<string, double>();
-            List<StudentEligability> eligableStudents = new List<StudentEligability>();
+            List<StudentEligibility> eligibleStudents = new List<StudentEligibility>();
             var CoursePassingGradeMap = new Dictionary<string, int>();
 
 
@@ -158,7 +158,7 @@ namespace ACRS.Controllers
 
                 if (c.Prerequisites == null)
                 {
-                    eligableStudents.Add(new StudentEligability(StudentId, c.CourseId, true));
+                    eligibleStudents.Add(new StudentEligibility(StudentId, c.CourseId, true));
                 }
                 else
                 {
@@ -170,7 +170,7 @@ namespace ACRS.Controllers
                             Course temp = await _context.Courses.FindAsync(p.CourseId);
 
                             if (CourseMap[p.CourseId] < temp.PassingGrade){
-                                eligableStudents.Add(new StudentEligability(StudentId, c.CourseId, false));
+                                eligibleStudents.Add(new StudentEligibility(StudentId, c.CourseId, false));
                                 break;
                             }
                             else
@@ -180,7 +180,7 @@ namespace ACRS.Controllers
                         }
                         else
                         {
-                            eligableStudents.Add(new StudentEligability(StudentId, c.CourseId, false));
+                            eligibleStudents.Add(new StudentEligibility(StudentId, c.CourseId, false));
                             break;
                         }
 
@@ -188,12 +188,12 @@ namespace ACRS.Controllers
 
                     if (count >= prerequisites)
                     {
-                        eligableStudents.Add(new StudentEligability(StudentId, c.CourseId, true));
+                        eligibleStudents.Add(new StudentEligibility(StudentId, c.CourseId, true));
                     }
                 }
             }
 
-            return eligableStudents;
+            return eligibleStudents;
     }
 }
 

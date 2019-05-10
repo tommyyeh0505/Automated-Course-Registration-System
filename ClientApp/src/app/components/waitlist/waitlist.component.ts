@@ -8,7 +8,7 @@ import { WaitlistService } from 'src/app/services/waitlist.service';
 })
 export class WaitlistComponent implements OnInit {
 
-  constructor(private waitlistService: WaitlistService) { }
+  constructor(private wailistService: WaitlistService) { }
 
   ngOnInit() {
   }

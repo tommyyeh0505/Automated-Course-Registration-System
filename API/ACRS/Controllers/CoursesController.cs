@@ -25,10 +25,28 @@ namespace ACRS.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
         {
-            return await _context.Courses
-                .Include(e => e.Prerequisites)
-                .ToListAsync();
+                       return await _context.Courses
+                         .Include(e => e.Prerequisites)
+                      .ToListAsync();
+
         }
+
+        // GET: api/Courses
+        [HttpGet("eligible/{id}")]
+        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetCourseEligability(string id)
+        {
+            return await GetEligableStudentsAsync(id);
+
+        }
+
+        // GET: api/Courses
+        [HttpGet("ineligible/{id}")]
+        public async Task<ActionResult<IEnumerable<StudentEligability>>> GetCourseInEligability(string id)
+        {
+            return await GetInEligableStudentsAsync(id);
+
+        }
+
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
@@ -103,30 +121,97 @@ namespace ACRS.Controllers
             return _context.Courses.Any(e => e.CourseId == id);
         }
 
-        public List<StudentEligability> GetEligableStudents(string CourseID)
+        public async Task<List<StudentEligability>> GetEligableStudentsAsync(string CourseID)
         {
-            List<StudentEligability> students = new List<StudentEligability>();
-            students.Add(new StudentEligability("A00000001", "COMP1000", true));
-            students.Add(new StudentEligability("A00000002", "COMP1000", true));
-            students.Add(new StudentEligability("A00000003", "COMP2000", true));
-            return students;
+            List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
+            List<Grade> grades = await _context.Grades.ToListAsync();
+            List<Student> students = await _context.Students.ToListAsync();
+            var studentMap = new Dictionary<string, int>();
+            List<StudentEligability> eligableStudents = new List<StudentEligability>();
+            Course targetCourse = courses.FirstOrDefault(o => o.CourseId == CourseID);
+            int prereqs = 0;
+            if (targetCourse.Prerequisites != null)
+            {
+                prereqs = targetCourse.Prerequisites.Count();
+            }
+
+            //TODO move to grades loop
+            foreach (Student s in students)
+            {
+                studentMap[s.StudentId] = 0;
+            }
+       
+
+            //Loop through all grades
+            foreach (Grade g in grades)
+            {
+                if (g.FinalGrade >= targetCourse.PassingGrade)
+                {
+                    studentMap[g.StudentId] = studentMap[g.StudentId] + 1;
+                }
+            }
+
+            //Loop through all students
+            foreach (Student s in students)
+            {
+                if (studentMap[s.StudentId] >= prereqs)
+                {
+                    eligableStudents.Add(new StudentEligability(s.StudentId, targetCourse.CourseId, true));
+                } 
+
+            }
+           
+            return eligableStudents;
+        }
+
+        public async Task<List<StudentEligability>> GetInEligableStudentsAsync(string CourseID)
+        {
+            List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
+            List<Grade> grades = await _context.Grades.ToListAsync();
+            List<Student> students = await _context.Students.ToListAsync();
+            var studentMap = new Dictionary<string, int>();
+            List<StudentEligability> ineligableStudents = new List<StudentEligability>();
+            Course targetCourse = courses.FirstOrDefault(o => o.CourseId == CourseID);
+            int prereqs = 0;
+            if (targetCourse.Prerequisites != null)
+            {
+                prereqs = targetCourse.Prerequisites.Count();
+            }
+
+            //TODO move to grades loop
+            foreach (Student s in students)
+            {
+                studentMap[s.StudentId] = 0;
+            }
+
+
+            //Loop through all grades
+            foreach (Grade g in grades)
+            {
+                if (g.FinalGrade > targetCourse.PassingGrade)
+                {
+                    studentMap[g.StudentId] = studentMap[g.StudentId] + 1;
+                }
+            }
+
+            //Loop through all students
+            foreach (Student s in students)
+            {
+                if (studentMap[s.StudentId] < prereqs)
+                {
+                    ineligableStudents.Add(new StudentEligability(s.StudentId, targetCourse.CourseId, false));
+                }
+
+            }
+
+            return ineligableStudents;
         }
 
         public List<List<StudentEligability>> GetEligableStudentsAllCourses()
         {
             List<List<StudentEligability>> lists = new List<List<StudentEligability>>();
             List<StudentEligability> students1 = new List<StudentEligability>();
-            students1.Add(new StudentEligability("A00000001", "COMP1000", true));
-            students1.Add(new StudentEligability("A00000002", "COMP1000", true));
-            students1.Add(new StudentEligability("A00000003", "COMP2000", true));
 
-            List<StudentEligability> students2 = new List<StudentEligability>();
-            students2.Add(new StudentEligability("A00000004", "COMP5000", true));
-            students2.Add(new StudentEligability("A00000005", "COMP5000", true));
-            students2.Add(new StudentEligability("A00000006", "COMP5000", true));
-
-            lists.Add(students1);
-            lists.Add(students2);
             return lists;
         }
 

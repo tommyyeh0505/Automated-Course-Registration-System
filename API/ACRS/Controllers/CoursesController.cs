@@ -32,7 +32,7 @@ namespace ACRS.Controllers
         }
 
         // GET: api/Courses
-        [HttpGet("{id}/eligable")]
+        [HttpGet("{id}/eligible")]
         public async Task<ActionResult<IEnumerable<StudentEligibility>>> GetEligableCourseByCourseId(string id)
         {
             return await GetEligableCourseByCourseIdAsync(id);
@@ -40,7 +40,7 @@ namespace ACRS.Controllers
         }
 
         // GET: api/Courses
-        [HttpGet("{id}/eligable")]
+        [HttpGet("{id}/ineligible")]
         public async Task<ActionResult<IEnumerable<StudentEligibility>>> GetCourseInEligabilityByCourseId(string id)
         {
             return await GetInEligableStudentByCourseIdAsync(id);
@@ -130,7 +130,7 @@ namespace ACRS.Controllers
             List<Grade> grades = await _context.Grades.ToListAsync();
             List<Student> students = await _context.Students.ToListAsync();
             var studentMap = new Dictionary<string, int>();
-            List<StudentEligibility> eligableStudents = new List<StudentEligibility>();
+            List<StudentEligibility> eligibleStudents = new List<StudentEligibility>();
             Course targetCourse = courses.FirstOrDefault(o => o.CourseId == CourseID);
             int prereqs = 0;
             if (targetCourse.Prerequisites != null)
@@ -159,12 +159,12 @@ namespace ACRS.Controllers
             {
                 if (studentMap[s.StudentId] >= prereqs)
                 {
-                    eligableStudents.Add(new StudentEligibility(s.StudentId, targetCourse.CourseId, true));
+                    eligibleStudents.Add(new StudentEligibility(s.StudentId, targetCourse.CourseId, true));
                 } 
 
             }
            
-            return eligableStudents;
+            return eligibleStudents;
         }
 
         public async Task<List<StudentEligibility>> GetInEligableStudentByCourseIdAsync(string CourseID)
@@ -173,7 +173,7 @@ namespace ACRS.Controllers
             List<Grade> grades = await _context.Grades.ToListAsync();
             List<Student> students = await _context.Students.ToListAsync();
             var studentMap = new Dictionary<string, int>();
-            List<StudentEligibility> ineligableStudents = new List<StudentEligibility>();
+            List<StudentEligibility> ineligibleStudents = new List<StudentEligibility>();
             Course targetCourse = courses.FirstOrDefault(o => o.CourseId == CourseID);
             int prereqs = 0;
             if (targetCourse.Prerequisites != null)
@@ -202,12 +202,12 @@ namespace ACRS.Controllers
             {
                 if (studentMap[s.StudentId] < prereqs)
                 {
-                    ineligableStudents.Add(new StudentEligibility(s.StudentId, targetCourse.CourseId, false));
+                    ineligibleStudents.Add(new StudentEligibility(s.StudentId, targetCourse.CourseId, false));
                 }
 
             }
 
-            return ineligableStudents;
+            return ineligibleStudents;
         }
 
         public List<List<StudentEligibility>> GetEligableStudentsAllCourses()

@@ -81,13 +81,12 @@ export class AddWaitlistComponent implements OnInit {
 
         this.courseService.getCourses().pipe(first()).subscribe((data: Course[]) => {
             this.courses = data;
+            this.courseAutoComplete = new FormControl(this.data.waitlist.courseId, [Validators.required])
             this.filteredCourses = this.courseAutoComplete.valueChanges
                 .pipe(
                     startWith(''),
                     map(state => state ? this._filterCourses(state) : this.courses.slice())
                 );
-            this.courseAutoComplete = new FormControl(this.data.waitlist.courseId, [Validators.required])
-
             this.waitlists = this.data.waitlists;
 
         });
@@ -100,8 +99,9 @@ export class AddWaitlistComponent implements OnInit {
 
 
 
-    public isTakenClass(courseId: string, crn: string, term: string, studentId:string) {
+    public isTakenClass(courseId: string, crn: string, term: string, studentId: string) {
         this.validWaitlist = this.waitlists.filter(g => g.courseId === courseId && g.crn === crn && g.term === term && g.studentId === studentId).length === 0;
+        console.log({ courseId, crn, term, studentId });
     }
 
     public chooseCourseId(courseId: string) {
@@ -120,9 +120,9 @@ export class AddWaitlistComponent implements OnInit {
         this.isTakenClass(this.courseId, this.crn, this.term, this.studentId);
     }
 
-    public chooseStudentId(studentId:string){
+    public chooseStudentId(studentId: string) {
         this.studentId = studentId;
-        this.isTakenClass(this.courseId,this.crn, this.term, this.studentId);
+        this.isTakenClass(this.courseId, this.crn, this.term, this.studentId);
     }
 
 

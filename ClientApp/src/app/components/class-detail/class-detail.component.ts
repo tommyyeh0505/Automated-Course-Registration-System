@@ -71,6 +71,8 @@ export class ClassDetailComponent implements OnInit {
       this.getCourseByCourseId(courseId);
       this.grades = data;
       this.initTable(data);
+    }, err => {
+      this.router.navigate(['/error']);
     })
   }
 
@@ -136,11 +138,8 @@ export class ClassDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
         this.updateGrade(result.grade.gradeId, result.grade);
       }
-
-      this.initNewGrade();
     });
   }
 

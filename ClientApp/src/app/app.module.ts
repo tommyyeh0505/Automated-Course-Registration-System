@@ -28,6 +28,8 @@ import { StudentDetailComponent } from './components/student-detail/student-deta
 import { WaitlistComponent } from './components/waitlist/waitlist.component';
 import { AddGradeComponent } from './components/modals/grade/add/add-grade.component';
 import { EditGradeComponent } from './components/modals/grade/edit/edit-grade.component';
+import { AddStudentGradeComponent } from './components/modals/student-grade/add/add-student-grade.component';
+import { EditStudentGradeComponent } from './components/modals/student-grade/edit/edit-student-grade.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { EditGradeComponent } from './components/modals/grade/edit/edit-grade.co
     StudentDetailComponent,
     WaitlistComponent,
     AddGradeComponent,
-    EditGradeComponent
+    EditGradeComponent,
+    AddStudentGradeComponent,
+    EditStudentGradeComponent
   ],
   imports: [
     MatTabsModule,
@@ -91,7 +95,9 @@ import { EditGradeComponent } from './components/modals/grade/edit/edit-grade.co
     AddStudentComponent,
     EditStudentComponent,
     AddGradeComponent,
-    EditGradeComponent
+    EditGradeComponent,
+    AddStudentGradeComponent,
+    EditStudentGradeComponent
   ]
 })
 export class AppModule { }

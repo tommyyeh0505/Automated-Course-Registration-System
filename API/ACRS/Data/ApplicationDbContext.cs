@@ -25,7 +25,7 @@ namespace ACRS.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Grade> Grades { get; set; }
-        public DbSet<WaitList> WaitLists { get; set; }
+        public DbSet<Waitlist> Waitlists { get; set; }
         public DbSet<Prerequisite> Prerequisites { get; set; }
     }
 }

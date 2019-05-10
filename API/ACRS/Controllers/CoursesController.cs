@@ -145,7 +145,7 @@ namespace ACRS.Controllers
             //Loop through all grades
             foreach (Grade g in grades)
             {
-                if (g.FinalGrade > targetCourse.PassingGrade)
+                if (g.FinalGrade >= targetCourse.PassingGrade)
                 {
                     studentMap[g.StudentId] = studentMap[g.StudentId] + 1;
                 }

@@ -110,7 +110,9 @@ export class AddStudentGradeComponent implements OnInit {
 
 
     public submit() {
-
+        if (!this.courseId) {
+            this.courseId = this.courseAutoComplete.value;
+        }
         this.data.grade.courseId = this.courseId;
         this.data.grade.crn = this.crn;
         this.data.grade.term = this.term;

@@ -15,7 +15,6 @@ import { Course } from 'src/app/models/course';
 export class WaitlistDetailComponent implements OnInit {
 
   courseId: string;
-
   crn: string;
   term: string;
   // waitlist: Waitlist;
@@ -49,6 +48,7 @@ export class WaitlistDetailComponent implements OnInit {
       this.getCourseByCourseId(courseId);
       this.waitlists = data;
       // this.initTable(data);
+      
 
     }, err => {
       this.router.navigate(['/error']);

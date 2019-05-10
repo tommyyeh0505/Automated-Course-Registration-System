@@ -34,7 +34,7 @@ namespace ACRS.Controllers
             
             foreach (Course course in courses)
             {
-                allEligabilities.Add(await _coursesController.GetEligableStudentsAsync(course.CourseId));
+                allEligabilities.Add(await _coursesController.GetEligableCourseByCourseIdAsync(course.CourseId));
             }
 
             List<string> headers = new List<string>

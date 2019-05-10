@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ACRS.Data;
 using ACRS.Models;
+using ACRS.Tools;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACRS.Controllers
@@ -20,7 +25,7 @@ namespace ACRS.Controllers
         }
 
         [HttpGet, Route("waitlist")]
-        public async Task<IActionResult> DownloadWaitlist()
+        public ActionResult DownloadWaitlist()
         {
             List<List<StudentEligability>> waitlist = _coursesController.GetEligableStudentsAllCourses();
 
@@ -32,9 +37,27 @@ namespace ACRS.Controllers
                 "Term"
             };
 
-            
+            List<List<string>> data = new List<List<string>>();
 
-            return null;
+            foreach (List<StudentEligability> course in waitlist)
+            {
+                foreach (StudentEligability studentChoice in course)
+                {
+                    List<string> row = new List<string>();
+
+                    row.Add(studentChoice.CourseId);
+                    row.Add(studentChoice.StudentId);
+
+                    data.Add(row);
+                }
+            }
+
+            Stream excel = ExcelWriter.CreateAsStream(headers, data);
+
+            return new FileStreamResult(excel, "application/octet-stream")
+            {
+                FileDownloadName = "waitlist.xlsx"
+            };
         }
     }
 }

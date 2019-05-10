@@ -54,7 +54,8 @@ import { EditStudentGradeComponent } from './components/modals/student-grade/edi
     AddGradeComponent,
     EditGradeComponent,
     AddStudentGradeComponent,
-    EditStudentGradeComponent
+    EditStudentGradeComponent,
+
   ],
   imports: [
     MatTabsModule,

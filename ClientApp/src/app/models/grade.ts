@@ -5,6 +5,6 @@ export class Grade {
     public courseId: string;
     public term: string;
     public finalGrade: number = 65;
-    public rawGrade:string;
+    public rawGrade: string;
     public attempts: number = 0;
 }

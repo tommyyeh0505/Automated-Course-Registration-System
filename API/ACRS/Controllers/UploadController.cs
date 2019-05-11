@@ -206,16 +206,16 @@ namespace ACRS.Controllers
                         }
                         else if (uploadedFinalGrade < dbFinalGrade)
                         {
-                            // Do nothing, keep the higher
+                            // Keep higher grade
                         }
                         else
                         {
-                            // Same grade, what do we want to do?
+                            // Same grade, do nothing
                         }
                     }
                     else
                     {
-                        if (uploadedGrade.FinalGrade < 65)
+                        if (uploadedGrade.FinalGrade < course.PassingGrade)
                         {
                             uploadedGrade.Attempts++;
                         }

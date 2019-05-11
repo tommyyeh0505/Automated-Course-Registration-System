@@ -30,6 +30,7 @@ namespace ACRS.Controllers
         public async Task<ActionResult> DownloadWaitlistAsync()
         {
             List<Course> courses = _context.Courses.ToList();
+            List<Waitlist> waitlists = _context.Waitlists.ToList();
             List<List<StudentEligibility>> allEligabilities = new List<List<StudentEligibility>>();
 
             foreach (Course course in courses)
@@ -47,30 +48,31 @@ namespace ACRS.Controllers
 
             List<List<string>> data = new List<List<string>>();
 
-            foreach (List<StudentEligibility> eligabilities in allEligabilities)
+            foreach (Waitlist entry in waitlists)
             {
-                foreach (StudentEligibility eligability in eligabilities)
+                bool isEligable = false;
+
+                foreach (List<StudentEligibility> eligibilities in allEligabilities)
                 {
-                    string studentId = eligability.StudentId;
-                    string courseId = eligability.CourseId;
+                    isEligable = eligibilities.Any(s => s.CourseId == entry.CourseId && s.StudentId == entry.StudentId);
 
-                    Waitlist waitList = _context.Waitlists.Where(w => w.CourseId == courseId &&
-                                                                      w.StudentId == studentId).FirstOrDefault();
-
-                    if (waitList != null)
+                    if (isEligable)
                     {
-                        List<string> row = new List<string>();
-
-                        string crn = waitList.CRN;
-                        string term = waitList.Term;
-
-                        row.Add(studentId);
-                        row.Add(courseId);
-                        row.Add(crn);
-                        row.Add(term);
+                        break;
                     }
                 }
+
+                data.Add(new List<string>
+                {
+                    entry.StudentId,
+                    entry.CourseId,
+                    entry.CRN,
+                    entry.Term
+                });
             }
+
+            // Sort by courseId then by studentid
+            data = data.OrderBy(a => a[1]).ThenBy(a => a[0]).ToList();
 
             Stream excel = ExcelWriter.CreateAsStream(headers, data);
 

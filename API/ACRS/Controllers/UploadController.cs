@@ -196,7 +196,7 @@ namespace ACRS.Controllers
                         {
                             uploadedGrade.Attempts = dbGrade.Attempts;
 
-                            if (uploadedGrade.FinalGrade < 65)
+                            if (uploadedGrade.FinalGrade < course.PassingGrade)
                             {
                                 uploadedGrade.Attempts++;
                             }

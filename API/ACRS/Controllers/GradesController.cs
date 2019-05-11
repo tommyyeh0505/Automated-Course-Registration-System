@@ -77,6 +77,20 @@ namespace ACRS.Controllers
                 return BadRequest();
             }
 
+            Course course = await _context.Courses.FindAsync(grade.CourseId);
+            Grade dbGrade = await _context.Grades.FindAsync(grade.GradeId);
+
+            // Cannot have two entities of the same primary key being tracked!
+            _context.Entry(dbGrade).State = EntityState.Detached;
+
+            if (grade.FinalGrade < course.PassingGrade && dbGrade.FinalGrade < course.PassingGrade)
+            {
+                grade.Attempts++;
+            }
+
+            // Raw grade no longer valid, just set it to the value the user inputted!
+            grade.RawGrade = grade.FinalGrade.ToString();
+
             _context.Entry(grade).State = EntityState.Modified;
 
             try
@@ -102,6 +116,15 @@ namespace ACRS.Controllers
         [HttpPost]
         public async Task<ActionResult<Grade>> PostGrade(Grade grade)
         {
+            Course course = await _context.Courses.FindAsync(grade.CourseId);
+
+            if (grade.FinalGrade < course.PassingGrade)
+            {
+                grade.Attempts++;
+            }
+
+            grade.RawGrade = grade.FinalGrade.ToString();
+
             _context.Grades.Add(grade);
             await _context.SaveChangesAsync();
 

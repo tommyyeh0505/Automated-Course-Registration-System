@@ -140,16 +140,6 @@ namespace ACRS.Controllers
                         Row = i + 2
                     });
                 }
-
-                //if (!_context.Courses.Any(c => c.CourseId == r.CourseId))
-                //{
-                //    errors.Add(new UploadError
-                //    {
-                //        FileName = fileName,
-                //        Reason = "Course does not exist",
-                //        Row = i + 2
-                //    });
-                //}
             }
 
             return errors;

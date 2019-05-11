@@ -38,13 +38,12 @@ namespace ACRS.Data
                 context.Waitlists.AddRange(waitlists);
                 context.SaveChanges();
 
-                const string roleAdmin = "Admin";
                 const string defaultPassword = "P@$$w0rd";
 
                 // Adding role to database
-                if (await roleManager.FindByNameAsync(roleAdmin) == null)
+                if (await roleManager.FindByNameAsync(UserRole.Admin) == null)
                 {
-                    await roleManager.CreateAsync(new IdentityRole(roleAdmin));
+                    await roleManager.CreateAsync(new IdentityRole(UserRole.Admin));
                 }
 
                 // Add user with username 'admin' and password 'P@$$w0rd' to database
@@ -60,13 +59,11 @@ namespace ACRS.Data
                     if (result.Succeeded)
                     {
                         await userManager.AddPasswordAsync(user, defaultPassword);
-                        await userManager.AddToRoleAsync(user, roleAdmin);
+                        await userManager.AddToRoleAsync(user, UserRole.Admin);
                     }
                 }
             }
         }
-
-
 
         private static List<Course> GetCourses()
         {

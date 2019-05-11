@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace ACRS.Controllers
@@ -22,10 +23,12 @@ namespace ACRS.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
 
-        public UploadController(ApplicationDbContext context)
+        public UploadController(ApplicationDbContext context, IConfiguration configuration)
         {
+            _configuration = configuration;
             _context = context;
         }
 
@@ -87,7 +90,7 @@ namespace ACRS.Controllers
 
                             try
                             {
-                                r = new CsvData(csvReader);
+                                r = new CsvData(csvReader, _configuration);
                             }
                             catch (Exception)
                             {

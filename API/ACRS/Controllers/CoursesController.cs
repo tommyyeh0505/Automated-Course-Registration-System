@@ -99,15 +99,24 @@ namespace ACRS.Controllers
         public async Task<ActionResult<Course>> DeleteCourse(string id)
         {
             var course = await _context.Courses.FindAsync(id);
+
             if (course == null)
             {
                 return NotFound();
             }
+
+            if ((await _context.Grades.Where(g => g.CourseId == course.CourseId).ToListAsync()).Count != 0)
+            {
+                return BadRequest("Courses with grades cannot be deleted");
+            }
+
             var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == id);
+
             foreach(Prerequisite pr in c.Prerequisites)
             {
                 _context.Prerequisites.Remove(pr);
             }
+
             await _context.SaveChangesAsync();
 
             _context.Courses.Remove(course);

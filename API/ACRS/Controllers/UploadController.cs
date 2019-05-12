@@ -140,16 +140,6 @@ namespace ACRS.Controllers
                         Row = i + 2
                     });
                 }
-
-                //if (!_context.Courses.Any(c => c.CourseId == r.CourseId))
-                //{
-                //    errors.Add(new UploadError
-                //    {
-                //        FileName = fileName,
-                //        Reason = "Course does not exist",
-                //        Row = i + 2
-                //    });
-                //}
             }
 
             return errors;
@@ -160,6 +150,8 @@ namespace ACRS.Controllers
             return strings.Any(s => string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s));
         }
 
+        // MUST save context changes after any add delete, or anything, else EntityFramework will stack all requests
+        // since we don't have a composite key
         private void UpdateDatabase(List<CsvData> data)
         {
             foreach (CsvData r in data)
@@ -169,12 +161,13 @@ namespace ACRS.Controllers
                     if (_context.Students.Find(r.StudentId) == null)
                     {
                         _context.Students.Add(CreateStudent(r.StudentName, r.StudentId));
+                        _context.SaveChanges();
                     }
 
                     Course course = _context.Courses.Find(r.CourseId);
                     Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade, r.RawGrade);
-                    Grade dbGrade = _context.Grades.Where(g => g.CourseId == r.CourseId &&
-                                                               g.StudentId == r.StudentId).SingleOrDefault();
+                    Grade dbGrade = _context.Grades.Where(g => g.StudentId == r.StudentId &&
+                                                                      g.CourseId == r.CourseId).SingleOrDefault();
 
                     if (course == null)
                     {
@@ -185,6 +178,7 @@ namespace ACRS.Controllers
                         };
 
                         _context.Add(course);
+                        _context.SaveChanges();
                     }
 
                     if (dbGrade != null)
@@ -196,36 +190,41 @@ namespace ACRS.Controllers
                         {
                             uploadedGrade.Attempts = dbGrade.Attempts;
 
-                            if (uploadedGrade.FinalGrade < 65)
+                            if (uploadedGrade.FinalGrade < course.PassingGrade)
                             {
                                 uploadedGrade.Attempts++;
                             }
 
                             _context.Remove(dbGrade);
+
+                            // Must save changes first before attempting to add, as EntityFramework will insert first!
+                            _context.SaveChanges();
+
                             _context.Add(uploadedGrade);
+                            _context.SaveChanges();
                         }
                         else if (uploadedFinalGrade < dbFinalGrade)
                         {
-                            // Do nothing, keep the higher
+                            // Keep higher grade
                         }
                         else
                         {
-                            // Same grade, what do we want to do?
+                            // Same grade, do nothing
                         }
                     }
                     else
                     {
-                        if (uploadedGrade.FinalGrade < 65)
+                        if (uploadedGrade.FinalGrade < course.PassingGrade)
                         {
                             uploadedGrade.Attempts++;
                         }
 
                         _context.Add(uploadedGrade);
+                        _context.SaveChanges();
                     }
 
                 }
             }
-            _context.SaveChanges();
         }
 
         private Student CreateStudent(string name, string id)

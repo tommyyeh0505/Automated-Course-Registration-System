@@ -2,6 +2,7 @@
     <div>
         <h2>Files</h2>
     </div>
+
     <div class="upload-box mat-elevation-z8 scrollbar-style" appDropFile (fileDropEvent)="onFileDrop($event)">
         <div class="upload-box-prompt-container" *ngIf="files.length === 0">
             <p class="upload-prompt">Drop your files here!</p>
@@ -14,7 +15,8 @@
                             <mat-card-content style="padding: 0; margin: 0">
                                 <div class="file-container">
                                     <p class="file-name">{{file.name}}</p>
-                                    <button class="file-remove-btn" matTooltip="View Student" mat-icon-button (click)="removeFile(i)">
+                                    <button [disabled]="isUploading" class="file-remove-btn" matTooltip="View Student"
+                                        mat-icon-button (click)="removeFile(i)">
                                         <mat-icon>delete</mat-icon>
                                     </button>
                                 </div>
@@ -24,11 +26,20 @@
                 </mat-list>
             </div>
         </div>
+        <div class="uploading-darken" *ngIf="isUploading"></div>
+        <div class="upload-progress-spinner-container" *ngIf="isUploading && progress < 100">
+            <mat-progress-spinner mode="determinate" [value]="progress"></mat-progress-spinner>
+            <p style="padding-left: 20px">Uploading&nbsp;{{progress}}%</p>
+        </div>
+        <div class="upload-progress-spinner-container" *ngIf="isUploading && progress === 100">
+            <mat-spinner></mat-spinner>
+            <p style="padding-left: 20px">Processing...</p>
+        </div>
     </div>
 
     <button class="pulse waves-effect waves-light" style="width: 100%" (click)="upload()" [disabled]="isUploading"
-        mat-raised-button color="accent">Upload&nbsp;<span
-            *ngIf="isUploading && progress < 100">{{progress}}%</span></button>
+        mat-raised-button color="accent">Upload</button>
+
 
     <div>
         <h2>Errors</h2>

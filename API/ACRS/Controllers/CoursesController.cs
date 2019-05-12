@@ -191,7 +191,7 @@ namespace ACRS.Controllers
             //Loop through all grades
             foreach (Grade g in grades)
             {
-                if (g.FinalGrade > targetCourse.PassingGrade)
+                if (g.FinalGrade >= targetCourse.PassingGrade)
                 {
                     studentMap[g.StudentId] = studentMap[g.StudentId] + 1;
                 }
@@ -209,5 +209,19 @@ namespace ACRS.Controllers
 
             return ineligibleStudents;
         }
+
+        public async Task<List<List<StudentEligability>>> GetEligableStudentsAllCourses()
+        {
+            List<List<StudentEligability>> lists = new List<List<StudentEligability>>();
+            List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
+
+            foreach(Course c in courses)
+            {
+                List<StudentEligability> l = await GetEligableCourseByCourseIdAsync(c.CourseId);
+                lists.Add(l);
+            }
+            return lists;
+        }
+
     }
 }

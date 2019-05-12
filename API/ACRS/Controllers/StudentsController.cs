@@ -129,13 +129,9 @@ namespace ACRS.Controllers
         {
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
             List<Grade> grades = await _context.Grades.Where(g => g.StudentId == StudentId).ToListAsync();
-            //List<Student> students = await _context.Students.ToListAsync();
             var CourseMap = new Dictionary<string, double>();
             List<StudentEligibility> eligibleStudents = new List<StudentEligibility>();
             var CoursePassingGradeMap = new Dictionary<string, int>();
-
-
-            //Course targetCourse = courses.FirstOrDefault(o => o.CourseId == CourseID);
             foreach (Grade g in grades)
             {
                 if (CourseMap.ContainsKey(g.CourseId) ==true)
@@ -150,7 +146,6 @@ namespace ACRS.Controllers
                     CourseMap[g.CourseId] = g.FinalGrade;
                 }
             }
-
             foreach (Course c in courses)
             {
                 int prerequisites = 0;
@@ -183,17 +178,15 @@ namespace ACRS.Controllers
                             eligibleStudents.Add(new StudentEligibility(StudentId, c.CourseId, false));
                             break;
                         }
-
                     }
-
                     if (count >= prerequisites)
                     {
                         eligibleStudents.Add(new StudentEligibility(StudentId, c.CourseId, true));
                     }
                 }
             }
-
             return eligibleStudents;
+
     }
 }
 

@@ -3,7 +3,10 @@
         <h2>Files</h2>
     </div>
 
-    <div class="upload-box mat-elevation-z8 scrollbar-style" appDropFile (fileDropEvent)="onFileDrop($event)">
+    <div [ngClass]="{'upload-box':true,
+                     'mat-elevation-z8':true,
+                     'scrollbar-style':!isUploading,
+                     'no-scroll':isUploading}" appDropFile (fileDropEvent)="onFileDrop($event)">
         <div class="upload-box-prompt-container" *ngIf="files.length === 0">
             <p class="upload-prompt">Drop your files here!</p>
         </div>
@@ -15,7 +18,7 @@
                             <mat-card-content style="padding: 0; margin: 0">
                                 <div class="file-container">
                                     <p class="file-name">{{file.name}}</p>
-                                    <button [disabled]="isUploading" class="file-remove-btn" matTooltip="View Student"
+                                    <button [disabled]="isUploading" class="file-remove-btn" matTooltip="Remove File"
                                         mat-icon-button (click)="removeFile(i)">
                                         <mat-icon>delete</mat-icon>
                                     </button>

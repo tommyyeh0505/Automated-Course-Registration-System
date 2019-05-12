@@ -35,8 +35,8 @@ export class AddCourseComponent implements OnInit {
     public courses: Course[] = [];
     public prereqList: string[] = [];
     public validCourseId: boolean = true;
+    public notDuplicatedPreq: boolean = true;
     public validPreq: boolean = true;
-
 
     public selectedPreq: string;
     constructor(
@@ -82,12 +82,16 @@ export class AddCourseComponent implements OnInit {
         if (this.selectedPreq) {
             if (this.prereqList.indexOf(this.selectedPreq) === -1) {
                 this.prereqList.push(this.selectedPreq);
-                this.validPreq = true;
+                this.notDuplicatedPreq = true;
             }
             else {
-                this.validPreq = false;
+                this.notDuplicatedPreq = false;
             }
         }
+        else {
+            this.notDuplicatedPreq = true;
+        }
+        this.selectedPreq = '';
         this.courseAutoComplete.reset();
     }
 
@@ -95,6 +99,7 @@ export class AddCourseComponent implements OnInit {
         let index = this.prereqList.indexOf(courseId);
         this.prereqList.splice(index, 1);
     }
+
 
     public submit() {
         let courseId = this.addCourseForm.value.courseId;

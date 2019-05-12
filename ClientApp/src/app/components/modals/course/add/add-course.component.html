@@ -35,7 +35,7 @@
           <input matInput placeholder="Choose Prerequisite" aria-label="Choose Prerequisite" [matAutocomplete]="auto"
             [formControl]="courseAutoComplete" style="width:80%;">
 
-          <mat-autocomplete #auto="matAutocomplete" style="width:80%;"
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" style="width:80%;"
             (optionSelected)='selectPreq($event.option.value)'>
             <mat-option *ngFor="let course of filteredCourses | async" [value]="course.courseId">
               <span>{{course.courseId}}</span> |
@@ -53,7 +53,8 @@
           Prerequisite</button>
 
         <p>
-          <span *ngIf="!this.validPreq" style="color:red">Duplicated course in the Prequisite list</span>
+          <span *ngIf="!this.notDuplicatedPreq" style="color:red">Duplicated course in the Prequisite list</span>
+          <span *ngIf="!this.validPreq" style="color:red">Please select a valid course ID</span>
           <mat-list role="list">
             <mat-list-item *ngFor="let course of prereqList" role="listitem"><span matLine>{{course}}</span>
               <button mat-icon-button color="warn" (click)="removePreq(course)">

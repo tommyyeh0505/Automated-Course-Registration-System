@@ -1,15 +1,82 @@
-.filedrop {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    text-align: center;
-    display:table;
+.upload-container {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
 }
 
-.big{
-    font-size: 20pt;
+.upload-file-remove-button {
+    padding: 0;
+    margin: 0;
+    position: absolute; right: 0;
+}
+
+.file-container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.file-remove-btn {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    color: #ff6b6b;
+}
+
+.file-name {
+    margin: 10px;
+    display: inline;
+}
+
+.upload-box {
+    margin-top:15px;
+    height: 400px;
+    margin-bottom: 15px;
+    overflow-y: scroll;
+}
+
+.upload-box-prompt-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+}
+
+.upload-prompt {
+    font-size: 32pt;
     font-weight: bold;
-    font-size: 56pt;
-    display:table-cell;
-    vertical-align:middle;
+    text-align: center;
+}
+
+.error-box {
+    margin-top:15px;
+    height: 400px;
+    margin-bottom: 15px;
+    overflow-y: scroll;
+    padding: 20px;
+    padding-top: 10px;
+}
+
+.scrollbar-style::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: rgb(37, 37, 37);
+}
+
+.scrollbar-style::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #30303000;
+}
+
+.scrollbar-style::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: rgb(59, 59, 59);
 }

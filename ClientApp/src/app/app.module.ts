@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule, MatDialogModule, MatSnackBarModule, MatSelectModule, MatAutocompleteModule, MatTooltipModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatProgressBarModule, MatDialogModule, MatSnackBarModule, MatSelectModule, MatAutocompleteModule, MatTooltipModule, MatExpansionModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -28,6 +28,11 @@ import { StudentDetailComponent } from './components/student-detail/student-deta
 import { WaitlistComponent } from './components/waitlist/waitlist.component';
 import { AddGradeComponent } from './components/modals/grade/add/add-grade.component';
 import { EditGradeComponent } from './components/modals/grade/edit/edit-grade.component';
+import { AddStudentGradeComponent } from './components/modals/student-grade/add/add-student-grade.component';
+import { EditStudentGradeComponent } from './components/modals/student-grade/edit/edit-student-grade.component';
+import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-detail.component';
+import { AddWaitlistComponent } from './components/modals/waitlist/add/add-waitlist.component';
+import { MessageComponent } from './components/message/message.component';
 
 @NgModule({
   declarations: [
@@ -50,9 +55,16 @@ import { EditGradeComponent } from './components/modals/grade/edit/edit-grade.co
     StudentDetailComponent,
     WaitlistComponent,
     AddGradeComponent,
-    EditGradeComponent
+    EditGradeComponent,
+    AddStudentGradeComponent,
+    EditStudentGradeComponent,
+    WaitlistDetailComponent,
+    AddWaitlistComponent,
+    MessageComponent
+
   ],
   imports: [
+    MatExpansionModule,
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -91,7 +103,10 @@ import { EditGradeComponent } from './components/modals/grade/edit/edit-grade.co
     AddStudentComponent,
     EditStudentComponent,
     AddGradeComponent,
-    EditGradeComponent
+    EditGradeComponent,
+    AddStudentGradeComponent,
+    EditStudentGradeComponent,
+    AddWaitlistComponent
   ]
 })
 export class AppModule { }

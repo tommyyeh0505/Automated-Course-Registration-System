@@ -53,8 +53,6 @@ export class DashboardComponent {
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private service: DashboardService) {
   }
   async ngOnInit() {
-
-
     await this.getStudents();
     await this.getCourses();
     await this.getWaitlists();

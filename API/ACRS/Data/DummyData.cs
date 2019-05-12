@@ -35,16 +35,15 @@ namespace ACRS.Data
                 context.SaveChanges();
 
                 var waitlists = GetWaitLists().ToArray();
-                context.WaitLists.AddRange(waitlists);
+                context.Waitlists.AddRange(waitlists);
                 context.SaveChanges();
 
-                const string roleAdmin = "Admin";
                 const string defaultPassword = "P@$$w0rd";
 
                 // Adding role to database
-                if (await roleManager.FindByNameAsync(roleAdmin) == null)
+                if (await roleManager.FindByNameAsync(UserRole.Admin) == null)
                 {
-                    await roleManager.CreateAsync(new IdentityRole(roleAdmin));
+                    await roleManager.CreateAsync(new IdentityRole(UserRole.Admin));
                 }
 
                 // Add user with username 'admin' and password 'P@$$w0rd' to database
@@ -60,13 +59,11 @@ namespace ACRS.Data
                     if (result.Succeeded)
                     {
                         await userManager.AddPasswordAsync(user, defaultPassword);
-                        await userManager.AddToRoleAsync(user, roleAdmin);
+                        await userManager.AddToRoleAsync(user, UserRole.Admin);
                     }
                 }
             }
         }
-
-
 
         private static List<Course> GetCourses()
         {
@@ -92,37 +89,37 @@ namespace ACRS.Data
             };
         }
 
-        private static List<WaitList> GetWaitLists()
+        private static List<Waitlist> GetWaitLists()
         {
-            return new List<WaitList>()
+            return new List<Waitlist>()
             {
-                new WaitList()
+                new Waitlist()
                 {
-                    WaitListId = 1,
+                    WaitlistId = 1,
                     StudentId = "A00000001",
                     CourseId = "COMMP4900",
                     Term = "2019W",
                     CRN = "61412321"
                 },
-                 new WaitList()
+                 new Waitlist()
                 {
-                    WaitListId = 2,
+                    WaitlistId = 2,
                     StudentId = "A00000002",
                     CourseId = "COMMP4900",
                     Term = "2019S",
                     CRN = "61412321"
                 },
-                 new WaitList()
+                 new Waitlist()
                 {
-                    WaitListId = 3,
+                    WaitlistId = 3,
                     StudentId = "A00000003",
                     CourseId = "COMMP4900",
                     Term = "2019S",
                     CRN = "61412321"
                 },
-                 new WaitList()
+                 new Waitlist()
                 {
-                    WaitListId = 4,
+                    WaitlistId = 4,
                     StudentId = "A00000004",
                     CourseId = "COMMP4900",
                     Term = "2019S",

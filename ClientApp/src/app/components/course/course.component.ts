@@ -39,11 +39,7 @@ export class CourseComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog
   ) {
-    this.getCourses();
-    // Create 100 users
 
-
-    // Assign the data to the data source for the table to render
 
 
   }
@@ -142,9 +138,9 @@ export class CourseComponent implements OnInit {
     this.courseService.deleteCourse(course);
     let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
     this.dataSource.data.splice(itemIndex, 1);
+    this.courses = this.dataSource.data;
     this.initTable(this.dataSource.data);
   }
-
 
 
 

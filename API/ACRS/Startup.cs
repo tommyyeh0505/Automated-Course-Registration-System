@@ -63,19 +63,31 @@ namespace ACRS
                        .AllowAnyHeader();
             }));
 
-            var host = Configuration["MySQL:Host"];
-            var port = Configuration["MySQL:Port"];
-            var userId = Configuration["MySQL:UserId"];
-            var password = Configuration["MySQL:Password"];
-            var db = Configuration["MySQL:Database"];
+            string databaseType = Configuration["DatabaseType"] ?? "sqlite";
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            switch (databaseType)
             {
-                options.UseMySql($"server={host}; userid={userId}; pwd={password};"
-                    + $"port={port}; database={db}");
-            });
+                case "mysql":
+                    var host = Configuration["MySQL:Host"];
+                    var port = Configuration["MySQL:Port"];
+                    var userId = Configuration["MySQL:UserId"];
+                    var password = Configuration["MySQL:Password"];
+                    var db = Configuration["MySQL:Database"];
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                    {
+                        options.UseMySql($"server={host}; userid={userId}; pwd={password};"
+                            + $"port={port}; database={db}");
+                    });
+                    break;
+                case "sqlite":
+                default:
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlite(Configuration["SQLite:ConnectionString"]));
+                    break;
+            }
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddControllersAsServices();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)

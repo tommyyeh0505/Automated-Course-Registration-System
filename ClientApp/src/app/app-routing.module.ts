@@ -13,6 +13,7 @@ import { StudentComponent } from './components/student/student.component';
 import { ClassDetailComponent } from './components/class-detail/class-detail.component';
 import { StudentDetailComponent } from './components/student-detail/student-detail.component';
 import { WaitlistComponent } from './components/waitlist/waitlist.component';
+import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-detail.component';
 
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
@@ -24,12 +25,12 @@ const routes: Routes = [
       { path: 'student', component: StudentComponent },
       { path: 'student/:id', component: StudentDetailComponent },
 
-
       { path: 'class', component: ClassComponent },
       { path: 'class/:id', component: ClassDetailComponent },
       { path: 'course', component: CourseComponent },
       { path: 'course/:id', component: CourseDetailComponent },
       { path: 'waitlist', component: WaitlistComponent },
+      { path: 'waitlist/:id', component: WaitlistDetailComponent },
       { path: 'upload', component: UploadComponent },
     ]
   },

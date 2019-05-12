@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace ACRS.Models
 {
-    public class WaitList
+    public class Waitlist
     {
-
         [Required]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int WaitListId { get; set; }
+        public int WaitlistId { get; set; }
 
         [Required]
         public string StudentId { get; set; }

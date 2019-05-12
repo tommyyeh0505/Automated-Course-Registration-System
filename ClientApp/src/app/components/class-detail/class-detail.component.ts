@@ -48,12 +48,14 @@ export class ClassDetailComponent implements OnInit {
       this.term = id[2];
       this.course.courseId = this.courseId;
       this.getCourses();
+
       this.getGradesByKey(this.courseId, this.crn, this.term);
 
     })
   }
 
   initTable(data) {
+
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -68,7 +70,9 @@ export class ClassDetailComponent implements OnInit {
     this.gradeService.getGradesByKey(courseId, crn, term).subscribe((data: Grade[]) => {
       this.getCourseByCourseId(courseId);
       this.grades = data;
+
       this.initTable(data);
+
     }, err => {
       this.router.navigate(['/error']);
     })
@@ -144,7 +148,7 @@ export class ClassDetailComponent implements OnInit {
   getCourses() {
     this.courseService.getCourses().subscribe((data: Course[]) => {
       this.courses = data;
-      this.initTable(data);
+
     });
   }
 

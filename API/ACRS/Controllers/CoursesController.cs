@@ -33,9 +33,9 @@ namespace ACRS.Controllers
 
         // GET: api/Courses
         [HttpGet("{id}/eligible")]
-        public async Task<ActionResult<IEnumerable<StudentEligibility>>> GetEligableCourseByCourseId(string id)
+        public async Task<ActionResult<IEnumerable<StudentEligibility>>> GetEligibleCourseByCourseId(string id)
         {
-            return await GetEligableCourseByCourseIdAsync(id);
+            return await GetEligibleCourseByCourseIdAsync(id);
 
         }
 
@@ -43,7 +43,7 @@ namespace ACRS.Controllers
         [HttpGet("{id}/ineligible")]
         public async Task<ActionResult<IEnumerable<StudentEligibility>>> GetCourseInEligabilityByCourseId(string id)
         {
-            return await GetInEligableStudentByCourseIdAsync(id);
+            return await GetInEligibleStudentByCourseIdAsync(id);
 
         }
 
@@ -124,7 +124,7 @@ namespace ACRS.Controllers
 
 
 
-        public async Task<List<StudentEligibility>> GetEligableCourseByCourseIdAsync(string courseId)
+        public async Task<List<StudentEligibility>> GetEligibleCourseByCourseIdAsync(string courseId)
         {
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
             List<Grade> grades = await _context.Grades.ToListAsync();
@@ -167,7 +167,7 @@ namespace ACRS.Controllers
             return eligibleStudents;
         }
 
-        public async Task<List<StudentEligibility>> GetInEligableStudentByCourseIdAsync(string courseId)
+        public async Task<List<StudentEligibility>> GetInEligibleStudentByCourseIdAsync(string courseId)
         {
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
             List<Grade> grades = await _context.Grades.ToListAsync();
@@ -210,14 +210,14 @@ namespace ACRS.Controllers
             return ineligibleStudents;
         }
 
-        public async Task<List<List<StudentEligability>>> GetEligableStudentsAllCourses()
+        public async Task<List<List<StudentEligibility>>> GetEligibleStudentsAllCourses()
         {
-            List<List<StudentEligability>> lists = new List<List<StudentEligability>>();
+            List<List<StudentEligibility>> lists = new List<List<StudentEligibility>>();
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
 
             foreach(Course c in courses)
             {
-                List<StudentEligability> l = await GetEligableCourseByCourseIdAsync(c.CourseId);
+                List<StudentEligibility> l = await GetEligibleCourseByCourseIdAsync(c.CourseId);
                 lists.Add(l);
             }
             return lists;

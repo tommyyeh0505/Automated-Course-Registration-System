@@ -1,17 +1,48 @@
-<div>
-    <h1 class="mat-h1">Upload</h1>
-    <div *ngFor="let file of files">
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>{{file.name}}</mat-card-title>
-            </mat-card-header>
-        </mat-card>
+<div class="upload-container">
+    <div>
+        <h2>Files</h2>
+    </div>
+    <div class="upload-box mat-elevation-z8 scrollbar-style" appDropFile (fileDropEvent)="onFileDrop($event)">
+        <div class="upload-box-prompt-container" *ngIf="files.length === 0">
+            <p class="upload-prompt">Drop your files here!</p>
+        </div>
+        <div *ngIf="files.length > 0">
+            <div *ngFor="let file of files">
+                <mat-list>
+                    <mat-list-item>
+                        <mat-card style="width: 100%">
+                            <mat-card-content>{{file.name}}</mat-card-content>
+                        </mat-card>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
     </div>
 
-    <button class="pulse waves-effect waves-light" (click)="upload()" [disabled]="isUploading" mat-raised-button
-        color="accent">Upload&nbsp;<span *ngIf="isUploading && progress < 100">{{progress}}%</span></button>
-</div>
+    <button class="pulse waves-effect waves-light" style="width: 100%" (click)="upload()" [disabled]="isUploading"
+        mat-raised-button color="accent">Upload&nbsp;<span
+            *ngIf="isUploading && progress < 100">{{progress}}%</span></button>
 
-<div class="filedrop" appDropFile (fileDropEvent)="onFileDrop($event)">
-    <span class="big">Drop your files here!</span>
+    <div>
+        <h2>Errors</h2>
+    </div>
+    <div class="error-box mat-elevation-z8 scrollbar-style">
+        <div *ngFor="let mapFile of errors | keyvalue">
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            File Name: {{mapFile.key}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngFor="let reasonMap of mapFile.value | keyvalue">
+                        <h3>Reason: {{reasonMap.key}}</h3>
+                        <p>Row Numbers:&nbsp;<span *ngFor="let rowNumber of arrayGetN(100, reasonMap.value)">
+                                {{rowNumber}},&nbsp;
+                            </span><span *ngIf="reasonMap.value.length > 100">......, {{reasonMap.value[reasonMap.value.length - 1]}}</span></p>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
 </div>

@@ -56,7 +56,7 @@ export class AddCourseComponent implements OnInit {
     private createForm() {
         this.addCourseForm = this.fb.group({
             courseId: new FormControl(this.data.course.courseId, [Validators.required]),
-            passingGrade: new FormControl(65, [Validators.required]),
+            passingGrade: new FormControl(65, [Validators.required, Validators.min(0), Validators.max(100)]),
         });
         this.filteredCourses = this.courseAutoComplete.valueChanges
             .pipe(

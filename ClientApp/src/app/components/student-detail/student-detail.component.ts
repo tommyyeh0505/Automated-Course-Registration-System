@@ -9,6 +9,7 @@ import { GradeService } from 'src/app/services/grade.service';
 import { AddStudentGradeComponent } from '../modals/student-grade/add/add-student-grade.component';
 import { first } from 'rxjs/operators';
 import { EditStudentGradeComponent } from '../modals/student-grade/edit/edit-student-grade.component';
+import { AddStudentComponent } from '../modals/student/add/add-student.component';
 
 
 @Component({
@@ -18,9 +19,9 @@ import { EditStudentGradeComponent } from '../modals/student-grade/edit/edit-stu
 })
 export class StudentDetailComponent implements OnInit {
   student: Student = new Student();
+  students: Student[];
   grades: Grade[];
   studentGrades: Grade[];
-
   newGrade: Grade;
   editGrade: Grade;
   displayedColumns: string[] = ['courseId', 'crn', 'term', 'finalGrade', 'rawGrade', 'attempts', 'edit', 'delete'];
@@ -83,6 +84,7 @@ export class StudentDetailComponent implements OnInit {
       this.editGrade = new Grade();
     });
   }
+
 
 
   initTable(data) {

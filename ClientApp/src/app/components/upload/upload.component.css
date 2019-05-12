@@ -4,11 +4,35 @@
     margin-bottom: 15px;
 }
 
+.upload-file-remove-button {
+    padding: 0;
+    margin: 0;
+    position: absolute; right: 0;
+}
+
+.file-container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.file-remove-btn {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    color: #ff6b6b;
+}
+
+.file-name {
+    margin: 10px;
+    display: inline;
+}
+
 .upload-box {
     margin-top:15px;
     height: 400px;
     margin-bottom: 15px;
-    /* border: 1px dashed white; */
     overflow-y: scroll;
 }
 

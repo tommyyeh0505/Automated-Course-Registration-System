@@ -35,6 +35,8 @@ export class UploadComponent implements OnInit {
   }
 
   upload() {
+    this.errors.clear();
+    
     if (this.files.length <= 0) {
       this.snackBar.open("Please select files to upload", "Error" , {
         duration: 4000,
@@ -86,5 +88,9 @@ export class UploadComponent implements OnInit {
       }
 
       return arr;
+    }
+
+    removeFile(index) {
+      this.files.splice(index, 1);
     }
 }

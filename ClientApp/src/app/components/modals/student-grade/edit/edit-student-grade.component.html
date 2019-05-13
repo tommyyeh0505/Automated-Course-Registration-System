@@ -49,15 +49,15 @@
           <mat-label>Student Grade</mat-label>
           <input autofocus type="number" min="0" max="100" matInput placeholder="Student Grade"
             formControlName="finalGrade" required>
-          <mat-error>Please enter a student grade</mat-error>
+          <mat-error>Grade must be a number from 0 to 100</mat-error>
 
         </mat-form-field>
 
         <mat-form-field color="accent">
           <mat-label>Student Attempts</mat-label>
-          <input type="number" min="0" max="100" matInput placeholder="Student Attempts" formControlName="attempts"
+          <input type="number" min="0" max="3" matInput placeholder="Student Attempts" formControlName="attempts"
             required>
-          <mat-error>Please enter an attempt number</mat-error>
+          <mat-error>Attempts must be a number from 0 to 3</mat-error>
 
         </mat-form-field>
 

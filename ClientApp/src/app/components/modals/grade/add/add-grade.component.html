@@ -36,11 +36,15 @@
           <mat-label>Student Grade</mat-label>
           <input type="number" min="0" max="100" matInput placeholder="Student Grade" formControlName="finalGrade"
             required>
-          <mat-error>Please enter a student grade</mat-error>
+          <mat-error>Grade must a number from 0 to 100</mat-error>
 
         </mat-form-field>
 
 
+        <mat-form-field color="accent">
+          <mat-label>Student Raw Grade</mat-label>
+          <input type="text" matInput placeholder="Student Raw Grade" formControlName="rawGrade">
+        </mat-form-field>
 
 
 

@@ -57,8 +57,8 @@ export class AddGradeComponent implements OnInit {
             crn: new FormControl({ value: this.data.grade.crn, disabled: true }),
             term: new FormControl({ value: this.data.grade.term, disabled: true }),
             studentId: new FormControl(this.data.grade.studentId, [Validators.required]),
-            finalGrade: new FormControl(this.data.grade.finalGrade, [Validators.required]),
-
+            finalGrade: new FormControl(this.data.grade.finalGrade, [Validators.required, Validators.min(0), Validators.max(100)]),
+            rawGrade: new FormControl(this.data.grade.rawGrade)
         });
         this.grades = this.data.grades;
 
@@ -76,15 +76,15 @@ export class AddGradeComponent implements OnInit {
     public submit() {
         let studentId = this.addGradeForm.value.studentId;
         let finalGrade = this.addGradeForm.value.finalGrade;
-
+        let rawGrade = this.addGradeForm.value.rawGrade;
         this.data.grade.studentId = studentId;
         this.data.grade.finalGrade = finalGrade;
-
+        this.data.grade.rawGrade = rawGrade;
 
     }
 
 
- 
+
 
 }
 

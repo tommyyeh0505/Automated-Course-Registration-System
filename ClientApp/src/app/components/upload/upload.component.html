@@ -6,7 +6,7 @@
     <div [ngClass]="{'upload-box':true,
                      'mat-elevation-z8':true,
                      'scrollbar-style':!isUploading,
-                     'no-scroll':isUploading}" appDropFile (fileDropEvent)="onFileDrop($event)">
+                     'no-scroll':isUploading}" appDropFile (fileDropEvent)="onFileDrop($event)" (dragOverEvent)="onDragOver()" (dragLeaveEvent)="onDragLeave()">
         <div class="upload-box-prompt-container" *ngIf="files.length === 0">
             <p class="upload-prompt">Drop your files here!</p>
         </div>

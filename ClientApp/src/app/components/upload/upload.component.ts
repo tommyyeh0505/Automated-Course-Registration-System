@@ -19,6 +19,7 @@ export interface PeriodicElement {
 export class UploadComponent implements OnInit {
   displayedColumns: string[] = ['position'];
 
+  public isOverDropArea: boolean = false;
   public progress: number = 0;
   public isUploading: boolean = false;
   public files: File[] = [];
@@ -92,5 +93,15 @@ export class UploadComponent implements OnInit {
 
     removeFile(index) {
       this.files.splice(index, 1);
+    }
+
+    onDragOver() {
+      console.log('over drop area');
+      this.isOverDropArea = true;
+    }
+
+    onDragLeave() {
+      this.isOverDropArea = false;
+      console.log('leave drop area');
     }
 }

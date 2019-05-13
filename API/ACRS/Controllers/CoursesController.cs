@@ -219,14 +219,14 @@ namespace ACRS.Controllers
             return ineligibleStudents;
         }
 
-        public async Task<List<List<StudentEligability>>> GetEligableStudentsAllCourses()
+        public async Task<List<List<StudentEligibility>>> GetEligableStudentsAllCourses()
         {
-            List<List<StudentEligability>> lists = new List<List<StudentEligability>>();
+            List<List<StudentEligibility>> lists = new List<List<StudentEligibility>>();
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
 
             foreach(Course c in courses)
             {
-                List<StudentEligability> l = await GetEligableCourseByCourseIdAsync(c.CourseId);
+                List<StudentEligibility> l = await GetEligableCourseByCourseIdAsync(c.CourseId);
                 lists.Add(l);
             }
             return lists;

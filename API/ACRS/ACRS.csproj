@@ -31,8 +31,11 @@
    </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Compile Remove="Migrations\20190509163856_9maydb.cs" />
+    <Compile Remove="Migrations\20190513001144_12may2db.cs" />
+    <Compile Remove="Migrations\20190513001144_12may2db.Designer.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\20190513165328_13may2db.cs" />
+    <Compile Remove="Migrations\20190513165328_13may2db.Designer.cs" />
   </ItemGroup>
-
-
 </Project>

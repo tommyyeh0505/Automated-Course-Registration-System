@@ -19,6 +19,12 @@
   }
   
   mat-icon{
-    margin-right:5px;
+    margin-right:8px;
+    font-size: 28px;
   }
+
+  a{
+    font-size:25px;
+  }
+
 

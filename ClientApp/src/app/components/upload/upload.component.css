@@ -38,6 +38,9 @@
 }
 
 .uploading-darken {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
     width: 100%;
     height: 100%;
     position: sticky;
@@ -69,18 +72,6 @@
     overflow-y: scroll;
     padding: 20px;
     padding-top: 10px;
-}
-
-.upload-progress-spinner-container {
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    flex-direction: column;
 }
 
 .no-scroll {

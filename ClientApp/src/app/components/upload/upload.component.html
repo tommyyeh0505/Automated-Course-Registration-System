@@ -9,7 +9,12 @@
                      'no-scroll' : isUploading}" appDropFile (fileDropEvent)="onFileDrop($event)"
     (dragOverEvent)="onDragOver()" (dragLeaveEvent)="onDragLeave()">
     <div class="upload-box-prompt-container" *ngIf="files.length === 0">
-      <p class="upload-prompt">Drop your files here!</p>
+      <h3 class="upload-prompt">Drag and drop files here</h3>
+      <p style="margin-top: 5px; margin-bottom: 20px;">or</p>
+      <div>
+        <button mat-raised-button color="primary" (click)="browseFiles()">Browse Files</button>
+        <input id="file-input" type="file" multiple style="display: none" (change)="inputOnFileChange($event)">
+      </div>
     </div>
     <div *ngIf="files.length > 0">
       <div *ngFor="let file of files; let i = index" [attr.data-index]="i">
@@ -44,7 +49,6 @@
 
   <button class="pulse waves-effect waves-light" style="width: 100%" (click)="upload()" [disabled]="isUploading"
     mat-raised-button color="accent">Upload</button>
-
 
   <div>
     <h2>Errors</h2>

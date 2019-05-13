@@ -57,12 +57,13 @@
     display: flex;
     align-items: center; 
     justify-content: center;
+    flex-direction: column;
 }
 
 .upload-prompt {
-    font-size: 32pt;
-    font-weight: bold;
+    font-size: 30pt;
     text-align: center;
+    margin: 20px;
 }
 
 .error-box {

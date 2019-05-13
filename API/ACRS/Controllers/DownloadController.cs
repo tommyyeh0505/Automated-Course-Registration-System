@@ -35,7 +35,7 @@ namespace ACRS.Controllers
 
             foreach (Course course in courses)
             {
-                allEligabilities.Add(await _coursesController.GetEligibleCourseByCourseIdAsync(course.CourseId));
+                allEligabilities.Add(await _coursesController.GetEligableCourseByCourseIdAsync(course.CourseId));
             }
 
             List<string> headers = new List<string>
@@ -50,13 +50,13 @@ namespace ACRS.Controllers
 
             foreach (Waitlist entry in waitlists)
             {
-                bool isEligible = false;
+                bool isEligable = false;
 
                 foreach (List<StudentEligibility> eligibilities in allEligabilities)
                 {
-                    isEligible = eligibilities.Any(s => s.CourseId == entry.CourseId && s.StudentId == entry.StudentId);
+                    isEligable = eligibilities.Any(s => s.CourseId == entry.CourseId && s.StudentId == entry.StudentId);
 
-                    if (isEligible)
+                    if (isEligable)
                     {
                         break;
                     }

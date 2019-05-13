@@ -91,6 +91,7 @@ export class EditCourseComponent implements OnInit {
                 this.validPreq = false;
             }
         }
+        this.selectedPreq = '';
         this.courseAutoComplete.reset();
     }
 

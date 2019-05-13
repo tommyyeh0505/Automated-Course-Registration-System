@@ -64,7 +64,7 @@ export class AddStudentGradeComponent implements OnInit {
             crn: new FormControl(this.data.grade.crn, [Validators.required]),
             term: new FormControl(this.data.grade.term, [Validators.required]),
             studentId: new FormControl({ value: this.data.grade.studentId, disabled: true }),
-            finalGrade: new FormControl(this.data.grade.finalGrade, [Validators.required]),
+            finalGrade: new FormControl(this.data.grade.finalGrade, [Validators.required, Validators.min(0), Validators.max(100)]),
         });
 
         this.courseService.getCourses().pipe(first()).subscribe((data: Course[]) => {

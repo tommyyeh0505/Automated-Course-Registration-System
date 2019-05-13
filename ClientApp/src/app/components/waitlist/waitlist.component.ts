@@ -32,7 +32,7 @@ export class WaitlistComponent implements OnInit {
   displayedColumns: string[] = ['courseId', 'crn', 'term', 'view'];
   dataSource: MatTableDataSource<Class>;
   classes: Class[] = [];
-  newWailist: Waitlist;
+  newWaitlist: Waitlist;
   waitlists: Waitlist[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -98,24 +98,24 @@ export class WaitlistComponent implements OnInit {
   }
 
   openAddDialog() {
-    this.newWailist = new Waitlist();
+    this.newWaitlist = new Waitlist();
 
     let dialogRef = this.dialog.open(AddWaitlistComponent, {
       width: '65vw',
       minWidth: '300px',
       maxWidth: '600px',
       data: {
-        waitlist: this.newWailist,
+        waitlist: this.newWaitlist,
         waitlists: this.waitlists,
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getEligibleByCourseId(result.waitlist.courseId, result.waitlist);
+        this.checkWaitlist(result.waitlist.courseId, result.waitlist);
 
       }
-      this.newWailist = new Waitlist();
+      this.newWaitlist = new Waitlist();
     });
   }
 
@@ -132,7 +132,7 @@ export class WaitlistComponent implements OnInit {
     })
   }
 
-  getEligibleByCourseId(courseId: string, waitlist: Waitlist) {
+  checkWaitlist(courseId: string, waitlist: Waitlist) {
     this.courseService.getEligibleByCourseId(courseId).subscribe((data: Eligibility[]) => {
 
       let studentId = waitlist.studentId;

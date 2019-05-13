@@ -33,6 +33,7 @@ import { EditStudentGradeComponent } from './components/modals/student-grade/edi
 import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-detail.component';
 import { AddWaitlistComponent } from './components/modals/waitlist/add/add-waitlist.component';
 import { MessageComponent } from './components/message/message.component';
+import { HelpComponent } from './components/help/help.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { MessageComponent } from './components/message/message.component';
     EditStudentGradeComponent,
     WaitlistDetailComponent,
     AddWaitlistComponent,
-    MessageComponent
+    MessageComponent,
+    HelpComponent
 
   ],
   imports: [

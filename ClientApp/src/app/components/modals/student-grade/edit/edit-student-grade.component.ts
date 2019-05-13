@@ -64,8 +64,8 @@ export class EditStudentGradeComponent implements OnInit {
             crn: new FormControl(this.data.grade.crn, [Validators.required]),
             term: new FormControl(this.data.grade.term, [Validators.required]),
             studentId: new FormControl({ value: this.data.grade.studentId, disabled: true }),
-            finalGrade: new FormControl(this.data.grade.finalGrade, [Validators.required]),
-            attempts: new FormControl(this.data.grade.attempts, [Validators.required]),
+            finalGrade: new FormControl(this.data.grade.finalGrade, [Validators.required, Validators.min(0), Validators.max(100)]),
+            attempts: new FormControl(this.data.grade.attempts, [Validators.required, Validators.min(0), Validators.max(3)]),
         });
 
         this.courseService.getCourses().pipe(first()).subscribe((data: Course[]) => {

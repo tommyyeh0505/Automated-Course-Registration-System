@@ -33,11 +33,11 @@
     <div class="uploading-darken" *ngIf="isUploading">
       <div *ngIf="isUploading && progress < 100">
         <mat-progress-spinner mode="determinate" [value]="progress"></mat-progress-spinner>
-        <p style="padding-left: 20px">Uploading&nbsp;{{progress}}%</p>
+        <p>Uploading&nbsp;{{progress}}%</p>
       </div>
       <div *ngIf="isUploading && progress === 100">
         <mat-spinner></mat-spinner>
-        <p style="padding-left: 20px">Processing...</p>
+        <p>Processing...</p>
       </div>
     </div>
   </div>

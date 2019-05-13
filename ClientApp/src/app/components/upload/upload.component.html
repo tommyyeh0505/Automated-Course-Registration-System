@@ -1,56 +1,76 @@
 <div class="upload-container">
-    <div>
-        <h2>Files</h2>
-    </div>
-    <div class="upload-box mat-elevation-z8 scrollbar-style" appDropFile (fileDropEvent)="onFileDrop($event)">
-        <div class="upload-box-prompt-container" *ngIf="files.length === 0">
-            <p class="upload-prompt">Drop your files here!</p>
-        </div>
-        <div *ngIf="files.length > 0">
-            <div *ngFor="let file of files; let i = index" [attr.data-index]="i">
-                <mat-list>
-                    <mat-list-item>
-                        <mat-card style="width: 100%; padding-top: 6px; padding-bottom: 6px">
-                            <mat-card-content style="padding: 0; margin: 0">
-                                <div class="file-container">
-                                    <p class="file-name">{{file.name}}</p>
-                                    <button class="file-remove-btn" matTooltip="View Student" mat-icon-button (click)="removeFile(i)">
-                                        <mat-icon>delete</mat-icon>
-                                    </button>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </mat-list-item>
-                </mat-list>
-            </div>
-        </div>
-    </div>
+  <div>
+    <h2>Files</h2>
+  </div>
 
-    <button class="pulse waves-effect waves-light" style="width: 100%" (click)="upload()" [disabled]="isUploading"
-        mat-raised-button color="accent">Upload&nbsp;<span
-            *ngIf="isUploading && progress < 100">{{progress}}%</span></button>
+  <div [ngClass]="{'upload-box' : true,
+                     'mat-elevation-z8' : true,
+                     'scrollbar-style' : !isUploading,
+                     'no-scroll' : isUploading}" appDropFile (fileDropEvent)="onFileDrop($event)"
+    (dragOverEvent)="onDragOver()" (dragLeaveEvent)="onDragLeave()">
+    <div class="upload-box-prompt-container" *ngIf="files.length === 0">
+      <h3 class="upload-prompt">Drag and drop files here</h3>
+      <p style="margin-top: 5px; margin-bottom: 20px;">or</p>
+      <div>
+        <button mat-raised-button color="primary" (click)="browseFiles()">Browse Files</button>
+        <input id="file-input" type="file" multiple style="display: none" (change)="inputOnFileChange($event)">
+      </div>
+    </div>
+    <div *ngIf="files.length > 0">
+      <div *ngFor="let file of files; let i = index" [attr.data-index]="i">
+        <mat-list>
+          <mat-list-item>
+            <mat-card style="width: 100%; padding-top: 6px; padding-bottom: 6px">
+              <mat-card-content style="padding: 0; margin: 0">
+                <div class="file-container">
+                  <p class="file-name">{{file.name}}</p>
+                  <button [disabled]="isUploading" class="file-remove-btn" matTooltip="Remove File" mat-icon-button
+                    (click)="removeFile(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+    <div class="uploading-darken" *ngIf="isUploading">
+      <div *ngIf="isUploading && progress < 100">
+        <mat-progress-spinner mode="determinate" [value]="progress"></mat-progress-spinner>
+        <p>Uploading&nbsp;{{progress}}%</p>
+      </div>
+      <div *ngIf="isUploading && progress === 100">
+        <mat-spinner></mat-spinner>
+        <p>Processing...</p>
+      </div>
+    </div>
+  </div>
 
-    <div>
-        <h2>Errors</h2>
+  <button class="pulse waves-effect waves-light" style="width: 100%" (click)="upload()" [disabled]="isUploading"
+    mat-raised-button color="accent">Upload</button>
+
+  <div>
+    <h2>Errors</h2>
+  </div>
+  <div class="error-box mat-elevation-z8 scrollbar-style">
+    <div *ngFor="let mapFile of errors | keyvalue">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              File Name: {{mapFile.key}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngFor="let reasonMap of mapFile.value | keyvalue">
+            <h3>Reason: {{reasonMap.key}}</h3>
+            <p>Row Numbers:&nbsp;<span *ngFor="let rowNumber of arrayGetN(100, reasonMap.value)">
+                {{rowNumber}},&nbsp;
+              </span><span *ngIf="reasonMap.value.length > 100">. . . . .,
+                {{reasonMap.value[reasonMap.value.length - 1]}}</span></p>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
-    <div class="error-box mat-elevation-z8 scrollbar-style">
-        <div *ngFor="let mapFile of errors | keyvalue">
-            <mat-accordion>
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            File Name: {{mapFile.key}}
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div *ngFor="let reasonMap of mapFile.value | keyvalue">
-                        <h3>Reason: {{reasonMap.key}}</h3>
-                        <p>Row Numbers:&nbsp;<span *ngFor="let rowNumber of arrayGetN(100, reasonMap.value)">
-                                {{rowNumber}},&nbsp;
-                            </span><span *ngIf="reasonMap.value.length > 100">. . . . .,
-                                {{reasonMap.value[reasonMap.value.length - 1]}}</span></p>
-                    </div>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
-    </div>
+  </div>
 </div>

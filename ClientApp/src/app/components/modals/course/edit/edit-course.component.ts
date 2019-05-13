@@ -53,7 +53,7 @@ export class EditCourseComponent implements OnInit {
     private createForm() {
         this.editCourseForm = this.fb.group({
             courseId: new FormControl(this.data.course.courseId, [Validators.required]),
-            passingGrade: new FormControl(this.data.course.passingGrade, [Validators.required]),
+            passingGrade: new FormControl(this.data.course.passingGrade, [Validators.required, Validators.min(0), Validators.max(100)]),
 
         });
         this.filteredCourses = this.courseAutoComplete.valueChanges
@@ -91,6 +91,7 @@ export class EditCourseComponent implements OnInit {
                 this.validPreq = false;
             }
         }
+        this.selectedPreq = '';
         this.courseAutoComplete.reset();
     }
 

@@ -19,6 +19,7 @@ export interface PeriodicElement {
 export class UploadComponent implements OnInit {
   displayedColumns: string[] = ['position'];
 
+  public isOverDropArea: boolean = false;
   public progress: number = 0;
   public isUploading: boolean = false;
   public files: File[] = [];
@@ -30,15 +31,25 @@ export class UploadComponent implements OnInit {
 
   onFileDrop(files: FileList) {
     for (let i = 0; i < files.length; i++) {
-        this.files.push(files.item(i));
+      this.files.push(files.item(i));
+    }
+  }
+
+  inputOnFileChange(event) {
+    let files: FileList = event.target.files;
+
+    this.files.splice(0);
+
+    for (let i = 0; i < files.length; i++) {
+      this.files.push(files.item(i));
     }
   }
 
   upload() {
     this.errors.clear();
-    
+
     if (this.files.length <= 0) {
-      this.snackBar.open("Please select files to upload", "Error" , {
+      this.snackBar.open("Please select files to upload", "Error", {
         duration: 4000,
       });
 
@@ -52,18 +63,18 @@ export class UploadComponent implements OnInit {
         if (event.type === HttpEventType.UploadProgress) {
           this.progress = Math.round(100 * event.loaded / event.total);
         } else if (event.type === HttpEventType.Response) {
-          
+
           let errors: UploadError[] = event.body;
 
           errors.forEach(e => {
             if (this.errors.get(e.fileName) === undefined) {
               this.errors.set(e.fileName, new Map<string, Array<string>>());
             }
-  
+
             if (this.errors.get(e.fileName).get(e.reason) == undefined) {
               this.errors.get(e.fileName).set(e.reason, new Array<string>());
             }
-  
+
             this.errors.get(e.fileName).get(e.reason).push(e.row);
           });
 
@@ -75,22 +86,36 @@ export class UploadComponent implements OnInit {
       });
   }
 
-    arrayGetN(n: number, array: any[]) {
-      let arr: any[] = [];
-      let length = n;
+  browseFiles() {
+    document.getElementById("file-input").click();
+  }
 
-      if (n > array.length) {
-        length = array.length;
-      }
+  removeFile(index) {
+    this.files.splice(index, 1);
+  }
 
-      for (let i = 0; i < length; i++) {
-        arr.push(array[i]);
-      }
+  onDragOver() {
+    console.log('over drop area');
+    this.isOverDropArea = true;
+  }
 
-      return arr;
+  onDragLeave() {
+    this.isOverDropArea = false;
+    console.log('leave drop area');
+  }
+
+  arrayGetN(n: number, array: any[]) {
+    let arr: any[] = [];
+    let length = n;
+
+    if (n > array.length) {
+      length = array.length;
     }
 
-    removeFile(index) {
-      this.files.splice(index, 1);
+    for (let i = 0; i < length; i++) {
+      arr.push(array[i]);
     }
+
+    return arr;
+  }
 }

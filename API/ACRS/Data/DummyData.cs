@@ -71,9 +71,10 @@ namespace ACRS.Data
             {
                 new Course()
                 {
-                    CourseId = "COMM1120",
+                    CourseId ="COMM1120",
                     PassingGrade = 50
                 },
+
                  new Course()
                 {
                     CourseId = "INTD1100",
@@ -82,9 +83,9 @@ namespace ACRS.Data
                 new Course()
                 {
                     CourseId = "INTD1110",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
-                        new Prerequisite(){
+                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
                             CourseId = "INTD1110"
                         }
@@ -93,9 +94,9 @@ namespace ACRS.Data
                 new Course()
                 {
                     CourseId = "INTD1115",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
-                        new Prerequisite(){
+                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
                             CourseId = "INTD1115"
                         }
@@ -104,9 +105,9 @@ namespace ACRS.Data
                 new Course()
                 {
                     CourseId = "INTD1150",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
-                        new Prerequisite(){
+                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
                             CourseId = "INTD1150"
                         }
@@ -115,9 +116,9 @@ namespace ACRS.Data
                 new Course()
                 {
                     CourseId = "INTD1310",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
-                        new Prerequisite(){
+                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
                             CourseId = "INTD1310"
                         }
@@ -126,7 +127,7 @@ namespace ACRS.Data
                 new Course()
                 {
                     CourseId = "INTD1230",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1150",
@@ -139,13 +140,13 @@ namespace ACRS.Data
                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
                             CourseId = "INTD1230"
-                        },
+                        }
                     }
                },
                 new Course()
                 {
                     CourseId = "INTD1250",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1100",
@@ -162,13 +163,13 @@ namespace ACRS.Data
                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
                             CourseId = "INTD1250"
-                        },
+                        }
                     }
                },
                 new Course()
                 {
                     CourseId = "INTD2130",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1100",
@@ -176,29 +177,29 @@ namespace ACRS.Data
                         },
                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
-                            CourseId = "INTD1230"
-                        },
+                            CourseId = "INTD2130"
+                        }
                     }
                },
                 new Course()
                 {
                     CourseId = "INTD2160",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
-                        new Prerequisite(){
-                            PrerequisiteCourseId = "COMM1120",
-                            CourseId = "INTD2160"
-                        },
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1150",
                             CourseId = "INTD2160"
                         },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "COMM1120",
+                            CourseId = "INTD2160"
+                        }
                     }
                },
                 new Course()
                 {
                     CourseId = "INTD1360",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
@@ -207,13 +208,13 @@ namespace ACRS.Data
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1150",
                             CourseId = "INTD1360"
-                        },
+                        }
                     }
                },
                 new Course()
                 {
                     CourseId = "INTD1370",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1100",
@@ -228,7 +229,7 @@ namespace ACRS.Data
                 new Course()
                 {
                     CourseId = "INTD2350",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1100",
@@ -236,6 +237,10 @@ namespace ACRS.Data
                         },
                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
+                            CourseId = "INTD2350"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "COMM1150",
                             CourseId = "INTD2350"
                         },
                         new Prerequisite(){
@@ -249,20 +254,32 @@ namespace ACRS.Data
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD2160",
                             CourseId = "INTD2350"
-                        },
+                        }
                     }
                },
                 new Course()
                 {
                     CourseId = "INTD2360",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1100",
                             CourseId = "INTD2360"
                         },
                         new Prerequisite(){
+                            PrerequisiteCourseId = "COMM1120",
+                            CourseId = "INTD2360"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1110",
+                            CourseId = "INTD2360"
+                        },
+                        new Prerequisite(){
                             PrerequisiteCourseId = "INTD1115",
+                            CourseId = "INTD2360"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1150",
                             CourseId = "INTD2360"
                         },
                         new Prerequisite(){
@@ -278,22 +295,43 @@ namespace ACRS.Data
                             CourseId = "INTD2360"
                         },
                         new Prerequisite(){
-                            PrerequisiteCourseId = "INTD2160",
+                            PrerequisiteCourseId = "INTD2300",
                             CourseId = "INTD2360"
                         },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD2160",
+                            CourseId = "INTD2360"
+                        }
                     }
                },
                 new Course()
                 {
                     CourseId = "INTD2400",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "COMM1120",
+                            CourseId = "INTD2400"
+                        },
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1100",
                             CourseId = "INTD2400"
                         },
                         new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1110",
+                            CourseId = "INTD2400"
+                        },
+                        new Prerequisite(){
                             PrerequisiteCourseId = "INTD1115",
+                            CourseId = "INTD2400"
+                        },
+                        ,
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1150",
+                            CourseId = "INTD2400"
+                        }
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1310",
                             CourseId = "INTD2400"
                         },
                         new Prerequisite(){
@@ -321,8 +359,60 @@ namespace ACRS.Data
                 new Course()
                 {
                     CourseId = "INTD2500",
-                    PassingGrade = 50,
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "COMM1120",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1100",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1110",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1115",
+                            CourseId = "INTD2500"
+                        },
+                         new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1150",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1310",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1230",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1250",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD2130",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD2300",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD2320",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD2400",
+                            CourseId = "INTD2500"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD2160",
+                            CourseId = "INTD2500"
+                        },
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1370",
                             CourseId = "INTD2500"
@@ -334,32 +424,57 @@ namespace ACRS.Data
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD2360",
                             CourseId = "INTD2500"
-                        },
-                        new Prerequisite(){
-                            PrerequisiteCourseId = "INTD2400",
-                            CourseId = "INTD2500"
                         }
                     }
                },
                 new Course()
                 {
-                    CourseId = "INTD2260",
-                    PassingGrade = 50,
+                    CourseId = "INTD2300",
+                    PassingGrade = 65,
                     Prerequisites = new List<Prerequisite>(){
                         new Prerequisite(){
                             PrerequisiteCourseId = "COMM1120",
-                            CourseId = "INTD2260"
+                            CourseId = "INTD2300"
                         },
                         new Prerequisite(){
-                            PrerequisiteCourseId = "INTD2160",
-                            CourseId = "INTD2260"
+                            PrerequisiteCourseId = "INTD1110",
+                            CourseId = "INTD2300"
                         },
                         new Prerequisite(){
-                            PrerequisiteCourseId = "INTD2360",
-                            CourseId = "INTD2260"
+                            PrerequisiteCourseId = "INTD1150",
+                            CourseId = "INTD2300"
+                        },
+                        ,
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1310",
+                            CourseId = "INTD2300"
                         }
                     }
                },
+                                new Course()
+                {
+                    CourseId = "INTD2320",
+                    PassingGrade = 65,
+                    Prerequisites = new List<Prerequisite>(){
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "COMM1120",
+                            CourseId = "INTD2320"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1110",
+                            CourseId = "INTD2320"
+                        },
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1150",
+                            CourseId = "INTD2320"
+                        },
+                        ,
+                        new Prerequisite(){
+                            PrerequisiteCourseId = "INTD1310",
+                            CourseId = "INTD2320"
+                        }
+                    }
+               }
             };
         }
 
@@ -402,27 +517,27 @@ namespace ACRS.Data
             };
         }
 
-        private static List<Prerequisite> GetPrerequisites()
-        {
-            return new List<Prerequisite>()
-            {
-                new Prerequisite()
-                {
-                    CourseId = "COMP2000",
-                    PrerequisiteCourseId = "COMP1000"
-                },
-                new Prerequisite()
-                {
-                    CourseId = "COMP3000",
-                    PrerequisiteCourseId = "COMP2000"
-                },
-                new Prerequisite()
-                {
-                    CourseId = "COMP2000",
-                    PrerequisiteCourseId = "COMP1000"
-                },
-            };
-        }
+        //private static List<Prerequisite> GetPrerequisites()
+        //{
+        //    return new List<Prerequisite>()
+        //    {
+        //        new Prerequisite()
+        //        {
+        //            CourseId = "COMP2000",
+        //            PrerequisiteCourseId = "COMP1000"
+        //        },
+        //        new Prerequisite()
+        //        {
+        //            CourseId = "COMP3000",
+        //            PrerequisiteCourseId = "COMP2000"
+        //        },
+        //        new Prerequisite()
+        //        {
+        //            CourseId = "COMP2000",
+        //            PrerequisiteCourseId = "COMP1000"
+        //        },
+        //    };
+        //}
 
         private static List<Student> GetStudents()
         {

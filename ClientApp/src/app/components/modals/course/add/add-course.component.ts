@@ -1,20 +1,12 @@
-
-
-
-import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
-
-
-
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-// Used for importing lists from the html.
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Course } from '../../../../models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { CourseDialogData } from 'src/app/components/course/course.component';
 import { Prerequisite } from 'src/app/models/prerequisite';
-
 
 
 

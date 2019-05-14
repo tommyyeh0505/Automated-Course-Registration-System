@@ -1,14 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule, MatDialog } from '@angular/material';
-import { Grade } from 'src/app/models/grade';
-import { GradeService } from 'src/app/services/grade.service';
+import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule, MatDialog, MatSnackBar } from '@angular/material';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
-import { Class } from 'src/app/models/class';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
-import { AddCourseComponent } from '../modals/course/add/add-course.component';
-import { Course } from 'src/app/models/course';
 import { AddStudentComponent } from '../modals/student/add/add-student.component';
 import { first } from 'rxjs/operators';
 import { EditStudentComponent } from '../modals/student/edit/edit-student.component';
@@ -37,15 +32,22 @@ export class StudentComponent implements OnInit {
 
   constructor(
     private studentService: StudentService,
-    private authService: AuthenticationService,
     private router: Router,
-    public dialog: MatDialog
-  ) {
-  }
+    public dialog: MatDialog,
+    public snackbar: MatSnackBar
+  ) { }
+
   ngOnInit() {
     this.getStudents();
   }
 
+  openSnackbar(message: string, style: string) {
+    this.snackbar.open(message, 'Close', {
+      duration: 3000, verticalPosition: 'top',
+      horizontalPosition: 'center',
+      panelClass: style
+    });
+  }
   openAddDialog() {
     this.newStudent = new Student();
     let dialogRef = this.dialog.open(AddStudentComponent, {
@@ -60,6 +62,7 @@ export class StudentComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.addStudent(this.newStudent);
+        this.openSnackbar("New Student Successfully Created", 'success-snackbar');
       }
       this.newStudent = new Student();
     });
@@ -82,11 +85,12 @@ export class StudentComponent implements OnInit {
       if (result) {
         let newEditStudent = result.student;
         this.updateStudent(newEditStudent.studentId, newEditStudent);
+        this.openSnackbar(`Student #${newEditStudent.studentId} Successfully Updated`, 'success-snackbar');
       }
-
       this.editStudent = new Student();
     });
   }
+
 
   initTable(data) {
     this.dataSource = new MatTableDataSource(data);
@@ -112,13 +116,11 @@ export class StudentComponent implements OnInit {
 
   }
 
-
   addStudent(student: Student) {
     this.studentService.addStudent(student).pipe(first()).subscribe((response: Response) => {
       this.refresh();
     })
   }
-
 
   updateStudent(studentId: string, student: Student) {
     this.studentService.updateStudent(studentId, student).pipe(first()).subscribe((response: any) => {

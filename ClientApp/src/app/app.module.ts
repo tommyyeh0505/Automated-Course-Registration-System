@@ -62,8 +62,8 @@ import { HelpComponent } from './components/help/help.component';
     WaitlistDetailComponent,
     AddWaitlistComponent,
     MessageComponent,
-    HelpComponent
-
+    HelpComponent,
+  
   ],
   imports: [
     MatProgressSpinnerModule,
@@ -109,7 +109,7 @@ import { HelpComponent } from './components/help/help.component';
     EditGradeComponent,
     AddStudentGradeComponent,
     EditStudentGradeComponent,
-    AddWaitlistComponent
+    AddWaitlistComponent,
   ]
 })
 export class AppModule { }

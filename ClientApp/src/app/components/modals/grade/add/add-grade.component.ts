@@ -11,7 +11,6 @@ import { startWith, map } from 'rxjs/operators';
 import { Prerequisite } from 'src/app/models/prerequisite';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
-import { StudentDialogData } from 'src/app/components/student/student.component';
 import { Grade } from 'src/app/models/grade';
 import { AddStudentComponent } from '../../student/add/add-student.component';
 import { GradeDialogData } from 'src/app/components/class-detail/class-detail.component';

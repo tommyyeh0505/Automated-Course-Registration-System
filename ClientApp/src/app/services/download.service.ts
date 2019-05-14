@@ -36,11 +36,10 @@ export class DownloadService {
 
 
     public downloadWaitlist() {
-        return this.http.get<any>(endpoint + 'waitlist/', this.getHttpHeaders())
-            .pipe(map((response: Response) => {
-                return response;
-            }));
+        window.location.href = endpoint + 'waitlist'
+
     }
+
 
     // HTTP headers
     private getHttpHeaders(): {} {

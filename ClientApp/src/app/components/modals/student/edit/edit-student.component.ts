@@ -21,7 +21,6 @@ export class EditStudentComponent implements OnInit {
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<EditStudentComponent>,
         public studentService: StudentService,
-        public snackbar: MatSnackBar,
         @Inject(MAT_DIALOG_DATA) public data: StudentDialogData) {
 
     }
@@ -42,16 +41,8 @@ export class EditStudentComponent implements OnInit {
     public submit() {
         let studentName = this.editStudentForm.value.studentName;
         this.data.student.studentName = studentName;
-        this.openSnackbar(`Student #${this.data.student.studentId} Successfully Updated`, 'success-snackbar');
     }
 
-    openSnackbar(message: string, style: string) {
-        this.snackbar.open(message, 'Close', {
-            duration: 3000, verticalPosition: 'top',
-            horizontalPosition: 'center',
-            panelClass: style
-        });
-    }
 
 
 }

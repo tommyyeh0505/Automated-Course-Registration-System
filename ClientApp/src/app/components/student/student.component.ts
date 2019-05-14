@@ -42,6 +42,15 @@ export class StudentComponent implements OnInit {
   }
 
 
+  openSnackbar(message: string, style: string) {
+    this.snackbar.open(message, 'Close', {
+      duration: 3000, verticalPosition: 'top',
+      horizontalPosition: 'center',
+      panelClass: style
+    });
+  }
+
+
   openAddDialog() {
     this.newStudent = new Student();
     let dialogRef = this.dialog.open(AddStudentComponent, {
@@ -110,13 +119,21 @@ export class StudentComponent implements OnInit {
 
   addStudent(student: Student) {
     this.studentService.addStudent(student).pipe(first()).subscribe((response: Response) => {
+      this.openSnackbar("New Student Successfully Created", 'success-snackbar');
       this.refresh();
+    }, err => {
+      this.openSnackbar("Failed To Create New Student", 'error-snackbar');
     })
   }
 
   updateStudent(studentId: string, student: Student) {
     this.studentService.updateStudent(studentId, student).pipe(first()).subscribe((response: any) => {
+      this.openSnackbar(`Student #${studentId} Successfully Updated`, 'success-snackbar');
+
       this.refresh();
+    }, err => {
+      this.openSnackbar(`Failed To Update Student #${studentId}`, 'error-snackbar');
+
     });
   }
 

@@ -4,19 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Student } from 'src/app/models/student';
 import { Grade } from 'src/app/models/grade';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
-import { AddGradeComponent } from '../modals/grade/add/add-grade.component';
 import { GradeService } from 'src/app/services/grade.service';
 import { AddStudentGradeComponent } from '../modals/student-grade/add/add-student-grade.component';
 import { first } from 'rxjs/operators';
 import { EditStudentGradeComponent } from '../modals/student-grade/edit/edit-student-grade.component';
-import { AddStudentComponent } from '../modals/student/add/add-student.component';
 
 
 @Component({
-  selector: 'app-student-detail',
+  selector: 'student-detail',
   templateUrl: './student-detail.component.html',
   styleUrls: ['./student-detail.component.css']
 })
+
 export class StudentDetailComponent implements OnInit {
   student: Student = new Student();
   students: Student[];
@@ -78,9 +77,7 @@ export class StudentDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.updateGrade(result.grade.gradeId, result.grade);
-        // console.log(result);
       }
-
       this.editGrade = new Grade();
     });
   }
@@ -103,11 +100,13 @@ export class StudentDetailComponent implements OnInit {
     })
 
   }
+
   addGrade(grade: Grade) {
     this.gradeService.addGrade(grade).pipe(first()).subscribe((response: any) => {
       this.refresh();
 
     }, err => {
+      
     });
   }
 

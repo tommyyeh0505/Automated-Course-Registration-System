@@ -29,7 +29,6 @@ export class AddStudentComponent implements OnInit {
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<AddStudentComponent>,
         public studentService: StudentService,
-        public snackbar: MatSnackBar,
         @Inject(MAT_DIALOG_DATA) public data: StudentDialogData) {
 
     }
@@ -58,17 +57,9 @@ export class AddStudentComponent implements OnInit {
         let studentName = this.addStudentForm.value.studentName;
         this.data.student.studentId = studentId;
         this.data.student.studentName = studentName;
-        this.openSnackbar("New Student Successfully Created", 'success-snackbar');
     }
 
-    openSnackbar(message: string, style: string) {
-        this.snackbar.open(message, 'Close', {
-            duration: 3000, verticalPosition: 'top',
-            horizontalPosition: 'center',
-            panelClass: style
-        });
-    }
-
+   
 
 }
 

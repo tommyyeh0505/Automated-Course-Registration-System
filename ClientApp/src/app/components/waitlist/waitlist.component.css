@@ -1,23 +1,33 @@
 table {
-  
     width: 100%;
-  }
-  
-  .mat-form-field {
+}
+
+.mat-form-field {
     font-size: 14px;
     width: 100%;
-  }
-  
-  td, th {
+}
+
+td,
+th {
     width: 25%;
-  }
-  
-  .grid-container {
+}
+
+.grid-container {
     margin: 30px;
-  }
-  
-  .mat-tab-group {
+}
+
+.mat-tab-group {
     margin-bottom: 40px;
-  }
-  
-  
+}
+
+.class-card {
+    margin-bottom: 25px;
+}
+
+::ng-deep .success-snackbar {
+    background-color: #028c0d !important;
+}
+
+::ng-deep .error-snackbar {
+    background-color: #ff6b6b !important;
+}

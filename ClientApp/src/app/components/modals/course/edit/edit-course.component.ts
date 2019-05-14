@@ -1,12 +1,6 @@
-
-
-
-import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
-
-
-
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Course } from '../../../../models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { Observable } from 'rxjs';
@@ -37,6 +31,7 @@ export class EditCourseComponent implements OnInit {
     public validPreq: boolean = true;
     public selectedPreq: string;
     public editCourse: Course = new Course();
+    checkPreqId: boolean = true;
 
     constructor(
         private fb: FormBuilder,
@@ -52,10 +47,11 @@ export class EditCourseComponent implements OnInit {
 
     private createForm() {
         this.editCourseForm = this.fb.group({
-            courseId: new FormControl(this.data.course.courseId, [Validators.required]),
+            courseId: new FormControl({ value: this.data.course.courseId, disabled: true }),
             passingGrade: new FormControl(this.data.course.passingGrade, [Validators.required, Validators.min(0), Validators.max(100)]),
 
         });
+        this.courses = this.data.courses.filter(c => c.courseId !== this.data.course.courseId);
         this.filteredCourses = this.courseAutoComplete.valueChanges
             .pipe(
                 startWith(''),
@@ -63,7 +59,7 @@ export class EditCourseComponent implements OnInit {
             );
         this.courseAutoComplete.reset();
         this.prereqList = this.data.course.prerequisites.map(c => c.prerequisiteCourseId);
-        this.courses = this.data.courses;
+
     }
 
     public isTakenCourseId(courseId: string) {
@@ -83,13 +79,17 @@ export class EditCourseComponent implements OnInit {
 
     public addPrerequisite() {
         if (this.selectedPreq) {
-            if (this.prereqList.indexOf(this.selectedPreq) === -1) {
+            if (this.prereqList.indexOf(this.selectedPreq) === -1 && this.selectedPreq !== this.data.course.courseId) {
                 this.prereqList.push(this.selectedPreq);
                 this.validPreq = true;
+                this.checkPreqId = true;
             }
             else {
                 this.validPreq = false;
+
             }
+
+
         }
         this.selectedPreq = '';
         this.courseAutoComplete.reset();
@@ -101,13 +101,12 @@ export class EditCourseComponent implements OnInit {
     }
 
     public submit() {
-        let courseId = this.editCourseForm.value.courseId;
         let passingGrade = parseInt(this.editCourseForm.value.passingGrade);
-        this.editCourse.courseId = courseId;
+        this.editCourse.courseId = this.data.course.courseId;
         this.editCourse.passingGrade = passingGrade;
         this.editCourse.prerequisites = this.prereqList.map(e => {
             let preq = new Prerequisite();
-            preq.courseId = courseId;
+            preq.courseId = this.data.course.courseId;
             preq.prerequisiteCourseId = e;
             return preq;
         })

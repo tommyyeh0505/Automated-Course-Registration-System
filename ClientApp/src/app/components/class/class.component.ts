@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
 import { Grade } from 'src/app/models/grade';
 import { GradeService } from 'src/app/services/grade.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { Class } from 'src/app/models/class';
 
@@ -40,8 +39,9 @@ export class ClassComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
   viewClass(obj: Class) {
-    this.router.navigate([`/class/${obj.courseId}-${obj.crn}-${obj.term}`]);
+    this.router.navigate([`/grade/${obj.courseId}-${obj.crn}-${obj.term}`]);
   }
+
   getClasses() {
     this.gradeService.getGrades().subscribe((data: Grade[]) => {
       this.classes = data.reduce((acc, cur) => {
@@ -55,10 +55,8 @@ export class ClassComponent implements OnInit {
         }
         return acc;
       }, []);
-
       this.initTable(this.classes);
     });
-
   }
 
 

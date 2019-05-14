@@ -48,8 +48,22 @@ namespace ACRS.Controllers
             {
                 if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
                 {
-                    List<CsvData> data = ParseCsv(file);
-                    List<UploadError> errors = IsValidCsvFile(data, file.FileName);
+                    List<CsvData> data = null;
+                    List<UploadError> errors = new List<UploadError>();
+
+                    try
+                    {
+                        data = ParseCsv(file);
+                    }
+                    catch (Exception)
+                    {
+                        errors.Add(new UploadError() { FileName = file.Name, Reason = "File is not a csv file", Row = null });
+                    }
+
+                    if (data != null)
+                    {
+                        errors = IsValidCsvFile(data, file.FileName);
+                    }
 
                     if (errors.Count == 0)
                     {

@@ -92,15 +92,12 @@ export class CourseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        console.log(result.course);
         let newEditCourse = result.course;
 
-        if (this.editCourse.courseId !== newEditCourse.courseId) {
-          this.addCourse(newEditCourse);
-          this.deleteCourse(this.editCourse);
-        }
-        else {
-          this.updateCourse(newEditCourse.courseId, newEditCourse);
-        }
+
+        this.updateCourse(newEditCourse.courseId, newEditCourse);
+
       }
       this.editCourse = new Course();
     });

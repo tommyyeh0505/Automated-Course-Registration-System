@@ -1,75 +1,70 @@
 <mat-dialog-content class="container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Edit Course</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="editCourseForm">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Edit Course</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="editCourseForm">
 
-        <mat-form-field color="accent">
+                <mat-form-field color="accent">
 
-          <mat-label>Course ID</mat-label>
-          <input type="text" matInput placeholder="Course ID" formControlName="courseId" required autofocus
-            (input)="isTakenCourseId($event.target.value)">
-          <mat-error>Please enter a course ID</mat-error>
+                    <mat-label>Course ID</mat-label>
+                    <input type="text" matInput placeholder="Course ID" formControlName="courseId" required autofocus (input)="isTakenCourseId($event.target.value)">
+                    <mat-error>Please enter a course ID</mat-error>
 
-        </mat-form-field>
-        <span *ngIf="!this.validCourseId" style="color:red">This Course ID has been taken</span>
-
+                </mat-form-field>
+                <span *ngIf="!this.validCourseId" style="color:red">This Course ID has been taken</span>
 
 
 
-        <mat-form-field color="accent">
-          <mat-label>Passing Grade</mat-label>
-          <input value="65" type="number" min="0" max="100" matInput placeholder="Passing Grade"
-            formControlName="passingGrade" required>
-          <mat-error>Grade must be a number from 0 to 100 </mat-error>
 
-        </mat-form-field>
+                <mat-form-field color="accent">
+                    <mat-label>Passing Grade</mat-label>
+                    <input value="65" type="number" min="0" max="100" matInput placeholder="Passing Grade" formControlName="passingGrade" required>
+                    <mat-error>Grade must be a number from 0 to 100 </mat-error>
+
+                </mat-form-field>
 
 
 
 
 
-        <mat-form-field color="accent" style="width:60%; display:inline-block;">
-          <input matInput placeholder="Choose Prerequisite" aria-label="Choose Prerequisite" [matAutocomplete]="auto"
-            [formControl]="courseAutoComplete" style="width:80%;">
+                <mat-form-field color="accent" style="width:60%; display:inline-block;">
+                    <input matInput placeholder="Choose Prerequisite" aria-label="Choose Prerequisite" [matAutocomplete]="auto" [formControl]="courseAutoComplete" style="width:80%;">
 
-          <mat-autocomplete #auto="matAutocomplete" style="width:80%;"
-            (optionSelected)='selectPreq($event.option.value)'>
-            <mat-option *ngFor="let course of filteredCourses | async" [value]="course.courseId">
-              <span>{{course.courseId}}</span> |
-              <small>Passing Grade: {{course.passingGrade}} %</small>
-            </mat-option>
-          </mat-autocomplete>
+                    <mat-autocomplete #auto="matAutocomplete" style="width:80%;" (optionSelected)='selectPreq($event.option.value)'>
+                        <mat-option *ngFor="let course of filteredCourses | async" [value]="course.courseId">
+                            <span>{{course.courseId}}</span> |
+                            <small>Passing Grade: {{course.passingGrade}} %</small>
+                        </mat-option>
+                    </mat-autocomplete>
 
 
-        </mat-form-field>
+                </mat-form-field>
 
 
-        <button style=" margin-left:20px" mat-raised-button color="primary" (click)="addPrerequisite()">Add
+                <button style=" margin-left:20px" mat-raised-button color="primary" (click)="addPrerequisite()">Add
           Prerequisite</button>
 
-        <p>
-          <span *ngIf="!this.validPreq" style="color:red">Duplicated course in the Prequisite list</span>
-          <mat-list role="list">
-            <mat-list-item *ngFor="let course of prereqList" role="listitem"><span matLine>{{course}}</span>
-              <button mat-icon-button color="warn" (click)="removePreq(course)">
+                <p>
+                    <span *ngIf="!validPreq" style="color:red">Duplicated course in the Prequisite list</span>
+                    <mat-list role="list">
+                        <mat-list-item *ngFor="let course of prereqList" role="listitem"><span matLine>{{course}}</span>
+                            <button mat-icon-button color="warn" (click)="removePreq(course)">
                 <mat-icon style="font-size:22px; cursor:pointer; color:#ff6b6b">delete</mat-icon>
               </button>
-            </mat-list-item>
+                        </mat-list-item>
 
 
-          </mat-list>
-        </p>
+                    </mat-list>
+                </p>
 
 
-        <div class="button">
-          <button [disabled]="!validCourseId" style="margin-top:15px" class="pulse waves-effect waves-light"
-            (click)="submit()" [mat-dialog-close]="data" mat-raised-button color="accent">Submit</button>
-        </div>
+                <div class="button">
+                    <button [disabled]="!validCourseId" style="margin-top:15px" class="pulse waves-effect waves-light" (click)="submit()" [mat-dialog-close]="data" mat-raised-button color="accent">Submit</button>
+                </div>
 
-      </form>
-    </mat-card-content>
-  </mat-card>
+            </form>
+        </mat-card-content>
+    </mat-card>
 </mat-dialog-content>

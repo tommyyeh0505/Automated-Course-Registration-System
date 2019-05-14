@@ -1,19 +1,8 @@
-
-
-
 import { Component, OnInit, Inject } from '@angular/core';
-
-
-
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {  MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { startWith, map, first } from 'rxjs/operators';
-import { Prerequisite } from 'src/app/models/prerequisite';
-import { Student } from 'src/app/models/student';
-import { StudentService } from 'src/app/services/student.service';
-import { StudentDialogData } from 'src/app/components/student/student.component';
 import { Grade } from 'src/app/models/grade';
-import { AddStudentComponent } from '../../student/add/add-student.component';
 import { GradeDialogData } from 'src/app/components/class-detail/class-detail.component';
 import { GradeService } from 'src/app/services/grade.service';
 import { Observable } from 'rxjs';

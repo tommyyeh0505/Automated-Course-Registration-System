@@ -30,7 +30,7 @@ export class ClassDetailComponent implements OnInit {
   courseCreated: boolean;
   newGrade: Grade;
   editGrade: Grade;
-  displayedColumns: string[] = ['studentId', 'finalGrade', 'rawGrade', 'attempts', 'viewStudent', 'edit', 'delete'];
+  displayedColumns: string[] = ['studentId', 'finalGrade', 'rawGrade', 'attempts', 'viewStudent', 'edit'];
   dataSource: MatTableDataSource<Grade>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

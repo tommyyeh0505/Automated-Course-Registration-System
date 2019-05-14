@@ -41,7 +41,6 @@ export class WaitlistComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router
   ) {
-
   }
   ngOnInit() {
     this.getWaitlists();

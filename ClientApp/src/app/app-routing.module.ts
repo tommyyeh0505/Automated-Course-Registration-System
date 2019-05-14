@@ -25,8 +25,8 @@ const routes: Routes = [
       { path: 'student', component: StudentComponent },
       { path: 'student/:id', component: StudentDetailComponent },
 
-      { path: 'class', component: ClassComponent },
-      { path: 'class/:id', component: ClassDetailComponent },
+      { path: 'grade', component: ClassComponent },
+      { path: 'grade/:id', component: ClassDetailComponent },
       { path: 'course', component: CourseComponent },
       { path: 'course/:id', component: CourseDetailComponent },
       { path: 'waitlist', component: WaitlistComponent },

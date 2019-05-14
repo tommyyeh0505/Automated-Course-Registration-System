@@ -1,8 +1,6 @@
 <!-- Side Navigation Bar -->
 <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-        [opened]="!(isHandset$ | async)">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
         <mat-toolbar>
             <a href="/">
                 <img style="width:50px;height:50px" src="/assets/img/logo.png" />
@@ -13,8 +11,8 @@
             <a mat-list-item href="/student">
                 <mat-icon style="color:#F74385">person</mat-icon>Student
             </a>
-            <a mat-list-item href="/class">
-                <mat-icon style="color:#028c0d">grade</mat-icon>Class
+            <a mat-list-item href="/grade">
+                <mat-icon style="color:#028c0d">grade</mat-icon>Grade
             </a>
             <a mat-list-item href="/course">
                 <mat-icon style="color:#AB28F7">class</mat-icon>Course
@@ -36,8 +34,7 @@
     <mat-sidenav-content>
 
         <mat-toolbar color="accent">
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-                *ngIf="isHandset$ | async">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
             <span>ACRS</span>

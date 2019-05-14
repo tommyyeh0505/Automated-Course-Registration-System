@@ -25,7 +25,7 @@ export class StudentDetailComponent implements OnInit {
   studentGrades: Grade[];
   newGrade: Grade;
   editGrade: Grade;
-  displayedColumns: string[] = ['courseId', 'crn', 'term', 'finalGrade', 'rawGrade', 'attempts', 'edit', 'delete'];
+  displayedColumns: string[] = ['courseId', 'crn', 'term', 'finalGrade', 'rawGrade', 'attempts', 'edit'];
   dataSource: MatTableDataSource<Grade>;
   isCreated: boolean = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;

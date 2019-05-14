@@ -133,10 +133,10 @@ export class WaitlistComponent implements OnInit {
       let studentId = waitlist.studentId;
       if (data.filter(d => d.studentId === studentId).length > 0) {
         this.addWaitlist(waitlist);
-        this.openSnackbar(`Student Successfully Added To The Waitlist`, 'success-snackbar');
+        this.openSnackbar(`Student successfully ddded to the waitlist`, 'success-snackbar');
       }
       else {
-        this.openSnackbar(`Student Is Not Qualified`, 'error-snackbar');
+        this.openSnackbar(`Student is not qualified`, 'error-snackbar');
       }
 
     })

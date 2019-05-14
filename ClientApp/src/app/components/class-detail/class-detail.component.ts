@@ -30,7 +30,7 @@ export class ClassDetailComponent implements OnInit {
   courseCreated: boolean;
   newGrade: Grade;
   editGrade: Grade;
-  displayedColumns: string[] = ['studentId', 'finalGrade', 'rawGrade', 'attempts', 'viewStudent', 'edit', 'delete'];
+  displayedColumns: string[] = ['studentId', 'finalGrade', 'rawGrade', 'attempts', 'viewStudent', 'edit'];
   dataSource: MatTableDataSource<Grade>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -158,10 +158,10 @@ export class ClassDetailComponent implements OnInit {
     this.courseService.addCourse(course).pipe(first()).subscribe((response: any) => {
       this.getCourseByCourseId(course.courseId);
       this.courseCreated = true;
-      this.openSnackbar("New Course Successfully Created", 'success-snackbar');
+      this.openSnackbar("New course successfully created", 'success-snackbar');
 
     }, err => {
-      this.openSnackbar("Failed To Create New Course", 'error-snackbar');
+      this.openSnackbar("Failed to create new course", 'error-snackbar');
 
     });
   }
@@ -169,10 +169,10 @@ export class ClassDetailComponent implements OnInit {
   addGrade(grade: Grade) {
     this.gradeService.addGrade(grade).pipe(first()).subscribe((response: any) => {
       this.refresh();
-      this.openSnackbar("New Student Grade Successfully Created", 'success-snackbar');
+      this.openSnackbar("New student grade successfully created", 'success-snackbar');
 
     }, err => {
-      this.openSnackbar("Failed To Create New Student Grade", 'error-snackbar');
+      this.openSnackbar("Failed to create new student grade", 'error-snackbar');
 
     });
   }
@@ -180,10 +180,10 @@ export class ClassDetailComponent implements OnInit {
   updateGrade(gradeId: number, grade: Grade) {
     this.gradeService.updateGrade(gradeId, grade).pipe(first()).subscribe((response: Response) => {
       this.refresh();
-      this.openSnackbar("Student Grade Successfully Updated", 'success-snackbar');
+      this.openSnackbar("Student grade successfully updated", 'success-snackbar');
 
     }, err => {
-      this.openSnackbar("Failed To Update New Student Grade", 'error-snackbar');
+      this.openSnackbar("Failed to update student grade", 'error-snackbar');
 
     })
 
@@ -191,7 +191,7 @@ export class ClassDetailComponent implements OnInit {
 
   deleteGrade(grade: Grade) {
     this.gradeService.deleteGrade(grade);
-    this.openSnackbar(`Student Grade Successfully Deleted`, 'success-snackbar');
+    this.openSnackbar(`Student grade successfully deleted`, 'success-snackbar');
     let itemIndex = this.dataSource.data.findIndex(obj => obj.gradeId === grade.gradeId);
     this.dataSource.data.splice(itemIndex, 1);
     this.grades = this.dataSource.data;

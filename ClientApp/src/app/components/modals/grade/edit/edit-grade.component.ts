@@ -40,9 +40,9 @@ export class EditGradeComponent implements OnInit {
             courseId: new FormControl({ value: this.data.grade.courseId, disabled: true }),
             crn: new FormControl({ value: this.data.grade.crn, disabled: true }),
             term: new FormControl({ value: this.data.grade.term, disabled: true }),
-            studentId: new FormControl(this.data.grade.studentId, [Validators.required]),
+            studentId: new FormControl({ value: this.data.grade.studentId, disabled: true }),
             finalGrade: new FormControl(this.data.grade.finalGrade, [Validators.required, Validators.min(0), Validators.max(100)]),
-            attempts: new FormControl(this.data.grade.attempts, [Validators.required]),
+            attempts: new FormControl(this.data.grade.attempts, [Validators.required, Validators.min(0), Validators.max(3)]),
         });
         this.grades = this.data.grades;
     }
@@ -54,10 +54,8 @@ export class EditGradeComponent implements OnInit {
     }
 
     public submit() {
-        let studentId = this.editGradeForm.value.studentId;
         let finalGrade = this.editGradeForm.value.finalGrade;
         let attempts = this.editGradeForm.value.attempts;
-        this.data.grade.studentId = studentId;
         this.data.grade.finalGrade = finalGrade;
         this.data.grade.attempts = attempts;
     }

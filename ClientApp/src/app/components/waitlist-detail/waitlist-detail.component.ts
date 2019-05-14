@@ -28,6 +28,7 @@ export class WaitlistDetailComponent implements OnInit {
   course: Course;
   courseCreated: boolean;
   displayedColumns: string[] = ['studentId', 'studentName', 'viewStudent', 'delete'];
+  
   dataSource: MatTableDataSource<Waitlist>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -94,7 +95,6 @@ export class WaitlistDetailComponent implements OnInit {
   }
 
   addWaitlist(waitlist: Waitlist) {
-
     this.waitlistService.addWaitlist(waitlist).pipe(first()).subscribe((response: Response) => {
       console.log(waitlist, response);
       this.refresh();

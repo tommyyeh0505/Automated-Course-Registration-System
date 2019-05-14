@@ -121,10 +121,10 @@ export class CourseComponent implements OnInit {
   addCourse(course: Course) {
     this.courseService.addCourse(course).pipe(first()).subscribe((response: any) => {
       this.refresh();
-      this.openSnackbar("New Course Successfully Created", 'success-snackbar');
+      this.openSnackbar("Course successfully created", 'success-snackbar');
 
     }, err => {
-      this.openSnackbar("Failed To Create New Course", 'error-snackbar');
+      this.openSnackbar("Failed to create new course", 'error-snackbar');
 
     });
   }
@@ -132,10 +132,10 @@ export class CourseComponent implements OnInit {
   updateCourse(courseId: string, editCourse: Course) {
     this.courseService.updateCourse(courseId, editCourse).pipe(first()).subscribe((response: any) => {
       this.refresh();
-      this.openSnackbar("Course Successfully Updated", 'success-snackbar');
+      this.openSnackbar("Course successfully updated", 'success-snackbar');
 
     }, err => {
-      this.openSnackbar("Failed To Update Course", 'error-snackbar');
+      this.openSnackbar("Failed to update course", 'error-snackbar');
 
     }
     );
@@ -149,7 +149,7 @@ export class CourseComponent implements OnInit {
 
   deleteCourse(course: Course) {
     this.courseService.deleteCourse(course);
-    this.openSnackbar(`Course Successfully Deleted`, 'success-snackbar');
+    this.openSnackbar(`Course successfully deleted`, 'success-snackbar');
     let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
     this.dataSource.data.splice(itemIndex, 1);
     this.courses = this.dataSource.data;

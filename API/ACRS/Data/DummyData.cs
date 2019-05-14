@@ -324,12 +324,12 @@ namespace ACRS.Data
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1115",
                             CourseId = "INTD2400"
-                        },
+                        }
                         ,
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1150",
                             CourseId = "INTD2400"
-                        }
+                        },
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1310",
                             CourseId = "INTD2400"
@@ -444,7 +444,6 @@ namespace ACRS.Data
                             PrerequisiteCourseId = "INTD1150",
                             CourseId = "INTD2300"
                         },
-                        ,
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1310",
                             CourseId = "INTD2300"
@@ -468,7 +467,6 @@ namespace ACRS.Data
                             PrerequisiteCourseId = "INTD1150",
                             CourseId = "INTD2320"
                         },
-                        ,
                         new Prerequisite(){
                             PrerequisiteCourseId = "INTD1310",
                             CourseId = "INTD2320"

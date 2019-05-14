@@ -132,15 +132,18 @@ export class StudentDetailComponent implements OnInit {
   addGrade(grade: Grade) {
     this.gradeService.addGrade(grade).pipe(first()).subscribe((response: any) => {
       this.refresh();
-
+      this.openSnackbar(`Student Grade Successfully Created`, 'success-snackbar');
     }, err => {
-
+      this.openSnackbar(`Failed To Create Student Grade`, 'error-snackbar');
     });
   }
 
   updateGrade(gradeId: number, grade: Grade) {
     this.gradeService.updateGrade(gradeId, grade).pipe(first()).subscribe((response: Response) => {
+      this.openSnackbar(`Student Grade Successfully Updated`, 'success-snackbar');
       this.refresh();
+    }, err => {
+      this.openSnackbar(`Failed To Update Student Grade`, 'error-snackbar');
     })
   }
 
@@ -156,6 +159,7 @@ export class StudentDetailComponent implements OnInit {
 
   deleteGrade(grade: Grade) {
     this.gradeService.deleteGrade(grade);
+    this.openSnackbar(`Student Grade Successfully Deleted`, 'success-snackbar');
     let itemIndex = this.dataSource.data.findIndex(obj => obj.gradeId === grade.gradeId);
     this.dataSource.data.splice(itemIndex, 1);
     this.grades = this.dataSource.data;
@@ -168,7 +172,6 @@ export class StudentDetailComponent implements OnInit {
       this.getStudentsGrades(studentId);
       this.isCreated = true;
     }, err => {
-      // this.router.navigate(['/error']);
       this.student.studentId = studentId;
       this.isCreated = false;
     })

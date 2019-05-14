@@ -133,7 +133,6 @@ export class StudentComponent implements OnInit {
       this.refresh();
     }, err => {
       this.openSnackbar(`Failed To Update Student #${studentId}`, 'error-snackbar');
-
     });
   }
 

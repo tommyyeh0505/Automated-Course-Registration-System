@@ -66,10 +66,10 @@ export class CourseDetailComponent implements OnInit {
   updateCourse(courseId: string, editCourse: Course) {
     this.courseService.updateCourse(courseId, editCourse).pipe(first()).subscribe((response: any) => {
 
-      this.openSnackbar("Course Successfully Updated", 'success-snackbar');
+      this.openSnackbar("Course successfully updated", 'success-snackbar');
 
     }, err => {
-      this.openSnackbar("Failed To Update Course", 'error-snackbar');
+      this.openSnackbar("Failed to update course", 'error-snackbar');
 
     }
     );

@@ -119,20 +119,20 @@ export class StudentComponent implements OnInit {
 
   addStudent(student: Student) {
     this.studentService.addStudent(student).pipe(first()).subscribe((response: Response) => {
-      this.openSnackbar("New Student Successfully Created", 'success-snackbar');
+      this.openSnackbar("New student successfully created", 'success-snackbar');
       this.refresh();
     }, err => {
-      this.openSnackbar("Failed To Create New Student", 'error-snackbar');
+      this.openSnackbar("Failed to create new student", 'error-snackbar');
     })
   }
 
   updateStudent(studentId: string, student: Student) {
     this.studentService.updateStudent(studentId, student).pipe(first()).subscribe((response: any) => {
-      this.openSnackbar(`Student #${studentId} Successfully Updated`, 'success-snackbar');
+      this.openSnackbar(`Student #${studentId} successfully updated`, 'success-snackbar');
 
       this.refresh();
     }, err => {
-      this.openSnackbar(`Failed To Update Student #${studentId}`, 'error-snackbar');
+      this.openSnackbar(`Failed to update student #${studentId}`, 'error-snackbar');
     });
   }
 

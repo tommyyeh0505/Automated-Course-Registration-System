@@ -81,7 +81,14 @@ export class UploadComponent implements OnInit {
           this.isUploading = false;
         }
       }, errors => {
-        console.log(errors);
+        if (this.errors.get('Other') === undefined) {
+          this.errors.set('Other', new Map<string, Array<string>>());
+        }
+
+        if (this.errors.get('Other').get('One or more files does not exist') == undefined) {
+          this.errors.get('Other').set('One or more files does not exist', new Array<string>());
+        }
+
         this.isUploading = false;
       });
   }

@@ -88,10 +88,10 @@ export class AddGradeComponent implements OnInit {
 
     addStudent(student: Student) {
         this.studentService.addStudent(student).pipe(first()).subscribe((response: Response) => {
-            this.openSnackbar("New Student Successfully Created", 'success-snackbar');
+            this.openSnackbar("Student successfully created", 'success-snackbar');
 
         }, err => {
-            this.openSnackbar("Failed To Create New Student", 'error-snackbar');
+            this.openSnackbar("Failed to create new student", 'error-snackbar');
         })
     }
 

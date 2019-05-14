@@ -8,6 +8,7 @@ import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.compon
 import { first } from 'rxjs/operators';
 import { CourseService } from 'src/app/services/course.service';
 import { Eligibility } from 'src/app/models/Eligibility';
+import { DownloadService } from 'src/app/services/download.service';
 
 export interface WaitlistDialogData {
   waitlist: Waitlist;
@@ -38,6 +39,7 @@ export class WaitlistComponent implements OnInit {
     private waitlistService: WaitlistService,
     private snackbar: MatSnackBar,
     private courseService: CourseService,
+    private downloadService: DownloadService,
     public dialog: MatDialog,
     private router: Router
   ) {
@@ -141,6 +143,10 @@ export class WaitlistComponent implements OnInit {
     })
   }
 
+  export() {
+    console.log(123);
+    this.downloadService.downloadWaitlist();
+  }
   openSnackbar(message: string, style: string) {
     this.snackbar.open(message, 'Close', {
       duration: 3000, verticalPosition: 'top',

@@ -51,6 +51,11 @@ namespace ACRS.Controllers
                     List<CsvData> data = null;
                     List<UploadError> errors = new List<UploadError>();
 
+                    if (file == null) {
+                        errors.Add(new UploadError() { FileName = file.FileName, Reason = "File does not exists", Row = null });
+                        continue;
+                    }
+
                     try
                     {
                         data = ParseCsv(file);

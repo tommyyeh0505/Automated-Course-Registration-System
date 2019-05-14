@@ -41,13 +41,7 @@ export class StudentComponent implements OnInit {
     this.getStudents();
   }
 
-  openSnackbar(message: string, style: string) {
-    this.snackbar.open(message, 'Close', {
-      duration: 3000, verticalPosition: 'top',
-      horizontalPosition: 'center',
-      panelClass: style
-    });
-  }
+
   openAddDialog() {
     this.newStudent = new Student();
     let dialogRef = this.dialog.open(AddStudentComponent, {
@@ -62,7 +56,6 @@ export class StudentComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.addStudent(this.newStudent);
-        this.openSnackbar("New Student Successfully Created", 'success-snackbar');
       }
       this.newStudent = new Student();
     });
@@ -85,7 +78,6 @@ export class StudentComponent implements OnInit {
       if (result) {
         let newEditStudent = result.student;
         this.updateStudent(newEditStudent.studentId, newEditStudent);
-        this.openSnackbar(`Student #${newEditStudent.studentId} Successfully Updated`, 'success-snackbar');
       }
       this.editStudent = new Student();
     });

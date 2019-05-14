@@ -96,8 +96,6 @@ export class AddStudentGradeComponent implements OnInit {
 
     public checkCourseId() {
         if (!this.courseId || this.courseId !== this.courseAutoComplete.value) {
-            // this.courseAutoComplete.setValue(null);
-            // this.courseId = '';
             return false;
         }
         return true;

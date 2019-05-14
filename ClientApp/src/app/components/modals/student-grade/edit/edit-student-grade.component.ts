@@ -60,7 +60,6 @@ export class EditStudentGradeComponent implements OnInit {
 
     private createForm() {
         this.editStudentGradeForm = this.fb.group({
-            courseId: new FormControl(this.data.grade.courseId, [Validators.required]),
             crn: new FormControl(this.data.grade.crn, [Validators.required]),
             term: new FormControl(this.data.grade.term, [Validators.required]),
             studentId: new FormControl({ value: this.data.grade.studentId, disabled: true }),
@@ -86,8 +85,7 @@ export class EditStudentGradeComponent implements OnInit {
     }
 
     public isTakenClass(courseId: string, crn: string, term: string) {
-        this.validGrade = this.grades.filter(g => g.courseId === courseId && g.crn === crn && g.term === term).length === 0;
-
+        this.validGrade = this.grades.filter(g => g.courseId === courseId && g.crn === crn && g.term === term && g.studentId === this.data.grade.studentId).length === 0;
     }
 
     public chooseCourseId(courseId: string) {
@@ -105,6 +103,12 @@ export class EditStudentGradeComponent implements OnInit {
         this.isTakenClass(this.courseId, this.crn, this.term);
     }
 
+    public checkCourseId() {
+        if (!this.courseId || this.courseId !== this.courseAutoComplete.value) {
+            return false;
+        }
+        return true;
+    }
 
 
 

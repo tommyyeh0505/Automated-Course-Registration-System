@@ -23,3 +23,11 @@ th {
 .class-card {
     margin-bottom: 25px;
 }
+
+::ng-deep .success-snackbar {
+    background-color: #028c0d !important;
+}
+
+::ng-deep .error-snackbar {
+    background-color: #ff6b6b !important;
+}

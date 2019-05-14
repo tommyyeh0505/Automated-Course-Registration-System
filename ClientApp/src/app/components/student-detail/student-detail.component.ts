@@ -3,11 +3,13 @@ import { StudentService } from 'src/app/services/student.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Student } from 'src/app/models/student';
 import { Grade } from 'src/app/models/grade';
-import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar } from '@angular/material';
 import { GradeService } from 'src/app/services/grade.service';
 import { AddStudentGradeComponent } from '../modals/student-grade/add/add-student-grade.component';
 import { first } from 'rxjs/operators';
 import { EditStudentGradeComponent } from '../modals/student-grade/edit/edit-student-grade.component';
+import { AddStudentComponent } from '../modals/student/add/add-student.component';
+import { EditStudentComponent } from '../modals/student/edit/edit-student.component';
 
 
 @Component({
@@ -25,13 +27,14 @@ export class StudentDetailComponent implements OnInit {
   editGrade: Grade;
   displayedColumns: string[] = ['courseId', 'crn', 'term', 'finalGrade', 'rawGrade', 'attempts', 'edit', 'delete'];
   dataSource: MatTableDataSource<Grade>;
+  isCreated: boolean = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(private route: ActivatedRoute,
-    private router: Router,
     public dialog: MatDialog,
     private gradeService: GradeService,
-    private studentService: StudentService) { }
+    private studentService: StudentService,
+    public snackbar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -82,6 +85,31 @@ export class StudentDetailComponent implements OnInit {
     });
   }
 
+  openEditStudentDialog() {
+
+
+    let dialogRef = this.dialog.open(EditStudentComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        student: this.student,
+        students: this.students
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        let newEditStudent = result.student;
+        this.updateStudent(newEditStudent.studentId, newEditStudent);
+        this.student = newEditStudent;
+      }
+
+    });
+  }
+
+
+
 
 
   initTable(data) {
@@ -106,7 +134,7 @@ export class StudentDetailComponent implements OnInit {
       this.refresh();
 
     }, err => {
-      
+
     });
   }
 
@@ -116,6 +144,15 @@ export class StudentDetailComponent implements OnInit {
     })
   }
 
+
+  updateStudent(studentId: string, student: Student) {
+    this.studentService.updateStudent(studentId, student).pipe(first()).subscribe((response: any) => {
+      this.openSnackbar(`Student #${studentId} Successfully Updated`, 'success-snackbar');
+      this.refresh();
+    }, err => {
+      this.openSnackbar(`Failed To Update Student #${studentId}`, 'error-snackbar');
+    });
+  }
 
   deleteGrade(grade: Grade) {
     this.gradeService.deleteGrade(grade);
@@ -129,8 +166,11 @@ export class StudentDetailComponent implements OnInit {
     this.studentService.getStudent(studentId).subscribe((data: Student) => {
       this.student = data;
       this.getStudentsGrades(studentId);
+      this.isCreated = true;
     }, err => {
-      this.router.navigate(['/error']);
+      // this.router.navigate(['/error']);
+      this.student.studentId = studentId;
+      this.isCreated = false;
     })
   }
 
@@ -148,5 +188,41 @@ export class StudentDetailComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  addStudent(student: Student) {
+    this.studentService.addStudent(student).pipe(first()).subscribe((response: Response) => {
+      this.openSnackbar("New Student Successfully Created", 'success-snackbar');
+      this.isCreated = true;
+      this.refresh();
+    }, err => {
+      this.openSnackbar("Failed To Create New Student", 'error-snackbar');
+    })
+  }
+
+  openSnackbar(message: string, style: string) {
+    this.snackbar.open(message, 'Close', {
+      duration: 3000, verticalPosition: 'top',
+      horizontalPosition: 'center',
+      panelClass: style
+    });
+  }
+
+  createStudent() {
+    let dialogRef = this.dialog.open(AddStudentComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        student: this.student,
+        students: this.students
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addStudent(result.student);
+      }
+    });
   }
 }

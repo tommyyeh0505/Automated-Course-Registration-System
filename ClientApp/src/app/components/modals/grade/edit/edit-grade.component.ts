@@ -1,12 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Student } from 'src/app/models/student';
-import { StudentService } from 'src/app/services/student.service';
-import { StudentDialogData } from 'src/app/components/student/student.component';
 import { Grade } from 'src/app/models/grade';
-import { EditStudentComponent } from '../../student/edit/edit-student.component';
-import { templateJitUrl } from '@angular/compiler';
 import { GradeService } from 'src/app/services/grade.service';
 import { GradeDialogData } from 'src/app/components/class-detail/class-detail.component';
 

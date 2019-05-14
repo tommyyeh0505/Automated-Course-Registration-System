@@ -11,7 +11,6 @@ import { Prerequisite } from 'src/app/models/prerequisite';
 
 
 
-
 @Component({
     selector: 'add-course',
     styleUrls: ['./add-course.component.css'],

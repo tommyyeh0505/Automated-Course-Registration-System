@@ -6,7 +6,6 @@ import { GradeDialogData } from 'src/app/components/class-detail/class-detail.co
 import { GradeService } from 'src/app/services/grade.service';
 import { StudentService } from 'src/app/services/student.service';
 import { Student } from 'src/app/models/student';
-import { AddStudentComponent } from '../../student/add/add-student.component';
 import { first } from 'rxjs/operators';
 
 

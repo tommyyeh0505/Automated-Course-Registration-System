@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
 import { StudentDialogData } from 'src/app/components/student/student.component';
@@ -15,7 +15,6 @@ export class EditStudentComponent implements OnInit {
 
     public editStudentForm: FormGroup;
     public students: Student[] = [];
-    public validStudentId: boolean = true;
     public editStudent: Student = new Student();
 
     constructor(
@@ -32,17 +31,12 @@ export class EditStudentComponent implements OnInit {
 
     private createForm() {
         this.editStudentForm = this.fb.group({
-            studentId: new FormControl({ value: this.data.student.studentId, disabled: true }, [Validators.required]),
-            studentName: new FormControl(this.data.student.studentName, [Validators.required]),
+            studentId: new FormControl({ value: this.data.student.studentId, disabled: true }),
+            studentName: new FormControl(this.data.student.studentName),
         });
         this.students = this.data.students;
     }
 
-    public isTakenStudentId(studentId: string) {
-        studentId = studentId.trim();
-        let studentIdList = this.students.map(s => s.studentId);
-        this.validStudentId = studentIdList.indexOf(studentId) === -1;
-    }
 
     public submit() {
         let studentName = this.editStudentForm.value.studentName;

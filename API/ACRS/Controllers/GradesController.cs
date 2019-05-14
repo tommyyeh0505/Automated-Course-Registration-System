@@ -32,7 +32,7 @@ namespace ACRS.Controllers
 
         // GET: api/Grades/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Grade>> GetGrade(int id)
+        public async Task<ActionResult<Grade>> GetGrade(long id)
         {
             var grade = await _context.Grades.FindAsync(id);
 
@@ -70,7 +70,7 @@ namespace ACRS.Controllers
 
         // PUT: api/Grades/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGrade(int id, Grade grade)
+        public async Task<IActionResult> PutGrade(long id, Grade grade)
         {
             if (id != grade.GradeId)
             {
@@ -133,7 +133,7 @@ namespace ACRS.Controllers
 
         // DELETE: api/Grades/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Grade>> DeleteGrade(int id)
+        public async Task<ActionResult<Grade>> DeleteGrade(long id)
         {
             var grade = await _context.Grades.FindAsync(id);
             if (grade == null)
@@ -147,7 +147,7 @@ namespace ACRS.Controllers
             return grade;
         }
 
-        private bool GradeExists(int id)
+        private bool GradeExists(long id)
         {
             return _context.Grades.Any(e => e.GradeId == id);
         }

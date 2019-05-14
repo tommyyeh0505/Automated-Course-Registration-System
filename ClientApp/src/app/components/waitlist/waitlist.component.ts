@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule, MatDialog, MatSnackBar } from '@angular/material';
-import { Grade } from 'src/app/models/grade';
-import { GradeService } from 'src/app/services/grade.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { Waitlist } from 'src/app/models/waitlist';
 import { Class } from 'src/app/models/class';
@@ -10,7 +7,6 @@ import { WaitlistService } from 'src/app/services/waitlist.service';
 import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.component';
 import { first } from 'rxjs/operators';
 import { CourseService } from 'src/app/services/course.service';
-import { Course } from 'src/app/models/course';
 import { Eligibility } from 'src/app/models/Eligibility';
 
 export interface WaitlistDialogData {
@@ -40,7 +36,7 @@ export class WaitlistComponent implements OnInit {
 
   constructor(
     private waitlistService: WaitlistService,
-    private snackBar: MatSnackBar,
+    private snackbar: MatSnackBar,
     private courseService: CourseService,
     public dialog: MatDialog,
     private router: Router
@@ -80,6 +76,7 @@ export class WaitlistComponent implements OnInit {
   getWaitlists() {
     this.waitlistService.getWaitlists().subscribe((data: Waitlist[]) => {
       this.waitlists = data;
+      console.log(data);
       this.classes = data.reduce((acc, cur) => {
         let c = {
           courseId: cur.courseId,
@@ -113,7 +110,6 @@ export class WaitlistComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.checkWaitlist(result.waitlist.courseId, result.waitlist);
-
       }
       this.newWaitlist = new Waitlist();
     });
@@ -125,7 +121,6 @@ export class WaitlistComponent implements OnInit {
   }
 
   addWaitlist(waitlist: Waitlist) {
-
     this.waitlistService.addWaitlist(waitlist).pipe(first()).subscribe((response: Response) => {
       console.log(waitlist, response);
       this.refresh();
@@ -138,19 +133,20 @@ export class WaitlistComponent implements OnInit {
       let studentId = waitlist.studentId;
       if (data.filter(d => d.studentId === studentId).length > 0) {
         this.addWaitlist(waitlist);
+        this.openSnackbar(`Student successfully ddded to the waitlist`, 'success-snackbar');
       }
       else {
-        this.openSnackBar("Student is not qualified", "");
+        this.openSnackbar(`Student is not qualified`, 'error-snackbar');
       }
 
     })
   }
 
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 4000,
-      verticalPosition: 'top'
+  openSnackbar(message: string, style: string) {
+    this.snackbar.open(message, 'Close', {
+      duration: 3000, verticalPosition: 'top',
+      horizontalPosition: 'center',
+      panelClass: style
     });
   }
 

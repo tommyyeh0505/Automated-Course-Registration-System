@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatTooltipModule, MatSnackBar } from '@angular/material';
 import { Course } from 'src/app/models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -35,7 +35,7 @@ export class CourseComponent implements OnInit {
 
   constructor(
     private courseService: CourseService,
-    private authService: AuthenticationService,
+    public snackbar: MatSnackBar,
     private router: Router,
     public dialog: MatDialog
   ) {
@@ -47,6 +47,14 @@ export class CourseComponent implements OnInit {
     this.getCourses();
   }
 
+
+  openSnackbar(message: string, style: string) {
+    this.snackbar.open(message, 'Close', {
+      duration: 3000, verticalPosition: 'top',
+      horizontalPosition: 'center',
+      panelClass: style
+    });
+  }
 
   openAddDialog() {
     this.newCourse = new Course();
@@ -85,14 +93,8 @@ export class CourseComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         let newEditCourse = result.course;
+        this.updateCourse(newEditCourse.courseId, newEditCourse);
 
-        if (this.editCourse.courseId !== newEditCourse.courseId) {
-          this.addCourse(newEditCourse);
-          this.deleteCourse(this.editCourse);
-        }
-        else {
-          this.updateCourse(newEditCourse.courseId, newEditCourse);
-        }
       }
       this.editCourse = new Course();
     });
@@ -119,13 +121,24 @@ export class CourseComponent implements OnInit {
   addCourse(course: Course) {
     this.courseService.addCourse(course).pipe(first()).subscribe((response: any) => {
       this.refresh();
+      this.openSnackbar("Course successfully created", 'success-snackbar');
+
+    }, err => {
+      this.openSnackbar("Failed to create new course", 'error-snackbar');
+
     });
   }
 
   updateCourse(courseId: string, editCourse: Course) {
     this.courseService.updateCourse(courseId, editCourse).pipe(first()).subscribe((response: any) => {
       this.refresh();
-    });
+      this.openSnackbar("Course successfully updated", 'success-snackbar');
+
+    }, err => {
+      this.openSnackbar("Failed to update course", 'error-snackbar');
+
+    }
+    );
   }
   refresh() {
     this.courseService.getCourses().subscribe((data: Course[]) => {
@@ -136,6 +149,7 @@ export class CourseComponent implements OnInit {
 
   deleteCourse(course: Course) {
     this.courseService.deleteCourse(course);
+    this.openSnackbar(`Course successfully deleted`, 'success-snackbar');
     let itemIndex = this.dataSource.data.findIndex(obj => obj.courseId === course.courseId);
     this.dataSource.data.splice(itemIndex, 1);
     this.courses = this.dataSource.data;

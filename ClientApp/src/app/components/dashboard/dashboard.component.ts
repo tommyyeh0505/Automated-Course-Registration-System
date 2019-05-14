@@ -68,7 +68,7 @@ export class DashboardComponent {
         "value": this.courseCount
       }],
       [{
-        "name": "Classes",
+        "name": "Grades",
         "value": this.classCount
       }],
       [{
@@ -101,8 +101,8 @@ export class DashboardComponent {
       this.router.navigate(['course'])
     else if (name === 'Waitlists')
       this.router.navigate(['waitlist'])
-    else if (name === 'Classes') {
-      this.router.navigate(['class'])
+    else if (name === 'Grades') {
+      this.router.navigate(['grade'])
     }
 
 

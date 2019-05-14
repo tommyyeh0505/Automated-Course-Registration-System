@@ -22,7 +22,6 @@ export class WaitlistDetailComponent implements OnInit {
   courseId: string;
   crn: string;
   term: string;
-  // waitlist: Waitlist;
   newWaitlist: Waitlist;
   students: Student[];
   waitlists: Waitlist[];

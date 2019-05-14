@@ -1,14 +1,6 @@
-
-
-
-import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
-
-
-
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { startWith, map } from 'rxjs/operators';
-import { Prerequisite } from 'src/app/models/prerequisite';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
 import { StudentDialogData } from 'src/app/components/student/student.component';
@@ -49,11 +41,9 @@ export class AddStudentComponent implements OnInit {
     private createForm() {
         this.addStudentForm = this.fb.group({
             studentId: new FormControl(this.data.student.studentId, [Validators.required]),
-            studentName: new FormControl(this.data.student.studentName, [Validators.required]),
-
+            studentName: new FormControl(this.data.student.studentName),
         });
         this.students = this.data.students;
-
     }
 
     public isTakenStudentId(studentId: string) {
@@ -62,19 +52,14 @@ export class AddStudentComponent implements OnInit {
         this.validStudentId = studentIdList.indexOf(studentId) === -1;
     }
 
-
-
-
     public submit() {
         let studentId = this.addStudentForm.value.studentId;
         let studentName = this.addStudentForm.value.studentName;
-
         this.data.student.studentId = studentId;
         this.data.student.studentName = studentName;
-
-
     }
 
+   
 
 }
 

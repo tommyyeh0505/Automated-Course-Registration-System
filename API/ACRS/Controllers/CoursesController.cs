@@ -122,6 +122,28 @@ namespace ACRS.Controllers
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
 
+            //delete all courses with course as prereq
+            List<Course> crs = await _context.Courses.Include(e => e.Prerequisites).ToListAsync();
+            if (crs != null)
+            {
+                foreach(Course cs in crs){
+                    List<Prerequisite> prereqs = cs.Prerequisites;
+
+                    //Delete prereq if it exisits
+                    if(prereqs.Any(a => a.PrerequisiteCourseId == id)) {
+                        var itemToRemove = prereqs.Single(r => r.PrerequisiteCourseId == id);
+                        prereqs.Remove(itemToRemove);
+                        cs.Prerequisites = prereqs;
+                        _context.Entry(cs).CurrentValues.SetValues(cs);
+                    }
+
+                }
+
+            }
+
+            await _context.SaveChangesAsync();
+
+
             return course;
         }
 

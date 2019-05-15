@@ -8,6 +8,7 @@ import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.compon
 import { first } from 'rxjs/operators';
 import { CourseService } from 'src/app/services/course.service';
 import { Eligibility } from 'src/app/models/Eligibility';
+import { DownloadService } from 'src/app/services/download.service';
 
 export interface WaitlistDialogData {
   waitlist: Waitlist;
@@ -38,10 +39,10 @@ export class WaitlistComponent implements OnInit {
     private waitlistService: WaitlistService,
     private snackbar: MatSnackBar,
     private courseService: CourseService,
+    private downloadService: DownloadService,
     public dialog: MatDialog,
     private router: Router
   ) {
-
   }
   ngOnInit() {
     this.getWaitlists();
@@ -76,7 +77,7 @@ export class WaitlistComponent implements OnInit {
   getWaitlists() {
     this.waitlistService.getWaitlists().subscribe((data: Waitlist[]) => {
       this.waitlists = data;
-      console.log(data);
+     
       this.classes = data.reduce((acc, cur) => {
         let c = {
           courseId: cur.courseId,
@@ -122,7 +123,7 @@ export class WaitlistComponent implements OnInit {
 
   addWaitlist(waitlist: Waitlist) {
     this.waitlistService.addWaitlist(waitlist).pipe(first()).subscribe((response: Response) => {
-      console.log(waitlist, response);
+     
       this.refresh();
     })
   }
@@ -142,6 +143,10 @@ export class WaitlistComponent implements OnInit {
     })
   }
 
+  export() {
+    
+    this.downloadService.downloadWaitlist();
+  }
   openSnackbar(message: string, style: string) {
     this.snackbar.open(message, 'Close', {
       duration: 3000, verticalPosition: 'top',

@@ -3,30 +3,30 @@
     <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
         <mat-toolbar>
             <a href="/">
-                <img style="width:50px;height:50px" src="/assets/img/logo.png" />
+                <img style="width:50px;height:50px" src="/assets/img/logo.jpg" />
             </a>
         </mat-toolbar>
         <mat-nav-list>
 
-            <a mat-list-item href="/student">
+            <a mat-list-item [ngClass]="{'select':this.url.includes('student')}" href="/student">
                 <mat-icon style="color:#F74385">person</mat-icon>Student
             </a>
-            <a mat-list-item href="/grade">
+            <a mat-list-item [ngClass]="{'select':this.url.includes('grade')}" href="/grade">
                 <mat-icon style="color:#028c0d">grade</mat-icon>Grade
             </a>
-            <a mat-list-item href="/course">
+            <a mat-list-item [ngClass]="{'select':this.url.includes('course')}" href="/course">
                 <mat-icon style="color:#AB28F7">class</mat-icon>Course
             </a>
-            <a mat-list-item href="/waitlist">
+            <a mat-list-item [ngClass]="{'select':this.url.includes('waitlist')}" href="/waitlist">
                 <mat-icon style="color:#2F72ED">assignment</mat-icon>Waitlist
             </a>
-            <a mat-list-item href="/upload">
+            <a mat-list-item [ngClass]="{'select':this.url.includes('upload')}" href="/upload">
                 <mat-icon style="color:#53DBDB">cloud_upload</mat-icon>Upload
             </a>
-            <a mat-list-item href="/account">
+            <a mat-list-item [ngClass]="{'select':this.url.includes('account')}" href="/account">
                 <mat-icon style="color:#28F78C">account_box</mat-icon>Account
             </a>
-            <a mat-list-item href="/logout" (click)="logout()">
+            <a mat-list-item [ngClass]="{'select':this.url.includes('logout')}" href="/logout" (click)="logout()">
                 <mat-icon style="color:#ff6b6b">exit_to_app</mat-icon>Logout
             </a>
         </mat-nav-list>
@@ -37,7 +37,7 @@
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
-            <span>ACRS</span>
+            <span>Mr.B</span>
         </mat-toolbar>
         <router-outlet></router-outlet>
     </mat-sidenav-content>

@@ -61,7 +61,7 @@ import { HelpComponent } from './components/help/help.component';
     WaitlistDetailComponent,
     AddWaitlistComponent,
     HelpComponent,
-  
+
   ],
   imports: [
     MatProgressSpinnerModule,

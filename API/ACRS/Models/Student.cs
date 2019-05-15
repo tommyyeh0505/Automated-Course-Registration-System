@@ -10,7 +10,6 @@ namespace ACRS.Models
         [Key]
         public string StudentId { get; set; }
 
-        [Required]
         public string StudentName { get; set; }
 
         [EmailAddress]

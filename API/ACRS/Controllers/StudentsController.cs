@@ -132,6 +132,7 @@ namespace ACRS.Controllers
             var CourseMap = new Dictionary<string, double>();
             List<StudentEligibility> eligibleStudents = new List<StudentEligibility>();
             var CoursePassingGradeMap = new Dictionary<string, int>();
+            /*
             foreach (Grade g in grades)
             {
                 if (CourseMap.ContainsKey(g.CourseId) ==true)
@@ -175,7 +176,7 @@ namespace ACRS.Controllers
                         }
                         else
                         {
-                            eligibleStudents.Add(new StudentEligibility(StudentId, c.CourseId, false));
+                            eligibleStudents.Add(new StudentEligibility(StudentId, c.CourseId, false, ));
                             break;
                         }
                     }
@@ -185,6 +186,7 @@ namespace ACRS.Controllers
                     }
                 }
             }
+            */
             return eligibleStudents;
 
     }

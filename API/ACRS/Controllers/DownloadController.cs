@@ -26,7 +26,55 @@ namespace ACRS.Controllers
             _coursesController = coursesController;
         }
 
-        [HttpGet, Route("waitlist")]
+        [HttpGet("waitlist/{id}")]
+        public async Task<ActionResult> DownloadWaitlistByIdAsync(string id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            List<Waitlist> waitlists = _context.Waitlists.ToList();
+            List<StudentEligibility> eligibilities = await _coursesController.GetEligableCourseByCourseIdAsync(id);
+
+            List<string> headers = new List<string>() {
+                "Student Id",
+                "Course Id",
+                "CRN",
+                "Term"
+            };
+
+            List<List<string>> data = new List<List<string>>();
+
+            foreach (Waitlist entry in waitlists)
+            {
+                bool isEligable = eligibilities.Any(s => s.CourseId == entry.CourseId && s.StudentId == entry.StudentId);
+
+                if (!isEligable)
+                {
+                    continue;
+                }
+
+                data.Add(new List<string>
+                {
+                    entry.StudentId,
+                    entry.CourseId,
+                    entry.CRN,
+                    entry.Term
+                });
+            }
+
+            data = data.OrderBy(a => a[1]).ThenBy(a => a[0]).ToList();
+
+            Stream excel = ExcelWriter.CreateAsStream(headers, data);
+
+            return new FileStreamResult(excel, "application/octet-stream")
+            {
+                FileDownloadName = $"waitlist{id}.xlsx"
+            };
+        }
+
+        [HttpGet("waitlist")]
         public async Task<ActionResult> DownloadWaitlistAsync()
         {
             List<Course> courses = _context.Courses.ToList();
@@ -60,6 +108,11 @@ namespace ACRS.Controllers
                     {
                         break;
                     }
+                }
+
+                if (!isEligable)
+                {
+                    continue;
                 }
 
                 data.Add(new List<string>

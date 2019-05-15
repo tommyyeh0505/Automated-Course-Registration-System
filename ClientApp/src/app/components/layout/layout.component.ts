@@ -22,7 +22,6 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 
 export class LayoutComponent {
 
-
     isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
         .pipe(
             map(result => result.matches)

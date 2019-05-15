@@ -71,6 +71,10 @@ namespace ACRS.Models
             {
                 FinalGrade = 0;
             }
+            else if (finalGradeString.Equals("TCR", StringComparison.OrdinalIgnoreCase))
+            {
+                FinalGrade = 100;
+            }
             else
             {
                 FinalGrade = int.Parse(finalGradeString);

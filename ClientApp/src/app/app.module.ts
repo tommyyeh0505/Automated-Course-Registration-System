@@ -34,7 +34,7 @@ import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-d
 import { AddWaitlistComponent } from './components/modals/waitlist/add/add-waitlist.component';
 import { HelpComponent } from './components/help/help.component';
 import { AccountComponent } from './components/account/account.component';
-import { EditPasswordComponent } from './components/modals/account/edit/edit-course.component';
+import { EditAccountComponent } from './components/modals/account/edit/edit-account.component';
 
 @NgModule({
   declarations: [
@@ -64,8 +64,7 @@ import { EditPasswordComponent } from './components/modals/account/edit/edit-cou
     AddWaitlistComponent,
     HelpComponent,
     AccountComponent,
-    EditPasswordComponent,
-
+    EditAccountComponent,
   ],
   imports: [
     MatProgressSpinnerModule,
@@ -112,7 +111,7 @@ import { EditPasswordComponent } from './components/modals/account/edit/edit-cou
     AddStudentGradeComponent,
     EditStudentGradeComponent,
     AddWaitlistComponent,
-    EditPasswordComponent,
+    EditAccountComponent,
   ]
 })
 export class AppModule { }

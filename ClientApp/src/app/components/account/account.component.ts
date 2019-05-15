@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { UpdatePassword } from 'src/app/models/updatePassword';
-import { EditPasswordComponent } from '../modals/account/edit/edit-course.component';
+import { EditAccountComponent } from '../modals/account/edit/edit-account.component';
 export interface ChangePassword {
-  newPassword: UpdatePassword;
+  password: UpdatePassword;
 }
 @Component({
   selector: 'app-account',
@@ -19,12 +19,12 @@ export class AccountComponent implements OnInit {
   }
 
   openPasswordDialog() {
-    let dialogRef = this.dialog.open(EditPasswordComponent, {
+    let dialogRef = this.dialog.open(EditAccountComponent, {
       width: '65vw',
       minWidth: '300px',
       maxWidth: '600px',
       data: {
-        newPassword: this.newPassword,
+        password: this.newPassword,
       }
     });
 

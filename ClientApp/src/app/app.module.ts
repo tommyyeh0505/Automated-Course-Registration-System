@@ -33,6 +33,7 @@ import { EditStudentGradeComponent } from './components/modals/student-grade/edi
 import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-detail.component';
 import { AddWaitlistComponent } from './components/modals/waitlist/add/add-waitlist.component';
 import { HelpComponent } from './components/help/help.component';
+import { AccountComponent } from './components/account/account.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { HelpComponent } from './components/help/help.component';
     WaitlistDetailComponent,
     AddWaitlistComponent,
     HelpComponent,
+    AccountComponent,
 
   ],
   imports: [

@@ -14,6 +14,7 @@ import { ClassDetailComponent } from './components/class-detail/class-detail.com
 import { StudentDetailComponent } from './components/student-detail/student-detail.component';
 import { WaitlistComponent } from './components/waitlist/waitlist.component';
 import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-detail.component';
+import { AccountComponent } from './components/account/account.component';
 
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
@@ -32,6 +33,7 @@ const routes: Routes = [
       { path: 'waitlist', component: WaitlistComponent },
       { path: 'waitlist/:id', component: WaitlistDetailComponent },
       { path: 'upload', component: UploadComponent },
+      { path: 'account', component: AccountComponent }
     ]
   },
   { path: 'login', component: LoginComponent },

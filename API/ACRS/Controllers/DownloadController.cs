@@ -26,33 +26,54 @@ namespace ACRS.Controllers
             _coursesController = coursesController;
         }
 
-        [HttpGet("waitlist/{id}")]
-        public async Task<ActionResult> DownloadWaitlistByIdAsync(string id)
+        [HttpGet("waitlist/ineligable")]
+        public async Task<ActionResult> DownWaitlistIneligableAsync()
         {
-            if (id == null)
+            List<Course> courses = _context.Courses.ToList();
+            List<Waitlist> waitlists = _context.Waitlists.ToList();
+            List<List<StudentEligibility>> allEligabilities = new List<List<StudentEligibility>>();
+
+            foreach (Course course in courses)
             {
-                return BadRequest();
+                allEligabilities.Add(await _coursesController.GetInEligableCourseByCourseIdAsync(course.CourseId));
             }
 
-            List<Waitlist> waitlists = _context.Waitlists.ToList();
-            List<StudentEligibility> eligibilities = await _coursesController.GetEligableCourseByCourseIdAsync(id);
-
-            List<string> headers = new List<string>() {
+            List<string> headers = new List<string>
+            {
                 "Student Id",
                 "Course Id",
                 "CRN",
-                "Term"
+                "Term",
+                "Failed Prerequisites"
             };
 
             List<List<string>> data = new List<List<string>>();
 
             foreach (Waitlist entry in waitlists)
             {
-                bool isEligable = eligibilities.Any(s => s.CourseId == entry.CourseId && s.StudentId == entry.StudentId);
+                bool isEligable = false;
+                List<StudentEligibility> matches = new List<StudentEligibility>();
+
+                foreach (List<StudentEligibility> eligibilities in allEligabilities)
+                {
+                    isEligable = eligibilities.Any(s => s.CourseId == entry.CourseId && s.StudentId == entry.StudentId);
+
+                    if (isEligable)
+                    {
+                        matches = eligibilities.Where(s => s.CourseId == entry.CourseId && s.StudentId == entry.StudentId).ToList();
+
+                        break;
+                    }
+                }
 
                 if (!isEligable)
                 {
                     continue;
+                }
+
+
+                foreach (StudentEligibility e in matches) {
+                    
                 }
 
                 data.Add(new List<string>
@@ -60,22 +81,24 @@ namespace ACRS.Controllers
                     entry.StudentId,
                     entry.CourseId,
                     entry.CRN,
-                    entry.Term
+                    entry.Term,
+
                 });
             }
 
+            // Sort by courseId then by studentid
             data = data.OrderBy(a => a[1]).ThenBy(a => a[0]).ToList();
 
             Stream excel = ExcelWriter.CreateAsStream(headers, data);
 
             return new FileStreamResult(excel, "application/octet-stream")
             {
-                FileDownloadName = $"waitlist{id}.xlsx"
+                FileDownloadName = "waitlist.xlsx"
             };
         }
 
-        [HttpGet("waitlist")]
-        public async Task<ActionResult> DownloadWaitlistAsync()
+        [HttpGet("waitlist/eligable")]
+        public async Task<ActionResult> DownloadWaitlistEligableAsync()
         {
             List<Course> courses = _context.Courses.ToList();
             List<Waitlist> waitlists = _context.Waitlists.ToList();

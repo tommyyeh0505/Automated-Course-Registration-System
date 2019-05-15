@@ -34,6 +34,7 @@ import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-d
 import { AddWaitlistComponent } from './components/modals/waitlist/add/add-waitlist.component';
 import { HelpComponent } from './components/help/help.component';
 import { AccountComponent } from './components/account/account.component';
+import { EditPasswordComponent } from './components/modals/account/edit/edit-course.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { AccountComponent } from './components/account/account.component';
     AddWaitlistComponent,
     HelpComponent,
     AccountComponent,
+    EditPasswordComponent,
 
   ],
   imports: [
@@ -110,6 +112,7 @@ import { AccountComponent } from './components/account/account.component';
     AddStudentGradeComponent,
     EditStudentGradeComponent,
     AddWaitlistComponent,
+    EditPasswordComponent,
   ]
 })
 export class AppModule { }

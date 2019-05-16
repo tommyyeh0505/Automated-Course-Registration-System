@@ -13,7 +13,7 @@ namespace ACRS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class GradesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

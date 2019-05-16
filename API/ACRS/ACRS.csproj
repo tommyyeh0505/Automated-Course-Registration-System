@@ -37,6 +37,12 @@
     <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
     <Compile Remove="Migrations\20190513165328_13may2db.cs" />
     <Compile Remove="Migrations\20190513165328_13may2db.Designer.cs" />
+    <Compile Remove="Migrations\20190514184724_14may2db.cs" />
+    <Compile Remove="Migrations\20190514184724_14may2db.Designer.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Database.db" />
   </ItemGroup>
 
   <ItemGroup>

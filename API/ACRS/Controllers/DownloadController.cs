@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using ACRS.Data;
 using ACRS.Models;
 using ACRS.Tools;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACRS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class DownloadController : Controller
     {
         private CoursesController _coursesController;

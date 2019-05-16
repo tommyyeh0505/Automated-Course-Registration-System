@@ -450,7 +450,7 @@ namespace ACRS.Data
                         }
                     }
                },
-                                new Course()
+               new Course()
                 {
                     CourseId = "INTD2320",
                     PassingGrade = 65,

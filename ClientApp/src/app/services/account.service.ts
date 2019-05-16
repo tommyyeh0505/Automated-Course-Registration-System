@@ -4,14 +4,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { UpdatePassword } from '../models/updatePassword';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { Waitlist } from '../models/waitlist';
-const endpoint = environment.apiEndpoint + 'download/';
+const endpoint = environment.apiEndpoint + 'auth/users/';
 @Injectable({
     providedIn: 'root'
 })
-export class DownloadService {
+export class AccountService {
     private jwtHelper: JwtHelperService;
 
 
@@ -34,19 +33,14 @@ export class DownloadService {
         }
     }
 
+    /**
+     * Http get, return a list of all courses
+     */
+    public updatePassword(newPassword: UpdatePassword) {
+        return this.http.put<any>(endpoint + newPassword.username, newPassword, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
 
-    public downloadWaitlist() {
-        window.location.href = endpoint + 'waitlist';
     }
 
-    public downloadWaitlistEligible() {
-   
-        window.open(endpoint + 'waitlist/eligible',"_blanks");
-    }
-
-    public downloadWaitlistIneligible() {
-        window.open(endpoint + 'waitlist/ineligible',"_blanks");
-    }
 
 
 
@@ -59,4 +53,5 @@ export class DownloadService {
             })
         };
     }
+
 }

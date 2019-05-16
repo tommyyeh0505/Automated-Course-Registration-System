@@ -7,7 +7,7 @@ import { WaitlistService } from 'src/app/services/waitlist.service';
 import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.component';
 import { first } from 'rxjs/operators';
 import { CourseService } from 'src/app/services/course.service';
-import { Eligibility } from 'src/app/models/Eligibility';
+import { Eligible } from 'src/app/models/eligible';
 import { DownloadService } from 'src/app/services/download.service';
 
 export interface WaitlistDialogData {
@@ -77,7 +77,7 @@ export class WaitlistComponent implements OnInit {
   getWaitlists() {
     this.waitlistService.getWaitlists().subscribe((data: Waitlist[]) => {
       this.waitlists = data;
-     
+
       this.classes = data.reduce((acc, cur) => {
         let c = {
           courseId: cur.courseId,
@@ -110,7 +110,7 @@ export class WaitlistComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.checkWaitlist(result.waitlist.courseId, result.waitlist);
+        this.addWaitlist(result.waitlist);
       }
       this.newWaitlist = new Waitlist();
     });
@@ -123,13 +123,16 @@ export class WaitlistComponent implements OnInit {
 
   addWaitlist(waitlist: Waitlist) {
     this.waitlistService.addWaitlist(waitlist).pipe(first()).subscribe((response: Response) => {
-     
+      this.openSnackbar(`Student successfully added to the waitlist`, 'success-snackbar');
       this.refresh();
+    }, err => {
+      this.openSnackbar(`Failed to add student to the waitlist`, 'error-snackbar');
+
     })
   }
 
   checkWaitlist(courseId: string, waitlist: Waitlist) {
-    this.courseService.getEligibleByCourseId(courseId).subscribe((data: Eligibility[]) => {
+    this.courseService.getEligibleByCourseId(courseId).subscribe((data: Eligible[]) => {
 
       let studentId = waitlist.studentId;
       if (data.filter(d => d.studentId === studentId).length > 0) {
@@ -143,9 +146,14 @@ export class WaitlistComponent implements OnInit {
     })
   }
 
-  export() {
-    
-    this.downloadService.downloadWaitlist();
+  eligible() {
+
+    this.downloadService.downloadWaitlistEligible();
+
+  }
+
+  ineligible() {
+    this.downloadService.downloadWaitlistIneligible();
   }
   openSnackbar(message: string, style: string) {
     this.snackbar.open(message, 'Close', {

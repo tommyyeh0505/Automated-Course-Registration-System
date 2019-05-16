@@ -8,10 +8,13 @@ import { WaitlistService } from 'src/app/services/waitlist.service';
 import { Course } from 'src/app/models/course';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
-import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.component';
-import { Eligibility } from 'src/app/models/Eligibility';
-import { first } from 'rxjs/operators';
+import { Eligible } from 'src/app/models/eligible';
+import { DetailWaitlistComponent } from '../modals/waitlist/detail/detail-waitlist.component';
+import { DownloadService } from 'src/app/services/download.service';
 
+export interface WaitlistDetail {
+  detail: Eligible;
+}
 @Component({
   selector: 'app-waitlist-detail',
   templateUrl: './waitlist-detail.component.html',
@@ -27,8 +30,10 @@ export class WaitlistDetailComponent implements OnInit {
   waitlists: Waitlist[];
   course: Course;
   courseCreated: boolean;
-  displayedColumns: string[] = ['studentId', 'studentName', 'viewStudent', 'delete'];
-  
+  eligible: Eligible[];
+  ineligible: Eligible[];
+  displayedColumns: string[] = ['waitlistId', 'studentId', 'studentName', 'fail', 'viewStudent', 'delete'];
+
   dataSource: MatTableDataSource<Waitlist>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -38,6 +43,7 @@ export class WaitlistDetailComponent implements OnInit {
     private courseService: CourseService,
     private studentService: StudentService,
     private snackBar: MatSnackBar,
+    private downloadService: DownloadService,
     public dialog: MatDialog,
     private gradeService: GradeService) { }
 
@@ -56,57 +62,10 @@ export class WaitlistDetailComponent implements OnInit {
 
   }
 
-  openAddDialog() {
-    this.newWaitlist = new Waitlist();
-    this.newWaitlist.courseId = this.courseId;
-    this.newWaitlist.crn = this.crn;
-    this.newWaitlist.term = this.term;
-    let dialogRef = this.dialog.open(AddWaitlistComponent, {
-      width: '65vw',
-      minWidth: '300px',
-      maxWidth: '600px',
-      data: {
-        waitlist: this.newWaitlist,
-        waitlists: this.waitlists,
-      }
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.checkWaitlist(result.waitlist.courseId, result.waitlist);
 
-      }
-      this.newWaitlist = new Waitlist();
-    });
-  }
 
-  checkWaitlist(courseId: string, waitlist: Waitlist) {
-    this.courseService.getEligibleByCourseId(courseId).subscribe((data: Eligibility[]) => {
 
-      let studentId = waitlist.studentId;
-      if (data.filter(d => d.studentId === studentId).length > 0) {
-        this.addWaitlist(waitlist);
-      }
-      else {
-        this.openSnackBar("Student is not qualified", "");
-      }
-
-    })
-  }
-
-  addWaitlist(waitlist: Waitlist) {
-    this.waitlistService.addWaitlist(waitlist).pipe(first()).subscribe((response: Response) => {
-      console.log(waitlist, response);
-      this.refresh();
-    })
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 4000,
-      verticalPosition: 'top'
-    });
-  }
 
   initTable(data) {
     this.dataSource = new MatTableDataSource(data);
@@ -128,6 +87,20 @@ export class WaitlistDetailComponent implements OnInit {
 
     }, err => {
       this.router.navigate(['/error']);
+    })
+  }
+
+  getEligibleByCourseID() {
+    this.courseService.getEligibleByCourseId(this.courseId).subscribe((data: Eligible[]) => {
+      this.eligible = data;
+    }, err => {
+    })
+  }
+
+  getIneligibleByCourseID() {
+    this.courseService.getIneligibleByCourseId(this.courseId).subscribe((data: Eligible[]) => {
+      this.ineligible = data;
+    }, err => {
     })
   }
 
@@ -155,12 +128,55 @@ export class WaitlistDetailComponent implements OnInit {
   getStudents() {
     this.studentService.getStudents().subscribe((data: Student[]) => {
       this.students = data;
+      this.getEligibleByCourseID();
+      this.getIneligibleByCourseID();
     })
   }
 
-  getStudentNameByStudentID(studentId: string) {
-    return this.students.filter(s => s.studentId == studentId)[0].studentName;
+  openDetailDialog(student: Student) {
+
+
+    let dialogRef = this.dialog.open(DetailWaitlistComponent, {
+      width: '65vw',
+      minWidth: '300px',
+      maxWidth: '600px',
+      data: {
+        detail: this.ineligible.filter(e => e.studentId === student.studentId)[0],
+
+      }
+    });
+
+
   }
+
+
+  getStudentNameByStudentID(studentId: string) {
+    if (this.students) {
+      return this.students.filter(s => s.studentId == studentId)[0].studentName;
+
+    }
+    return '';
+  }
+
+  qualify(student: Student) {
+    if (this.eligible) {
+
+      return this.eligible.filter(e => e.studentId === student.studentId).length > 0;
+    }
+    return false;
+  }
+
+  getFailedCourse(student: Student) {
+    if (this.ineligible) {
+      if (this.qualify(student)) {
+        return false;
+      }
+      return this.ineligible.filter(e => e.studentId === student.studentId).length > 0;
+
+    }
+    return false;
+  }
+
 
 
 }

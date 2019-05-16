@@ -38,11 +38,9 @@ export class CourseComponent implements OnInit {
     public snackbar: MatSnackBar,
     private router: Router,
     public dialog: MatDialog
-  ) {
+  ) {}
 
-
-
-  }
+  
   ngOnInit() {
     this.getCourses();
   }

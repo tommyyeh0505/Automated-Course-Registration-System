@@ -74,12 +74,17 @@ export class CourseService {
   }
 
 
+  public getIneligibleByCourseId(courseId: string) {
+    return this.http.get<any>(endpoint + courseId + '/ineligible/', this.getHttpHeaders())
+      .pipe(map((response: Response) => response || {})
+      );
+  }
 
   // HTTP headers
   private getHttpHeaders(): {} {
     return {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token,
         'Content-Type': 'application/json'
       })
     };

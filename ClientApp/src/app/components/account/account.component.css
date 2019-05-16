@@ -20,7 +20,10 @@ th {
     margin-bottom: 40px;
 }
 
-.pass {
-    background-color: #6a9df0;
-    color: black;
+::ng-deep .success-snackbar {
+    background-color: #028c0d !important;
+}
+
+::ng-deep .error-snackbar {
+    background-color: #ff6b6b !important;
 }

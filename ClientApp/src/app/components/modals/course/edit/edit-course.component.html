@@ -61,7 +61,7 @@
 
 
                 <div class="button">
-                    <button [disabled]="!validCourseId" style="margin-top:15px" class="pulse waves-effect waves-light" (click)="submit()" [mat-dialog-close]="data" mat-raised-button color="accent">Submit</button>
+                    <button [disabled]="!validCourseId || editCourseForm.invalid" style="margin-top:15px" class="pulse waves-effect waves-light" (click)="submit()" [mat-dialog-close]="data" mat-raised-button color="accent">Submit</button>
                 </div>
 
             </form>

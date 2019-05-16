@@ -1,27 +1,14 @@
-
-
-
-
 import { Component, OnInit, Inject } from '@angular/core';
-
-
-
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { startWith, map, first } from 'rxjs/operators';
-import { Prerequisite } from 'src/app/models/prerequisite';
-import { Student } from 'src/app/models/student';
-import { StudentService } from 'src/app/services/student.service';
-import { StudentDialogData } from 'src/app/components/student/student.component';
-import { Grade } from 'src/app/models/grade';
-import { AddStudentComponent } from '../../student/add/add-student.component';
-import { GradeDialogData } from 'src/app/components/class-detail/class-detail.component';
-import { GradeService } from 'src/app/services/grade.service';
 import { Waitlist } from 'src/app/models/waitlist';
 import { WaitlistDialogData } from 'src/app/components/waitlist/waitlist.component';
 import { Course } from 'src/app/models/course';
 import { Observable } from 'rxjs';
 import { CourseService } from 'src/app/services/course.service';
+import { Student } from 'src/app/models/student';
+import { StudentService } from 'src/app/services/student.service';
 
 
 
@@ -52,6 +39,8 @@ export class AddWaitlistComponent implements OnInit {
     public validWaitlist: boolean = true;
 
 
+    students: Student[] = [];
+
     public courses: Course[];
 
     courseAutoComplete = new FormControl();
@@ -61,24 +50,23 @@ export class AddWaitlistComponent implements OnInit {
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<AddWaitlistComponent>,
         public courseService: CourseService,
+        public studentService: StudentService,
         @Inject(MAT_DIALOG_DATA) public data: WaitlistDialogData) {
     }
 
     ngOnInit() {
         this.createForm();
+        this.getStudents();
     }
 
 
     private createForm() {
 
         this.addWaitlistForm = this.fb.group({
-            courseId: new FormControl(this.data.waitlist.courseId, [Validators.required]),
             crn: new FormControl(this.data.waitlist.crn, [Validators.required]),
             term: new FormControl(this.data.waitlist.term, [Validators.required]),
             studentId: new FormControl(this.data.waitlist.studentId, [Validators.required]),
         });
-
-
         this.courseService.getCourses().pipe(first()).subscribe((data: Course[]) => {
             this.courses = data;
             this.courseAutoComplete = new FormControl(this.data.waitlist.courseId, [Validators.required])
@@ -90,17 +78,23 @@ export class AddWaitlistComponent implements OnInit {
             this.waitlists = this.data.waitlists;
 
         });
-
-
-
-
-
     }
 
 
+    getStudents() {
+        this.studentService.getStudents().subscribe((data: Student[]) => {
+            this.students = data;
+        });
+
+    }
+
+    public isNewStudent() {
+        return this.students.map(e => e.studentId).indexOf(this.studentId) === -1;
+    }
+
 
     public isTakenClass(courseId: string, crn: string, term: string, studentId: string) {
-        this.validWaitlist = this.waitlists.filter(g => g.courseId === courseId && g.crn === crn && g.term === term && g.studentId === studentId).length === 0;
+        this.validWaitlist = this.waitlists.filter(g => g.courseId === courseId && g.term === term && g.studentId === studentId).length === 0;
     }
 
     public chooseCourseId(courseId: string) {
@@ -124,11 +118,31 @@ export class AddWaitlistComponent implements OnInit {
         this.isTakenClass(this.courseId, this.crn, this.term, this.studentId);
     }
 
+    public checkCourseId() {
+        if (!this.courseId || this.courseId !== this.courseAutoComplete.value) {
+            return false;
+        }
+        return true;
+    }
+
+    addStudent(student: Student) {
+        this.studentService.addStudent(student).pipe(first()).subscribe((response: Response) => {
+
+            console.log(response);
+        }, err => {
+
+        })
+    }
 
     public submit() {
-        if (!this.courseId) {
-            this.courseId = this.courseAutoComplete.value;
+        if (this.isNewStudent()) {
+            let student = new Student();
+            student.studentId = this.studentId;
+            this.addStudent(student);
+
+
         }
+
         this.data.waitlist.studentId = this.studentId;
         this.data.waitlist.courseId = this.courseId;
         this.data.waitlist.crn = this.crn;

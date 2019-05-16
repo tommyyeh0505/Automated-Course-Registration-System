@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment'
 
 @Injectable({
@@ -20,8 +20,16 @@ export class UploadService {
 
     const request = new HttpRequest('POST', environment.apiEndpoint + 'upload', formData, {
       reportProgress: true,
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + localStorage.getItem('currentUser'),
+        'Content-Type': 'application/json'
+      })
+
     });
+
 
     return this.http.request(request);
   }
+
+
 }

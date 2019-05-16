@@ -2,11 +2,16 @@
     <h1 class="mat-h1">Waitlist
 
 
-        <button mat-icon-button mat-flat-button color="primary" matTooltip="Download Waitlist" (click)="export()">
+        <button mat-icon-button mat-flat-button color="primary" matTooltip="Download Eligble" style="margin-right:15px;margin-left:10px" (click)="eligible()">
 
-            <mat-icon>cloud_download</mat-icon>
+            <mat-icon>assignment_turned_in</mat-icon>
         </button>
 
+
+        <button mat-icon-button mat-flat-button color="primary" matTooltip="Download Ineligible" (click)="ineligible()">
+
+            <mat-icon>assignment_late</mat-icon>
+        </button>
 
     </h1>
     <mat-form-field style="margin-top:20px; width:80%; margin-right:15px; " color="accent">

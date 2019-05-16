@@ -146,9 +146,13 @@ export class WaitlistComponent implements OnInit {
     })
   }
 
-  export() {
+  eligible() {
 
     this.downloadService.downloadWaitlistEligible();
+
+  }
+
+  ineligible() {
     this.downloadService.downloadWaitlistIneligible();
   }
   openSnackbar(message: string, style: string) {

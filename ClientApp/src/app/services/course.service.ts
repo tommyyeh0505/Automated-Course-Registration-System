@@ -78,13 +78,13 @@ export class CourseService {
     return this.http.get<any>(endpoint + courseId + '/ineligible/', this.getHttpHeaders())
       .pipe(map((response: Response) => response || {})
       );
-  } 
+  }
 
   // HTTP headers
   private getHttpHeaders(): {} {
     return {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + localStorage.getItem('currentUser'),
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token,
         'Content-Type': 'application/json'
       })
     };

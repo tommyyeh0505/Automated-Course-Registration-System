@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UpdatePassword } from '../models/updatePassword';
 import { map } from 'rxjs/operators';
-const endpoint = environment.apiEndpoint + 'auth/';
+const endpoint = environment.apiEndpoint + 'auth/users/';
 @Injectable({
     providedIn: 'root'
 })
@@ -37,7 +37,7 @@ export class AccountService {
      * Http get, return a list of all courses
      */
     public updatePassword(newPassword: UpdatePassword) {
-        return this.http.put<any>(endpoint + 'admin', newPassword, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+        return this.http.put<any>(endpoint + newPassword.username, newPassword, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
 
     }
 

@@ -40,11 +40,12 @@ export class DownloadService {
     }
 
     public downloadWaitlistEligible() {
-        window.location.href = endpoint + 'waitlist/eligible';
+   
+        window.open(endpoint + 'waitlist/eligible',"_blanks");
     }
 
     public downloadWaitlistIneligible() {
-        window.location.href = endpoint + 'waitlist/ineligible';
+        window.open(endpoint + 'waitlist/ineligible',"_blanks");
     }
 
 

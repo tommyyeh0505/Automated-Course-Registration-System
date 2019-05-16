@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ACRS.Data;
 using ACRS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ACRS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class StudentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

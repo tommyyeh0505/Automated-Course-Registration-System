@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ACRS.Data;
 using ACRS.Models;
 using CsvHelper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +22,7 @@ namespace ACRS.Controllers
     [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class UploadController : ControllerBase
     {
         private readonly IConfiguration _configuration;

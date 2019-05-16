@@ -41,12 +41,6 @@ namespace ACRS.Tools
 
             string range = "A1:" + char.ConvertFromUtf32(row[0].Length + 64) + "1";
             worksheet.Cells[range].LoadFromArrays(row);
-
-            // Style header to make it easier to distinguish from data
-            worksheet.Cells[range].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells[range].Style.Fill.BackgroundColor.SetColor(Color.Gray);
-            worksheet.Cells[range].Style.Font.Bold = true;
-            worksheet.Cells[range].Style.Font.Color.SetColor(Color.White);
         }
 
         private static void AddData(ExcelWorksheet worksheet, List<List<string>> data)

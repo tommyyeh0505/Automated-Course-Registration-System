@@ -38,4 +38,8 @@
     <Compile Remove="Migrations\20190513165328_13may2db.cs" />
     <Compile Remove="Migrations\20190513165328_13may2db.Designer.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
 </Project>

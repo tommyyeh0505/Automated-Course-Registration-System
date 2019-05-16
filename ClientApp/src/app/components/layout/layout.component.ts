@@ -12,6 +12,7 @@ import {
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -21,18 +22,22 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 
 export class LayoutComponent {
-
-
+    url: string;
     isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
         .pipe(
             map(result => result.matches)
         );
 
-    constructor(private breakpointObserver: BreakpointObserver, private authenticationService: AuthenticationService) { }
+    constructor(private breakpointObserver: BreakpointObserver,
+        private route: ActivatedRoute,
+        private authenticationService: AuthenticationService) { }
 
+    ngOnInit() {
+        this.url = window.location.pathname;
+    }
     logout() {
         this.authenticationService.logout();
-  
+
     }
-    
+
 }

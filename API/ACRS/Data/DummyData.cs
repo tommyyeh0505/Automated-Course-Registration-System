@@ -515,28 +515,6 @@ namespace ACRS.Data
             };
         }
 
-        //private static List<Prerequisite> GetPrerequisites()
-        //{
-        //    return new List<Prerequisite>()
-        //    {
-        //        new Prerequisite()
-        //        {
-        //            CourseId = "COMP2000",
-        //            PrerequisiteCourseId = "COMP1000"
-        //        },
-        //        new Prerequisite()
-        //        {
-        //            CourseId = "COMP3000",
-        //            PrerequisiteCourseId = "COMP2000"
-        //        },
-        //        new Prerequisite()
-        //        {
-        //            CourseId = "COMP2000",
-        //            PrerequisiteCourseId = "COMP1000"
-        //        },
-        //    };
-        //}
-
         private static List<Student> GetStudents()
         {
             return new List<Student>()

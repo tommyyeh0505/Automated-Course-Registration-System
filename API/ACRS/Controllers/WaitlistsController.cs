@@ -15,7 +15,6 @@ namespace ACRS.Controllers
     [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class WaitlistsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

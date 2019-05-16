@@ -16,7 +16,6 @@ namespace ACRS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class DownloadController : Controller
     {
         private CoursesController _coursesController;

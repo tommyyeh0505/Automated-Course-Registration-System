@@ -1,50 +1,48 @@
 <mat-dialog-content class="container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Add Waitlist</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="addWaitlistForm">
-        <mat-form-field color="accent">
-          <input matInput placeholder="Choose Course ID" aria-label="Choose Course" [matAutocomplete]="auto"
-            [formControl]="courseAutoComplete" style="width:80%;" required>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Add Waitlist</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="addWaitlistForm">
+                <mat-form-field color="accent" style="margin-bottom:10px">
+                    <input matInput placeholder="Choose Course ID" aria-label="Choose Course" [matAutocomplete]="auto" [formControl]="courseAutoComplete" style="width:80%;" required>
 
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)='chooseCourseId($event.option.value)'>
-            <mat-option *ngFor="let course of filteredCourses | async" [value]="course.courseId">
-              <span>{{course.courseId}}</span> |
-              <small>Passing Grade: {{course.passingGrade}} %</small>
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error>Please enter a Course ID</mat-error>
-        </mat-form-field>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='chooseCourseId($event.option.value)'>
+                        <mat-option *ngFor="let course of filteredCourses | async" [value]="course.courseId">
+                            <span>{{course.courseId}}</span> |
+                            <small>Passing Grade: {{course.passingGrade}} %</small>
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error>Please enter a Course ID</mat-error>
+                </mat-form-field>
+                <span *ngIf="!checkCourseId()" style="color:red ; margin-top:5px;margin-bottom:10px">Please select from the list</span>
 
-        <mat-form-field color="accent">
-          <mat-label>CRN</mat-label>
-          <input type="text" matInput placeholder="CRN" formControlName="crn" required
-            (input)="chooseCRN($event.target.value)">
-          <mat-error>Please enter a CRN</mat-error>
-        </mat-form-field>
 
-        <mat-form-field color="accent">
-          <mat-label>Term</mat-label>
-          <input type="text" matInput placeholder="Term" formControlName="term" required
-            (input)="chooseTerm($event.target.value)">
-          <mat-error>Please enter a term</mat-error>
-        </mat-form-field>
+                <mat-form-field color="accent">
+                    <mat-label>CRN</mat-label>
+                    <input type="text" matInput placeholder="CRN" formControlName="crn" required (input)="chooseCRN($event.target.value)">
+                    <mat-error>Please enter a CRN</mat-error>
+                </mat-form-field>
 
-        <mat-form-field color="accent">
-          <mat-label>Student ID</mat-label>
-          <input type="text" matInput placeholder="Student ID" formControlName="studentId" required
-            (input)="chooseStudentId($event.target.value)">
-          <mat-error>Please enter a student ID</mat-error>
-        </mat-form-field>
-        <span *ngIf="!this.validWaitlist" style="color:red">This student was added in the waitlist</span>
+                <mat-form-field color="accent">
+                    <mat-label>Term</mat-label>
+                    <input type="text" matInput placeholder="Term" formControlName="term" required (input)="chooseTerm($event.target.value)">
+                    <mat-error>Please enter a term</mat-error>
+                </mat-form-field>
 
-        <div class="button">
-          <button [disabled]="!validWaitlist" style="margin-top:25px" class="pulse waves-effect waves-light"
-            (click)="submit()" [mat-dialog-close]="data" mat-raised-button color="accent">Submit</button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+                <mat-form-field color="accent">
+                    <mat-label>Student ID</mat-label>
+                    <input type="text" matInput placeholder="Student ID" formControlName="studentId" required (input)="chooseStudentId($event.target.value)">
+                    <mat-error>Please enter a student ID</mat-error>
+                </mat-form-field>
+                <span *ngIf="!this.validWaitlist" style="color:red">This student was already in the waitlist for this course and
+          term</span>
+
+                <div class="button">
+                    <button [disabled]="!validWaitlist || addWaitlistForm.invalid" style="margin-top:25px" class="pulse waves-effect waves-light" (click)="submit()" [mat-dialog-close]="data" mat-raised-button color="accent">Submit</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
 </mat-dialog-content>

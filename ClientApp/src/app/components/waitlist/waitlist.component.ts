@@ -77,7 +77,7 @@ export class WaitlistComponent implements OnInit {
   getWaitlists() {
     this.waitlistService.getWaitlists().subscribe((data: Waitlist[]) => {
       this.waitlists = data;
-     
+
       this.classes = data.reduce((acc, cur) => {
         let c = {
           courseId: cur.courseId,
@@ -110,7 +110,7 @@ export class WaitlistComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.checkWaitlist(result.waitlist.courseId, result.waitlist);
+        this.addWaitlist(result.waitlist);
       }
       this.newWaitlist = new Waitlist();
     });
@@ -123,28 +123,18 @@ export class WaitlistComponent implements OnInit {
 
   addWaitlist(waitlist: Waitlist) {
     this.waitlistService.addWaitlist(waitlist).pipe(first()).subscribe((response: Response) => {
-     
+      this.openSnackbar(`Student successfully added to the waitlist`, 'success-snackbar');
       this.refresh();
-    })
-  }
-
-  checkWaitlist(courseId: string, waitlist: Waitlist) {
-    this.courseService.getEligibleByCourseId(courseId).subscribe((data: Eligibility[]) => {
-
-      let studentId = waitlist.studentId;
-      if (data.filter(d => d.studentId === studentId).length > 0) {
-        this.addWaitlist(waitlist);
-        this.openSnackbar(`Student successfully ddded to the waitlist`, 'success-snackbar');
-      }
-      else {
-        this.openSnackbar(`Student is not qualified`, 'error-snackbar');
-      }
+    }, err => {
+      this.openSnackbar(`Failed to add student to the waitlist`, 'error-snackbar');
 
     })
   }
+
+
 
   export() {
-    
+
     this.downloadService.downloadWaitlist();
   }
   openSnackbar(message: string, style: string) {

@@ -36,8 +36,11 @@ export class DownloadService {
 
 
     public downloadWaitlist() {
-        window.location.href = endpoint + 'waitlist'
+        window.location.href = endpoint + 'waitlist';
+    }
 
+    public downloadWaitlistByID(courseId: string) {
+        window.location.href = endpoint + 'waitlist/' + courseId;
     }
 
 

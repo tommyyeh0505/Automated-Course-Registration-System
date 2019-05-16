@@ -77,7 +77,7 @@ export class WaitlistComponent implements OnInit {
   getWaitlists() {
     this.waitlistService.getWaitlists().subscribe((data: Waitlist[]) => {
       this.waitlists = data;
-      console.log(data);
+     
       this.classes = data.reduce((acc, cur) => {
         let c = {
           courseId: cur.courseId,
@@ -123,7 +123,7 @@ export class WaitlistComponent implements OnInit {
 
   addWaitlist(waitlist: Waitlist) {
     this.waitlistService.addWaitlist(waitlist).pipe(first()).subscribe((response: Response) => {
-      console.log(waitlist, response);
+     
       this.refresh();
     })
   }
@@ -144,7 +144,7 @@ export class WaitlistComponent implements OnInit {
   }
 
   export() {
-    console.log(123);
+    
     this.downloadService.downloadWaitlist();
   }
   openSnackbar(message: string, style: string) {

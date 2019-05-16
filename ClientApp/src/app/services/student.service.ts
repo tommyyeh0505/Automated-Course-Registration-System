@@ -69,7 +69,7 @@ export class StudentService {
   private getHttpHeaders(): {} {
     return {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token,
+        'Authorization': 'Bearer ' + 123,
         'Content-Type': 'application/json'
       })
     };

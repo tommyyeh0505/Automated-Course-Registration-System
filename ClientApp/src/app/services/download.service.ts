@@ -53,10 +53,10 @@ export class DownloadService {
     // HTTP headers
     private getHttpHeaders(): {} {
         return {
-            headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token,
-                'Content-Type': 'application/json'
-            })
+          headers: new HttpHeaders({
+            'Authorization': 'Bearer ' + 123,
+            'Content-Type': 'application/json'
+          })
         };
-    }
+      }
 }

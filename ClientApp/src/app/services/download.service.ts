@@ -39,9 +39,14 @@ export class DownloadService {
         window.location.href = endpoint + 'waitlist';
     }
 
-    public downloadWaitlistByID(courseId: string) {
-        window.location.href = endpoint + 'waitlist/' + courseId;
+    public downloadWaitlistEligible() {
+        window.location.href = endpoint + 'waitlist/eligible';
     }
+
+    public downloadWaitlistIneligible() {
+        window.location.href = endpoint + 'waitlist/ineligible';
+    }
+
 
 
     // HTTP headers

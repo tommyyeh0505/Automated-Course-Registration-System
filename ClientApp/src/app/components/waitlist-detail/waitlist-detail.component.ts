@@ -10,6 +10,7 @@ import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
 import { Eligible } from 'src/app/models/eligible';
 import { DetailWaitlistComponent } from '../modals/waitlist/detail/detail-waitlist.component';
+import { DownloadService } from 'src/app/services/download.service';
 
 export interface WaitlistDetail {
   detail: Eligible;
@@ -42,6 +43,7 @@ export class WaitlistDetailComponent implements OnInit {
     private courseService: CourseService,
     private studentService: StudentService,
     private snackBar: MatSnackBar,
+    private downloadService: DownloadService,
     public dialog: MatDialog,
     private gradeService: GradeService) { }
 
@@ -146,6 +148,7 @@ export class WaitlistDetailComponent implements OnInit {
 
 
   }
+
 
   getStudentNameByStudentID(studentId: string) {
     if (this.students) {

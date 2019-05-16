@@ -21,8 +21,7 @@ export class UploadService {
     const request = new HttpRequest('POST', environment.apiEndpoint + 'upload', formData, {
       reportProgress: true,
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token,
-        'Content-Type': 'application/json'
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token
       })
 
     });

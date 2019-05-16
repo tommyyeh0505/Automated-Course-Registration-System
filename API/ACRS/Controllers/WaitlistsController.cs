@@ -25,6 +25,22 @@ namespace ACRS.Controllers
             _context = context;
         }
 
+        [HttpDelete("all")]
+        public async Task<ActionResult<Waitlist>> DeleteWaitlistAll()
+        {
+            List<Waitlist> list = await _context.Waitlists.ToListAsync();
+            foreach (Waitlist w in list)
+            {
+                var waitlist = await _context.Waitlists.FindAsync(w.WaitlistId);
+                if (waitlist != null)
+                {
+                    _context.Waitlists.Remove(waitlist);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return NoContent();
+        }
+
         // GET: api/Waitlists
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Waitlist>>> GetWaitlists()

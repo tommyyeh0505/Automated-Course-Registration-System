@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { Prerequisite } from 'src/app/models/prerequisite';
 import { CourseDialogData } from 'src/app/components/course/course.component';
-import { ChangePassword } from 'src/app/components/account/account.component';
+import { AccountDialogData } from 'src/app/components/account/account.component';
 
 @Component({
     selector: 'edit-account',
@@ -17,7 +17,7 @@ import { ChangePassword } from 'src/app/components/account/account.component';
 
 export class EditAccountComponent implements OnInit {
 
-    public editCourseForm: FormGroup;
+    public editAccountForm: FormGroup
 
     public newPassword: string;
 
@@ -27,22 +27,18 @@ export class EditAccountComponent implements OnInit {
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<EditAccountComponent>,
         public courseService: CourseService,
-        @Inject(MAT_DIALOG_DATA) public data: { ChangePassword }) {
+        @Inject(MAT_DIALOG_DATA) public data: AccountDialogData) {
     }
 
     ngOnInit() {
         this.createForm();
-
     }
 
     private createForm() {
-        this.editCourseForm = this.fb.group({
-            currentPassword: new FormControl(this.data.ChangePassword.currentPassword, [Validators.required]),
-            newPassword: new FormControl(this.data.ChangePassword.passingGrade, [Validators.required, Validators.min(0), Validators.max(100)]),
-
+        this.editAccountForm = this.fb.group({
+            currentPassword: new FormControl(this.data.password.currentPassword, [Validators.required]),
+            newPassword: new FormControl(this.data.password.newPassword, [Validators.required]),
         });
-
-
     }
 
 

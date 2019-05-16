@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { UpdatePassword } from 'src/app/models/updatePassword';
 import { EditAccountComponent } from '../modals/account/edit/edit-account.component';
-export interface ChangePassword {
+export interface AccountDialogData {
   password: UpdatePassword;
 }
 @Component({
@@ -19,6 +19,7 @@ export class AccountComponent implements OnInit {
   }
 
   openPasswordDialog() {
+    this.newPassword = new UpdatePassword();
     let dialogRef = this.dialog.open(EditAccountComponent, {
       width: '65vw',
       minWidth: '300px',

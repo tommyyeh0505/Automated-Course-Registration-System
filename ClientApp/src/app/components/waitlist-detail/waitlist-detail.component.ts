@@ -9,7 +9,7 @@ import { Course } from 'src/app/models/course';
 import { Student } from 'src/app/models/student';
 import { StudentService } from 'src/app/services/student.service';
 import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.component';
-import { Eligibility } from 'src/app/models/Eligibility';
+import { Eligibility } from 'src/app/models/eligibility';
 import { first } from 'rxjs/operators';
 
 @Component({

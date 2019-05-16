@@ -7,7 +7,7 @@ import { WaitlistService } from 'src/app/services/waitlist.service';
 import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.component';
 import { first } from 'rxjs/operators';
 import { CourseService } from 'src/app/services/course.service';
-import { Eligibility } from 'src/app/models/Eligibility';
+import { Eligibility } from 'src/app/models/eligibility';
 import { DownloadService } from 'src/app/services/download.service';
 
 export interface WaitlistDialogData {

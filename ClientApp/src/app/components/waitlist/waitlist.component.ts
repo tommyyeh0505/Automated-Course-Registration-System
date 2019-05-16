@@ -7,7 +7,7 @@ import { WaitlistService } from 'src/app/services/waitlist.service';
 import { AddWaitlistComponent } from '../modals/waitlist/add/add-waitlist.component';
 import { first } from 'rxjs/operators';
 import { CourseService } from 'src/app/services/course.service';
-import { Eligibility } from 'src/app/models/eligibility';
+import { Eligible } from 'src/app/models/eligible';
 import { DownloadService } from 'src/app/services/download.service';
 
 export interface WaitlistDialogData {
@@ -131,7 +131,20 @@ export class WaitlistComponent implements OnInit {
     })
   }
 
+  checkWaitlist(courseId: string, waitlist: Waitlist) {
+    this.courseService.getEligibleByCourseId(courseId).subscribe((data: Eligible[]) => {
 
+      let studentId = waitlist.studentId;
+      if (data.filter(d => d.studentId === studentId).length > 0) {
+        this.addWaitlist(waitlist);
+        this.openSnackbar(`Student successfully ddded to the waitlist`, 'success-snackbar');
+      }
+      else {
+        this.openSnackbar(`Student is not qualified`, 'error-snackbar');
+      }
+
+    })
+  }
 
   export() {
 

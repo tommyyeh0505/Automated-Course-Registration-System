@@ -7,6 +7,8 @@ import { WaitlistDialogData } from 'src/app/components/waitlist/waitlist.compone
 import { Course } from 'src/app/models/course';
 import { Observable } from 'rxjs';
 import { CourseService } from 'src/app/services/course.service';
+import { Student } from 'src/app/models/student';
+import { StudentService } from 'src/app/services/student.service';
 
 
 
@@ -37,6 +39,8 @@ export class AddWaitlistComponent implements OnInit {
     public validWaitlist: boolean = true;
 
 
+    students: Student[] = [];
+
     public courses: Course[];
 
     courseAutoComplete = new FormControl();
@@ -46,11 +50,13 @@ export class AddWaitlistComponent implements OnInit {
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<AddWaitlistComponent>,
         public courseService: CourseService,
+        public studentService: StudentService,
         @Inject(MAT_DIALOG_DATA) public data: WaitlistDialogData) {
     }
 
     ngOnInit() {
         this.createForm();
+        this.getStudents();
     }
 
 
@@ -74,6 +80,17 @@ export class AddWaitlistComponent implements OnInit {
         });
     }
 
+
+    getStudents() {
+        this.studentService.getStudents().subscribe((data: Student[]) => {
+            this.students = data;
+        });
+
+    }
+
+    public isNewStudent() {
+        return this.students.map(e => e.studentId).indexOf(this.studentId) === -1;
+    }
 
 
     public isTakenClass(courseId: string, crn: string, term: string, studentId: string) {
@@ -108,11 +125,24 @@ export class AddWaitlistComponent implements OnInit {
         return true;
     }
 
+    addStudent(student: Student) {
+        this.studentService.addStudent(student).pipe(first()).subscribe((response: Response) => {
+
+            console.log(response);
+        }, err => {
+
+        })
+    }
 
     public submit() {
-        if (!this.courseId) {
-            this.courseId = this.courseAutoComplete.value;
+        if (this.isNewStudent()) {
+            let student = new Student();
+            student.studentId = this.studentId;
+            this.addStudent(student);
+
+
         }
+
         this.data.waitlist.studentId = this.studentId;
         this.data.waitlist.courseId = this.courseId;
         this.data.waitlist.crn = this.crn;

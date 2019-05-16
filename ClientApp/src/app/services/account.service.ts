@@ -37,7 +37,7 @@ export class AccountService {
      * Http get, return a list of all courses
      */
     public updatePassword(newPassword: UpdatePassword) {
-        return this.http.put<any>(endpoint + newPassword.username, newPassword, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+        return this.http.put<any>(endpoint + newPassword.username, newPassword).pipe(map((response: Response) => response || {}));
 
     }
 

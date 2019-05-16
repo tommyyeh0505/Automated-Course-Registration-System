@@ -38,25 +38,25 @@ export class DashboardService {
      * Http get, return a list of all courses
      */
     public getCourses() {
-        return this.http.get<any>(endpoint + 'courses', this.getHttpHeaders());
+        return this.http.get<any>(endpoint + 'courses');
 
     }
 
 
 
     public getStudents() {
-        return this.http.get<any>(endpoint + 'students', this.getHttpHeaders());
+        return this.http.get<any>(endpoint + 'students');
     }
 
 
     public getWaitlists() {
-        return this.http.get<any>(endpoint + 'waitlists', this.getHttpHeaders());
+        return this.http.get<any>(endpoint + 'waitlists');
 
     }
 
 
     public getGrades() {
-        return this.http.get<any>(endpoint + 'grades', this.getHttpHeaders())
+        return this.http.get<any>(endpoint + 'grades')
     }
 
 

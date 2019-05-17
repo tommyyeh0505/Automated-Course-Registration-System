@@ -21,7 +21,6 @@ using System.Diagnostics;
 
 namespace ACRS
 {
-
     [Route("api/[controller]")]
     [EnableCors("CORSPolicy")]
     public class AuthController : Controller
@@ -85,7 +84,6 @@ namespace ACRS
             return Unauthorized();
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost, Route("register")]
         public async Task<ActionResult<AuthRegister>> Register([FromBody] AuthRegister user)
         {
@@ -127,14 +125,13 @@ namespace ACRS
             return CreatedAtAction("GetUsers", new { userName = newUser.UserName });
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpGet, Route("users")]
         public async Task<ActionResult<IEnumerable<string>>> GetUsers()
         {
             return await _userManager.Users.Select(u => u.UserName).ToListAsync();
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        
         [HttpDelete("users/{username}")]
         public async Task<ActionResult<object>> DeleteUser(string username)
         {
@@ -155,7 +152,6 @@ namespace ACRS
             return new { userName = username };
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("users/{username}")]
         public async Task<IActionResult> UpdateUser(string username, [FromBody] AuthChangePassword request)
         {

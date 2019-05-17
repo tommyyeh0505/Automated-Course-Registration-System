@@ -21,7 +21,6 @@ using System.Diagnostics;
 
 namespace ACRS
 {
-
     [Route("api/[controller]")]
     [EnableCors("CORSPolicy")]
     public class AuthController : Controller
@@ -132,7 +131,7 @@ namespace ACRS
             return await _userManager.Users.Select(u => u.UserName).ToListAsync();
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        
         [HttpDelete("users/{username}")]
         public async Task<ActionResult<object>> DeleteUser(string username)
         {

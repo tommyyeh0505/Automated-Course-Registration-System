@@ -20,11 +20,10 @@ export class ResetPasswordComponent implements OnInit{
     updatePassword.username = 'admin';
     updatePassword.currentPassword = currentPassword;
     updatePassword.newPassword = 'P@$$w0rd';
-    console.log(updatePassword);
+   
     this.accountService.updatePassword(updatePassword).subscribe((res: any) => {
-        localStorage.clear();
-        // this.router.navigate['/'];
-
+        console.log(res);   
+        this.router.navigate(['/']);
       }, err => {
   
       });

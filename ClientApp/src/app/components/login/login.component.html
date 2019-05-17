@@ -1,0 +1,36 @@
+<div class="grid-container" style="height:100vh; width:100vw;background:url('/assets/img/background.jpg'); background-size:cover;  background-repeat: no-repeat;
+background-attachment: fixed;
+background-position: center;  ">
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content color="accent">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <p>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Username</mat-label>
+            <input type="text" matInput placeholder="Username" formControlName="username" required autofocus>
+            <mat-error>Please enter a username</mat-error>
+          </mat-form-field>
+        </p>
+
+        <p>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput placeholder="Password" formControlName="password" required>
+            <mat-error>Please enter a password</mat-error>
+          </mat-form-field>
+        </p>
+
+        <mat-error *ngIf="authFailed">Incorrect username or password</mat-error>
+
+        <div class="button">
+          <button type="submit" class="pulse waves-effect waves-light" mat-raised-button color="accent">Login</button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

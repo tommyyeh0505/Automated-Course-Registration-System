@@ -1,0 +1,22 @@
+table {
+  
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+
+.grid-container {
+  margin: 30px;
+}
+
+.mat-tab-group {
+  margin-bottom: 40px;
+}
+

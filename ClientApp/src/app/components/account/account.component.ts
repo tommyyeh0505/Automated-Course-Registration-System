@@ -44,9 +44,11 @@ export class AccountComponent implements OnInit {
   }
 
   updatePassword(password: UpdatePassword) {
-    this.accountService.updatePassword(password).subscribe((res: any) => {
-      this.openSnackbar("Password successfully updated", 'success-snackbar');
 
+
+    this.accountService.updatePassword(password).subscribe((res: any) => {
+      localStorage.setItem(btoa('password') , btoa(password.newPassword));
+      this.openSnackbar("Password successfully updated", 'success-snackbar');
     }, err => {
       this.openSnackbar("Failed to change password", 'error-snackbar');
 

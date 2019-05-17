@@ -36,6 +36,7 @@ import { HelpComponent } from './components/help/help.component';
 import { AccountComponent } from './components/account/account.component';
 import { EditAccountComponent } from './components/modals/account/edit/edit-account.component';
 import { DetailWaitlistComponent } from './components/modals/waitlist/detail/detail-waitlist.component';
+import { ResetPasswordComponent } from './components/resetPassword/resetPassword.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { DetailWaitlistComponent } from './components/modals/waitlist/detail/det
     HelpComponent,
     AccountComponent,
     EditAccountComponent,
-    DetailWaitlistComponent
+    DetailWaitlistComponent,
+    ResetPasswordComponent
   ],
   imports: [
     MatProgressSpinnerModule,
@@ -114,7 +116,8 @@ import { DetailWaitlistComponent } from './components/modals/waitlist/detail/det
     EditStudentGradeComponent,
     AddWaitlistComponent,
     EditAccountComponent,
-    DetailWaitlistComponent
+    DetailWaitlistComponent,
+    
   ]
 })
 export class AppModule { }

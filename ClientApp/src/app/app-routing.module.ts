@@ -15,6 +15,7 @@ import { StudentDetailComponent } from './components/student-detail/student-deta
 import { WaitlistComponent } from './components/waitlist/waitlist.component';
 import { WaitlistDetailComponent } from './components/waitlist-detail/waitlist-detail.component';
 import { AccountComponent } from './components/account/account.component';
+import { ResetPasswordComponent } from './components/resetPassword/resetPassword.component';
 
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
@@ -38,6 +39,7 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'logout', redirectTo: 'login' },
+  { path: 'reset', component:  ResetPasswordComponent},
   { path: '**', component: ErrorComponent }
 ];
 

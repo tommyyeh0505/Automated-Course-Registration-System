@@ -28,7 +28,7 @@ export class EditAccountComponent implements OnInit {
     public matched: boolean = true;
 
     constructor(
-        private fb: FormBuilder,
+        public fb: FormBuilder,
         public dialogRef: MatDialogRef<EditAccountComponent>,
         public courseService: CourseService,
         @Inject(MAT_DIALOG_DATA) public data: AccountDialogData) {
@@ -38,7 +38,7 @@ export class EditAccountComponent implements OnInit {
         this.createForm();
     }
 
-    private createForm() {
+    public createForm() {
         this.editAccountForm = this.fb.group({
             currentPassword: new FormControl(this.data.password.currentPassword, [Validators.required]),
             newPassword: new FormControl(this.data.password.newPassword, [Validators.required]),
@@ -47,7 +47,7 @@ export class EditAccountComponent implements OnInit {
         });
     }
 
-    private validatePassword(value: string) {
+    public validatePassword(value: string) {
         if (!this.isValid(value)) {
             this.isPasswordValid = false;
         } else {
@@ -56,7 +56,7 @@ export class EditAccountComponent implements OnInit {
         this.newPassword = value;
     }
 
-    private repeatPassword(value: string) {
+    public repeatPassword(value: string) {
         this.repeatNewPassword = value;
         if (this.repeatNewPassword !== this.newPassword) {
             this.matched = false;
@@ -66,7 +66,7 @@ export class EditAccountComponent implements OnInit {
         }
     }
 
-    private isValid(str: string) {
+    public isValid(str: string) {
 
         return str.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d.*)(?=.*\W.*)[a-zA-Z0-9\S]{8,15}$/);
     }

@@ -21,8 +21,7 @@ namespace ACRS.Controllers
 {
     [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
-    [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+    [ApiController]    
     public class UploadController : ControllerBase
     {
         private readonly IConfiguration _configuration;

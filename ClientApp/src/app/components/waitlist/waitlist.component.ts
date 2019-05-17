@@ -152,6 +152,12 @@ export class WaitlistComponent implements OnInit {
 
   }
 
+  empty() {
+    this.waitlistService.dropWaitlist().subscribe(r => {
+      this.refresh();
+    });
+  }
+
   ineligible() {
     this.downloadService.downloadWaitlistIneligible();
   }

@@ -15,7 +15,7 @@ namespace ACRS.Controllers
     [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+    
     public class WaitlistsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -23,6 +23,22 @@ namespace ACRS.Controllers
         public WaitlistsController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        [HttpDelete("all")]
+        public async Task<ActionResult<Waitlist>> DeleteWaitlistAll()
+        {
+            List<Waitlist> list = await _context.Waitlists.ToListAsync();
+            foreach (Waitlist w in list)
+            {
+                var waitlist = await _context.Waitlists.FindAsync(w.WaitlistId);
+                if (waitlist != null)
+                {
+                    _context.Waitlists.Remove(waitlist);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return NoContent();
         }
 
         // GET: api/Waitlists

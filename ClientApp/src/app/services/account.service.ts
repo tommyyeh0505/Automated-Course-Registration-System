@@ -26,19 +26,18 @@ export class AccountService {
         private router: Router
 
     ) {
-        this.jwtHelper = new JwtHelperService();
-        if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
-            this.authService.logout();
-            this.router.navigate(['login', { expired: true }]);
-        }
+        // this.jwtHelper = new JwtHelperService();
+        // if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
+        //     this.authService.logout();
+        //     this.router.navigate(['login', { expired: true }]);
+        // }
     }
 
     /**
      * Http get, return a list of all courses
      */
     public updatePassword(newPassword: UpdatePassword) {
-        return this.http.put<any>(endpoint + newPassword.username, newPassword, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
-
+        return this.http.put<any>(endpoint + newPassword.username, newPassword).pipe(map((response: Response) => response || {}));
     }
 
 

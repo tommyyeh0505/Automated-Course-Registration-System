@@ -85,7 +85,6 @@ namespace ACRS
             return Unauthorized();
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost, Route("register")]
         public async Task<ActionResult<AuthRegister>> Register([FromBody] AuthRegister user)
         {
@@ -127,7 +126,6 @@ namespace ACRS
             return CreatedAtAction("GetUsers", new { userName = newUser.UserName });
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpGet, Route("users")]
         public async Task<ActionResult<IEnumerable<string>>> GetUsers()
         {
@@ -155,7 +153,6 @@ namespace ACRS
             return new { userName = username };
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("users/{username}")]
         public async Task<IActionResult> UpdateUser(string username, [FromBody] AuthChangePassword request)
         {

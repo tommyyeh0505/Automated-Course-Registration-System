@@ -148,30 +148,30 @@ Project Link: [ACRS](https://github.com/tommyyeh0505/Automated-Course-Registrati
 ## API Endpoints
 | URL                                        | Method | Data Params                                                     | URL Params          |
 |--------------------------------------------|--------|-----------------------------------------------------------------|---------------------|
-| /api/auth/login                            | POST   | {username, password}                                            | None                |
-| /api/auth/register                         | POST   | {username, password}                                            | None                |
-| /api/auth/users/:username                  | PUT    | {username, currentPassword, newPassword}                        | username            |
+| /api/auth/login                            | POST   | `{username, password}`                                            | None                |
+| /api/auth/register                         | POST   | `{username, password}`                                            | None                |
+| /api/auth/users/:username                  | PUT    | `{username, currentPassword, newPassword}`                        | username            |
 | /api/courses                               | GET    | None                                                            | None                |
 | /api/courses/:courseId                     | GET    | None                                                            | courseId            |
-| /api/courses/:courseId                     | PUT    | {courseId, passingGrade, prerequisites}                         | courseId            |
-| /api/courses                               | POST   | {courseId, passingGrade, prerequisites}                         | None                |
+| /api/courses/:courseId                     | PUT    | `{courseId, passingGrade, prerequisites}`                         | courseId            |
+| /api/courses                               | POST   | `{courseId, passingGrade, prerequisites}`                         | None                |
 | /api/courses/:courseId                     | DELETE | None                                                            | courseId            |
 | /api/courses/:courseId/eligible            | GET    | None                                                            | courseId            |
 | /api/courses/:courseId/ineligible          | GET    | None                                                            | courseId            |
 | /api/grades                                | GET    | None                                                            | None                |
 | /api/grades/:gradeId                       | GET    | None                                                            | gradeId             |
 | /api/grades/filter/:courseId/:crn/:term    | GET    | None                                                            | courseId, crn, term |
-| /api/grades/:gradeId                       | PUT    | {gradeId, studentId, courseId, crn, term, finalGrade, attempts} | gradeId             |
-| /api/grades/                               | POST   | {studentId, courseId, crn, term, finalGrade, attempts}          | None                |
+| /api/grades/:gradeId                       | PUT    | `{gradeId, studentId, courseId, crn, term, finalGrade, attempts}` | gradeId             |
+| /api/grades/                               | POST   | `{studentId, courseId, crn, term, finalGrade, attempts}`          | None                |
 | /api/grades/:gradeId                       | DELETE | None                                                            | None                |
 | /api/students                              | GET    | None                                                            | None                |
 | /api/students/:studentId                   | GET    | None                                                            | studentId           |
-| /api/students/:studentId                   | PUT    | {studentId, studentName}                                        | studentId           |
-| /api/students                              | POST   | {studentId, studentName}                                        | studentId           |
+| /api/students/:studentId                   | PUT    | `{studentId, studentName}`                                        | studentId           |
+| /api/students                              | POST   | `{studentId, studentName}`                                        | studentId           |
 | /api/students/:studentId                   | DELETE | None                                                            | studentId           |
 | /api/waitlists                             | GET    | None                                                            | None                |
 | /api/waitlists/:waitlistId                 | GET    | None                                                            | waitlistId          |
-| /api/waitlists/                            | POST   | {courseId, crn, term, studentId}                                | None                |
+| /api/waitlists/                            | POST   | `{courseId, crn, term, studentId}`                                | None                |
 | /api/waitlists/:waitlistId                 | DELETE | None                                                            | None                |
 | /api/waitlists/filter/:courseId/:crn/:term | GET    | None                                                            | courseId, crn, term |
 | /api/waitlists/all                         | DELETE | None                                                            | None                |

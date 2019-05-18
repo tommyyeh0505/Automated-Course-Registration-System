@@ -45,7 +45,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="doc/background.png">
+<img src="doc/background.PNG">
 
 The BCIT Interior Design Department currently has to manually enter all part-time student grades for each course every term which costed a significant amount of time compiling data in order to check if applicants have the correct prerequisites for each course. This process is very repetitive and inefficient, therefore, they want a system that can compile all the data from all attendance sheets generated from the Cognos system into a more user-friendly format. 
 

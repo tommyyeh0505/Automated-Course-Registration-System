@@ -146,11 +146,21 @@ Project Link: [ACRS](https://github.com/tommyyeh0505/Automated-Course-Registrati
 
 
 ## API Endpoints
-| Tables            | Are           | Cool  |
-| -------------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+| URL                               | Method | Data Params                              | URL Params |
+|-----------------------------------|--------|------------------------------------------|------------|
+| /api/auth/login                   | POST   | {username, password}                     | None       |
+| /api/auth/register                | POST   | {username, password}                     | None       |
+| /api/auth/users/:username         | PUT    | {username, currentPassword, newPassword} | username   |
+| /api/courses                      | GET    | None                                     | None       |
+| /api/courses/:courseId            | GET    | None                                     | courseId   |
+| /api/courses/:courseId            | PUT    | {courseId, passingGrade, prerequisites}  | courseId   |
+| /api/courses                      | POST   | {courseId, passingGrade, prerequisites}  | None       |
+| /api/courses/:courseId            | DELETE | None                                     | courseId   |
+| /api/courses/:courseId/eligible   | GET    | None                                     | courseId   |
+| /api/courses/:courseId/ineligible | GET    | None                                     | courseId   |
+| /api/grades                       | GET    | None                                     | None       |
+| /api/grades/:gradeId              | GET    | None                                     | gradeId    |
+|                                   |        |                                          |            |
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

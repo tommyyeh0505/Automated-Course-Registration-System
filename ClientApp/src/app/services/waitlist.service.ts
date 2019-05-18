@@ -68,6 +68,13 @@ export class WaitlistService {
     return this.http.put<any>(endpoint + waitlistId, editWaitlist, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
   }
 
+  public dropWaitlist(){
+    return this.http.delete<any>(endpoint + 'all', this.getHttpHeaders())
+      .pipe(map((response: Response) => {
+        return response;
+      }));
+  }
+
   // HTTP headers
   private getHttpHeaders(): {} {
     return {

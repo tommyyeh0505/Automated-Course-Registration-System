@@ -53,7 +53,7 @@ Automated Course Registration System is a proposed web application which contain
 
 
 ### Built With
-Our application uses a RESTful API which uses these following technologies:
+Technologies used:
 * [Angular](https://angular.io/)
 * [.Net Core Framework](https://dotnet.microsoft.com/)
 * [SQLite](https://www.sqlite.org/index.html)

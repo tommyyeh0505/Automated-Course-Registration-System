@@ -15,7 +15,7 @@
   <h1 align="center">Automated Course Registration System</h1>
 
   <p align="center">
-   Created by T.E.A.M M.E.A.T
+   Created by Team M.E.A.T
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·

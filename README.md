@@ -54,16 +54,16 @@ Automated Course Registration System is a proposed web application which contain
 
 ### Built With
 Technologies used:
-* [Angular](https://angular.io/)
-* [.Net Core Framework](https://dotnet.microsoft.com/)
+* [Angular 7](https://angular.io/)
+* [ASP.NET Core Framework 2.2](https://dotnet.microsoft.com/)
 * [SQLite](https://www.sqlite.org/index.html)
 * [Angular Material](https://material.angular.io/)
 
 ## Contributors
-* <a href="https://github.com/mikah13">[M]ike Hoang</a>
-* <a href="https://github.com/EvaAusa">[E]va Au</a>
-* <a href="https://github.com/aght">[A]ndy Tang</a>
-* <a href="https://github.com/tommyyeh0505">[T]ommy Yeh</a>
+* <a href="https://github.com/mikah13">Mike Hoang</a>
+* <a href="https://github.com/EvaAusa">Eva Au</a>
+* <a href="https://github.com/aght">Andy Tang</a>
+* <a href="https://github.com/tommyyeh0505">Tommy Yeh</a>
 
 
 <!-- GETTING STARTED -->

@@ -75,6 +75,7 @@ namespace ACRS.Controllers
             {
                 "Id",
                 "Student Id",
+                "Student Name",
                 "Course Id",
                 "CRN",
                 "Term",
@@ -92,6 +93,7 @@ namespace ACRS.Controllers
                 {
                     waitlist.WaitlistId.ToString(),
                     waitlist.StudentId,
+                    (await _context.Students.FindAsync(waitlist.StudentId)).StudentName,
                     waitlist.CourseId,
                     waitlist.CRN,
                     waitlist.Term,
@@ -141,6 +143,7 @@ namespace ACRS.Controllers
             {
                 "Id",
                 "Student Id",
+                "Student Name",
                 "Course Id",
                 "CRN",
                 "Term"
@@ -171,6 +174,7 @@ namespace ACRS.Controllers
                 {
                     entry.WaitlistId.ToString(),
                     entry.StudentId,
+                    (await _context.Students.FindAsync(entry.StudentId)).StudentName, 
                     entry.CourseId,
                     entry.CRN,
                     entry.Term

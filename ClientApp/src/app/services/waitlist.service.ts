@@ -27,11 +27,11 @@ export class WaitlistService {
     private router: Router
 
   ) {
-    this.jwtHelper = new JwtHelperService();
-    if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
-      this.authService.logout();
-      this.router.navigate(['login', { expired: true }]);
-    }
+    // this.jwtHelper = new JwtHelperService();
+    // if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
+    //   this.authService.logout();
+    //   this.router.navigate(['login', { expired: true }]);
+    // }
   }
 
   
@@ -39,7 +39,7 @@ export class WaitlistService {
    * Http get, return a list of all grades
    */
   public getWaitlists(): Observable<any> {
-    return this.http.get<any>(endpoint, this.getHttpHeaders())
+    return this.http.get<any>(endpoint)
       .pipe(map((response: Response) => {
 
         return response;
@@ -48,28 +48,28 @@ export class WaitlistService {
 
   public deleteWaitlist(waitlist: Waitlist) {
     let id = waitlist.waitlistId;
-    this.http.delete<any>(endpoint + id, this.getHttpHeaders())
+    this.http.delete<any>(endpoint + id)
       .subscribe();
     return waitlist;
   }
 
   public addWaitlist(waitlist: Waitlist) {
-    return this.http.post<any>(endpoint, waitlist, this.getHttpHeaders())
+    return this.http.post<any>(endpoint, waitlist)
       .pipe(map((response: Response) => response || {}));
 
   }
 
   public getWaitlistsByKey(courseId: string, crn: string, term: string) {
-    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`, this.getHttpHeaders())
+    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`)
       .pipe(map((response: Response) => response || {}))
   }
 
   public updateWaitlist(waitlistId: number, editWaitlist: Waitlist) {
-    return this.http.put<any>(endpoint + waitlistId, editWaitlist, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+    return this.http.put<any>(endpoint + waitlistId, editWaitlist).pipe(map((response: Response) => response || {}));
   }
 
   public dropWaitlist(){
-    return this.http.delete<any>(endpoint + 'all', this.getHttpHeaders())
+    return this.http.delete<any>(endpoint + 'all')
       .pipe(map((response: Response) => {
         return response;
       }));

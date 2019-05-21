@@ -28,39 +28,39 @@ export class StudentService {
     private router: Router
 
   ) {
-    this.jwtHelper = new JwtHelperService();
-    if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
-      this.authService.logout();
-      this.router.navigate(['login', { expired: true }]);
-    }
+    // this.jwtHelper = new JwtHelperService();
+    // if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
+    //   this.authService.logout();
+    //   this.router.navigate(['login', { expired: true }]);
+    // }
   }
 
   /**
    * Http get, return a list of all courses
    */
   public getStudents(): Observable<any> {
-    return this.http.get<any>(endpoint, this.getHttpHeaders())
+    return this.http.get<any>(endpoint)
       .pipe(map((response: Response) => response || {}));
   }
 
   public getStudent(studentId: string) {
-    return this.http.get<any>(endpoint + studentId, this.getHttpHeaders())
+    return this.http.get<any>(endpoint + studentId)
       .pipe(map((response: Response) => response || {}));
   }
 
   public updateStudent(studentId: string, editStudent: Student) {
-    return this.http.put<any>(endpoint + studentId, editStudent, this.getHttpHeaders())
+    return this.http.put<any>(endpoint + studentId, editStudent)
       .pipe(map((response: Response) => response || {}));
   }
 
   public addStudent(student: Student) {
 
-    return this.http.post<any>(endpoint, student, this.getHttpHeaders())
+    return this.http.post<any>(endpoint, student)
       .pipe(map((response: Response) => response || {}));
   }
 
   public getStudentGrades(studentId: string) {
-    return this.http.get<any>(endpoint + studentId + '/grades/', this.getHttpHeaders())
+    return this.http.get<any>(endpoint + studentId + '/grades/')
       .pipe(map((response: Response) => response || {}));
   }
 

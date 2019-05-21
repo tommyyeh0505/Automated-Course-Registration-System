@@ -27,18 +27,18 @@ export class GradeService {
     private router: Router
 
   ) {
-    this.jwtHelper = new JwtHelperService();
-    if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
-      this.authService.logout();
-      this.router.navigate(['login', { expired: true }]);
-    }
+    // this.jwtHelper = new JwtHelperService();
+    // if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
+    //   this.authService.logout();
+    //   this.router.navigate(['login', { expired: true }]);
+    // }
   }
 
   /**
    * Http get, return a list of all grades
    */
   public getGrades(): Observable<any> {
-    return this.http.get<any>(endpoint, this.getHttpHeaders())
+    return this.http.get<any>(endpoint)
       .pipe(map((response: Response) => {
 
         return response;
@@ -46,25 +46,25 @@ export class GradeService {
   }
 
   public getGradesByKey(courseId: string, crn: string, term: string) {
-    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`, this.getHttpHeaders())
+    return this.http.get<any>(endpoint + `filter/${courseId}/${crn}/${term}`)
       .pipe(map((response: Response) => response || {}))
   }
   public deleteGrade(grade: Grade) {
     let id = grade.gradeId;
-    this.http.delete<any>(endpoint + id, this.getHttpHeaders())
+    this.http.delete<any>(endpoint + id)
       .subscribe();
     return grade;
   }
 
   public addGrade(grade: Grade) {
 
-    return this.http.post<any>(endpoint, grade, this.getHttpHeaders())
+    return this.http.post<any>(endpoint, grade)
       .pipe(map((response: Response) => response || {}));
 
   }
 
   public updateGrade(gradeId: number, editGrade: Grade) {
-    return this.http.put<any>(endpoint + gradeId, editGrade, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+    return this.http.put<any>(endpoint + gradeId, editGrade).pipe(map((response: Response) => response || {}));
   }
 
   // HTTP headers

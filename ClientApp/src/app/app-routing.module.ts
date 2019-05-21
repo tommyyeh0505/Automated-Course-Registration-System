@@ -20,7 +20,7 @@ import { ResetPasswordComponent } from './components/resetPassword/resetPassword
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
   {
-    path: '', component: LayoutComponent, canActivate: [AuthGuard],
+    path: '', component: LayoutComponent,
     children: [
       { path: '', component: DashboardComponent, },
       { path: 'index', component: DashboardComponent },
@@ -39,7 +39,7 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'logout', redirectTo: 'login' },
-  { path: 'reset', component:  ResetPasswordComponent},
+  { path: 'reset', component: ResetPasswordComponent },
   { path: '**', component: ErrorComponent }
 ];
 

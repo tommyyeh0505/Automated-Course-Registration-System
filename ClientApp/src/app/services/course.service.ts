@@ -27,24 +27,24 @@ export class CourseService {
     private router: Router
 
   ) {
-    this.jwtHelper = new JwtHelperService();
-    if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
-      this.authService.logout();
-      this.router.navigate(['login', { expired: true }]);
-    }
+    // this.jwtHelper = new JwtHelperService();
+    // if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
+    //   this.authService.logout();
+    //   this.router.navigate(['login', { expired: true }]);
+    // }
   }
 
   /**
    * Http get, return a list of all courses
    */
   public getCourses(): Observable<any> {
-    return this.http.get<any>(endpoint, this.getHttpHeaders())
+    return this.http.get<any>(endpoint)
       .pipe(map((response: Response) => response || {}));
   }
 
   public getCourse(courseId: string) {
 
-    return this.http.get<any>(endpoint + courseId, this.getHttpHeaders())
+    return this.http.get<any>(endpoint + courseId)
       .pipe(map((response: Response) => response || {})
       );
 
@@ -52,30 +52,30 @@ export class CourseService {
   }
   public deleteCourse(course: Course) {
     let id = course.courseId;
-    return this.http.delete<any>(endpoint + id, this.getHttpHeaders())
+    return this.http.delete<any>(endpoint + id)
       .subscribe();
     return course;
   }
 
   public updateCourse(courseId: string, editCourse: Course) {
-    return this.http.put<any>(endpoint + courseId, editCourse, this.getHttpHeaders()).pipe(map((response: Response) => response || {}));
+    return this.http.put<any>(endpoint + courseId, editCourse).pipe(map((response: Response) => response || {}));
   }
   public addCourse(course: Course) {
 
-    return this.http.post<any>(endpoint, course, this.getHttpHeaders())
+    return this.http.post<any>(endpoint, course)
       .pipe(map((response: Response) => response || {}));
 
   }
 
   public getEligibleByCourseId(courseId: string) {
-    return this.http.get<any>(endpoint + courseId + '/eligible/', this.getHttpHeaders())
+    return this.http.get<any>(endpoint + courseId + '/eligible/')
       .pipe(map((response: Response) => response || {})
       );
   }
 
 
   public getIneligibleByCourseId(courseId: string) {
-    return this.http.get<any>(endpoint + courseId + '/ineligible/', this.getHttpHeaders())
+    return this.http.get<any>(endpoint + courseId + '/ineligible/')
       .pipe(map((response: Response) => response || {})
       );
   }

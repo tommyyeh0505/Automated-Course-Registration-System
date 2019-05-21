@@ -102,7 +102,7 @@ namespace ACRS
             }
 
             app.UseCors("CORSPolicy");
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
 

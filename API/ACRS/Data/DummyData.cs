@@ -30,14 +30,6 @@ namespace ACRS.Data
                 context.Courses.AddRange(courses);
                 context.SaveChanges();
 
-                var students = GetStudents().ToArray();
-                context.Students.AddRange(students);
-                context.SaveChanges();
-
-                var waitlists = GetWaitLists().ToArray();
-                context.Waitlists.AddRange(waitlists);
-                context.SaveChanges();
-
                 const string defaultPassword = "P@$$w0rd";
 
                 // Adding role to database

@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using ACRS.Data;
 using ACRS.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace ACRS.Controllers
 {
+    [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public class StudentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

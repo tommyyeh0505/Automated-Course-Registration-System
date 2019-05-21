@@ -20,7 +20,6 @@ export class UploadService {
 
     const request = new HttpRequest('POST', environment.apiEndpoint + 'upload', formData, {
       reportProgress: true
-     
 
     });
 

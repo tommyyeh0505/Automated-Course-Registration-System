@@ -38,6 +38,7 @@ export class AccountService {
      */
     public updatePassword(newPassword: UpdatePassword) {
         return this.http.put<any>(endpoint + newPassword.username, newPassword).pipe(map((response: Response) => response || {}));
+
     }
 
 

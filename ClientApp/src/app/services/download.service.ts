@@ -27,11 +27,7 @@ export class DownloadService {
         private router: Router
 
     ) {
-        this.jwtHelper = new JwtHelperService();
-        if (this.jwtHelper.isTokenExpired(localStorage.getItem('currentUser'))) {
-            this.authService.logout();
-            this.router.navigate(['login', { expired: true }]);
-        }
+
     }
 
 
@@ -40,12 +36,12 @@ export class DownloadService {
     }
 
     public downloadWaitlistEligible() {
-   
-        window.open(endpoint + 'waitlist/eligible',"_blanks");
+
+        window.open(endpoint + 'waitlist/eligible', "_blanks");
     }
 
     public downloadWaitlistIneligible() {
-        window.open(endpoint + 'waitlist/ineligible',"_blanks");
+        window.open(endpoint + 'waitlist/ineligible', "_blanks");
     }
 
 
@@ -54,7 +50,7 @@ export class DownloadService {
     private getHttpHeaders(): {} {
         return {
             headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token,
+                'Authorization': 'Bearer ' + 123,
                 'Content-Type': 'application/json'
             })
         };

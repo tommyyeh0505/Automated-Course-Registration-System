@@ -20,13 +20,12 @@ import { ResetPasswordComponent } from './components/resetPassword/resetPassword
 const routes: Routes = [
   //path: '', component: LayoutComponent, canActivate: [AuthGuard],
   {
-    path: '', component: LayoutComponent, canActivate: [AuthGuard],
+    path: '', component: LayoutComponent,
     children: [
       { path: '', component: DashboardComponent, },
       { path: 'index', component: DashboardComponent },
       { path: 'student', component: StudentComponent },
       { path: 'student/:id', component: StudentDetailComponent },
-
       { path: 'grade', component: ClassComponent },
       { path: 'grade/:id', component: ClassDetailComponent },
       { path: 'course', component: CourseComponent },

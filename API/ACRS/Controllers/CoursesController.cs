@@ -26,9 +26,9 @@ namespace ACRS.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
         {
-                       return await _context.Courses
-                         .Include(e => e.Prerequisites)
-                      .ToListAsync();
+            return await _context.Courses
+              .Include(e => e.Prerequisites)
+           .ToListAsync();
 
         }
 
@@ -74,7 +74,7 @@ namespace ACRS.Controllers
                 return NotFound();
             }
             var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == id);
-            if(c.Prerequisites!= null)
+            if (c.Prerequisites != null)
             {
                 _context.Prerequisites.RemoveRange(c.Prerequisites);
 
@@ -113,7 +113,7 @@ namespace ACRS.Controllers
 
             var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == id);
 
-            foreach(Prerequisite pr in c.Prerequisites)
+            foreach (Prerequisite pr in c.Prerequisites)
             {
                 _context.Prerequisites.Remove(pr);
             }
@@ -127,11 +127,13 @@ namespace ACRS.Controllers
             List<Course> crs = await _context.Courses.Include(e => e.Prerequisites).ToListAsync();
             if (crs != null)
             {
-                foreach(Course cs in crs){
+                foreach (Course cs in crs)
+                {
                     List<Prerequisite> prereqs = cs.Prerequisites;
 
                     //Delete prereq if it exisits
-                    if(prereqs.Any(a => a.PrerequisiteCourseId == id)) {
+                    if (prereqs.Any(a => a.PrerequisiteCourseId == id))
+                    {
                         var itemToRemove = prereqs.Single(r => r.PrerequisiteCourseId == id);
                         prereqs.Remove(itemToRemove);
                         cs.Prerequisites = prereqs;
@@ -183,7 +185,9 @@ namespace ACRS.Controllers
             {
                 if (prereqs.Contains(g.CourseId))
                 {
-                    if (g.FinalGrade >= targetCourse.PassingGrade)
+                    var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == g.CourseId);
+
+                    if (g.FinalGrade >= c.PassingGrade)
                     {
                         studentMap[g.StudentId].Add(g.CourseId);
                     }
@@ -237,7 +241,9 @@ namespace ACRS.Controllers
             {
                 if (prereqs.Contains(g.CourseId))
                 {
-                    if (g.FinalGrade >= targetCourse.PassingGrade)
+                    var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == g.CourseId);
+
+                    if (g.FinalGrade >= c.PassingGrade)
                     {
                         studentMap[g.StudentId].Add(g.CourseId);
                     }
@@ -266,7 +272,7 @@ namespace ACRS.Controllers
             List<List<StudentEligibility>> lists = new List<List<StudentEligibility>>();
             List<Course> courses = await _context.Courses.Include(o => o.Prerequisites).ToListAsync();
 
-            foreach(Course c in courses)
+            foreach (Course c in courses)
             {
                 List<StudentEligibility> l = await GetEligableCourseByCourseIdAsync(c.CourseId);
                 lists.Add(l);

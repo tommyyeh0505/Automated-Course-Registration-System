@@ -153,7 +153,6 @@ export class WaitlistDetailComponent implements OnInit {
   getStudentNameByStudentID(studentId: string) {
     if (this.students) {
       return this.students.filter(s => s.studentId == studentId)[0].studentName;
-
     }
     return '';
   }

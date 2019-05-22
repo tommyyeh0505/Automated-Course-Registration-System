@@ -85,25 +85,29 @@ namespace ACRS.Controllers
 
             List<List<string>> data = new List<List<string>>();
 
-            KeyValuePair<Waitlist, StudentEligibility> last = failedList.Last();
 
-            foreach (KeyValuePair<Waitlist, StudentEligibility> f in failedList)
+
+            if (failedList.Count > 0)
             {
-                Waitlist waitlist = f.Key;
-                StudentEligibility eligibility = f.Value;
+                KeyValuePair<Waitlist, StudentEligibility> last = failedList.Last();
 
-                string studentName = null;
-
-                try
+                foreach (KeyValuePair<Waitlist, StudentEligibility> f in failedList)
                 {
-                    studentName = students.Where(s => s.StudentId == waitlist.StudentId).First().StudentName;
-                }
-                catch (Exception)
-                {
-                    studentName = "";
-                }
+                    Waitlist waitlist = f.Key;
+                    StudentEligibility eligibility = f.Value;
 
-                List<string> row = new List<string>()
+                    string studentName = null;
+
+                    try
+                    {
+                        studentName = students.Where(s => s.StudentId == waitlist.StudentId).First().StudentName;
+                    }
+                    catch (Exception)
+                    {
+                        studentName = "";
+                    }
+
+                    List<string> row = new List<string>()
                 {
                     waitlist.WaitlistId.ToString(),
                     waitlist.StudentId,
@@ -114,29 +118,29 @@ namespace ACRS.Controllers
                     eligibility.FailedPrereqs.Count > 0 ? eligibility.FailedPrereqs[0] : null
                 };
 
-                data.Add(row);
+                    data.Add(row);
 
-                if (eligibility.FailedPrereqs.Count > 1)
-                {
-                    foreach (string courseId in eligibility.FailedPrereqs.Skip(1))
+                    if (eligibility.FailedPrereqs.Count > 1)
                     {
-                        List<string> courseIdRow = new List<string>()
+                        foreach (string courseId in eligibility.FailedPrereqs.Skip(1))
+                        {
+                            List<string> courseIdRow = new List<string>()
                         {
                             null, null, null, null, null, null, courseId
                         };
 
-                        data.Add(courseIdRow);
+                            data.Add(courseIdRow);
+                        }
+                    }
+
+                    data.Add(new List<string>(6));
+
+                    if (!f.Equals(last))
+                    {
+                        data.Add(headers);
                     }
                 }
-
-                data.Add(new List<string>(6));
-
-                if (!f.Equals(last))
-                {
-                    data.Add(headers);
-                }
             }
-
 
             // data = data.OrderBy(a => a[0]).ToList();
 

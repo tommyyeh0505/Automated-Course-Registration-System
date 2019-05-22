@@ -138,7 +138,6 @@ namespace ACRS.Controllers
         {
             List<UploadError> errors = new List<UploadError>();
 
-            // Row adds 2 to i due to offset of header, and row indices starting at 1 not 0
             for (int i = 0; i < data.Count; i++)
             {
                 CsvData r = data[i];
@@ -148,29 +147,69 @@ namespace ACRS.Controllers
                     errors.Add(new UploadError
                     {
                         FileName = fileName,
-                        Reason = "Parsing of row failed due to incorrect data format in row",
+                        Reason = "Unknown error in row",
                         Row = i + 2
                     });
                     continue;
                 }
 
-                if (AnyNullEmptyOrWhitespace(
-                      r.CRN,
-                      r.CourseId,
-                      r.Term,
-                      r.StudentName,
-                      r.StudentId))
+                if (AnyNullEmptyOrWhitespace(r.CRN))
                 {
-                    errors.Add(new UploadError
+                    errors.Add(CreateColumnEmptyError(fileName, "CRN", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.CourseId))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Course ID", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.Term))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Term", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.StudentName))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Student Name", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.StudentId))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Student ID", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.RawGrade))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Grade", i + 2));
+                }
+                else
+                {
+                    try
                     {
-                        FileName = fileName,
-                        Reason = "Empty row or invalid column",
-                        Row = i + 2
-                    });
+                        int finalGrade = ParseGrade(r.RawGrade);
+                    }
+                    catch (Exception)
+                    {
+                        errors.Add(new UploadError() {
+                            FileName = fileName,
+                            Reason = $"\"{r.RawGrade}\" is a not a valid grade value",
+                            Row = i + 2
+                        });
+                    }
                 }
             }
 
             return errors;
+        }
+
+        private UploadError CreateColumnEmptyError(string fileName, string columnName, int row)
+        {
+            return new UploadError
+            {
+                FileName = fileName,
+                Reason = $"{columnName} is empty",
+                Row = row
+            };
         }
 
         private bool AnyNullEmptyOrWhitespace(params string[] strings)
@@ -210,9 +249,12 @@ namespace ACRS.Controllers
                     List<Grade> dbGrades = _context.Grades.Where(g => g.StudentId == r.StudentId &&
                                                                       g.CourseId == r.CourseId).ToList();
 
-                    if (dbGrades.Count > 0) {
+                    if (dbGrades.Count > 0)
+                    {
                         dbGrade = dbGrades[0];
-                    } else {
+                    }
+                    else
+                    {
                         dbGrade = null;
                     }
 
@@ -282,6 +324,64 @@ namespace ACRS.Controllers
                 FinalGrade = grade,
                 RawGrade = rawGrade
             };
+        }
+
+        public static int ParseGrade(string grade)
+        {
+            int ret;
+            // If FinalGrade = -1, then row will be skipped
+            if (grade.Equals("V", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 0;
+            }
+            else if (Regex.IsMatch(grade.Trim(), @"^\d{1,3}\S{1,2}")) // 40F, 10SL
+            {
+                string gradestr = new string(grade.Trim().TakeWhile(char.IsDigit).ToArray());
+
+                ret = int.Parse(gradestr);
+            }
+            else if (grade.Equals("W", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = -1;
+            }
+            else if (grade.Equals("ATT", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 100;
+            }
+            else if (grade.Equals("AUD", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 0;
+            }
+            else if (grade.Equals("RTD", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = -1;
+            }
+            else if (grade.Equals("LW", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = -1;
+            }
+            else if (grade.Equals("S", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 100;
+            }
+            else if (grade.Equals("U", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 0;
+            }
+            else if (grade.Equals("INC", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 0;
+            }
+            else if (grade.Equals("TCR", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 100;
+            }
+            else
+            {
+                ret = int.Parse(grade);
+            }
+
+            return ret;
         }
     }
 }

@@ -125,4 +125,18 @@ export class UploadComponent implements OnInit {
 
     return arr;
   }
+
+  getRowNumbersString(array: any[]) {
+    let str: string = "";
+    array = this.arrayGetN(100, array);
+
+    for (let i = 0; i < array.length; i++) {
+      str += array[i];
+      if (i != array.length - 1) {
+        str += ", ";
+      }
+    }
+
+    return str;
+  }
 }

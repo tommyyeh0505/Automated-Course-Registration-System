@@ -21,7 +21,7 @@ namespace ACRS.Controllers
 {
     [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
-    [ApiController]    
+    [ApiController]
     public class UploadController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -52,7 +52,8 @@ namespace ACRS.Controllers
                     List<CsvData> data = null;
                     List<UploadError> errors = new List<UploadError>();
 
-                    if (file == null) {
+                    if (file == null)
+                    {
                         errors.Add(new UploadError() { FileName = file.FileName, Reason = "File does not exists", Row = null });
                         continue;
                     }
@@ -97,28 +98,35 @@ namespace ACRS.Controllers
             {
                 using (var streamReader = new StreamReader(stream))
                 {
-                    using (var csvReader = new CsvReader(streamReader))
+                    try
                     {
-                        csvReader.Configuration.IgnoreBlankLines = true;
-
-                        csvReader.Read();
-                        csvReader.ReadHeader();
-
-                        while (csvReader.Read())
+                        using (var csvReader = new CsvReader(streamReader))
                         {
-                            CsvData r = null;
+                            csvReader.Configuration.IgnoreBlankLines = true;
 
-                            try
-                            {
-                                r = new CsvData(csvReader, _configuration);
-                            }
-                            catch (Exception)
-                            {
-                                r = null;
-                            }
+                            csvReader.Read();
+                            csvReader.ReadHeader();
 
-                            data.Add(r);
+                            while (csvReader.Read())
+                            {
+                                CsvData r = null;
+
+                                try
+                                {
+                                    r = new CsvData(csvReader, _configuration);
+                                }
+                                catch (Exception)
+                                {
+                                    r = null;
+                                }
+
+                                data.Add(r);
+                            }
                         }
+                    }
+                    catch (Exception)
+                    {
+
                     }
                 }
             }
@@ -140,7 +148,7 @@ namespace ACRS.Controllers
                     errors.Add(new UploadError
                     {
                         FileName = fileName,
-                        Reason = "Parsing of row failed due to incorrect data format in column",
+                        Reason = "Parsing of row failed due to incorrect data format in row",
                         Row = i + 2
                     });
                     continue;
@@ -156,7 +164,7 @@ namespace ACRS.Controllers
                     errors.Add(new UploadError
                     {
                         FileName = fileName,
-                        Reason = "Empty or invalid column",
+                        Reason = "Empty row or invalid column",
                         Row = i + 2
                     });
                 }
@@ -170,8 +178,6 @@ namespace ACRS.Controllers
             return strings.Any(s => string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s));
         }
 
-        // MUST save context changes after any add delete, or anything, else EntityFramework will stack all requests
-        // since we don't have a composite key
         private void UpdateDatabase(List<CsvData> data)
         {
             foreach (CsvData r in data)
@@ -185,9 +191,6 @@ namespace ACRS.Controllers
                     }
 
                     Course course = _context.Courses.Find(r.CourseId);
-                    Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade, r.RawGrade);
-                    Grade dbGrade = _context.Grades.Where(g => g.StudentId == r.StudentId &&
-                                                                      g.CourseId == r.CourseId).SingleOrDefault();
 
                     if (course == null)
                     {
@@ -199,6 +202,18 @@ namespace ACRS.Controllers
 
                         _context.Add(course);
                         _context.SaveChanges();
+                    }
+
+                    Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade, r.RawGrade);
+                    Grade dbGrade = null;
+
+                    List<Grade> dbGrades = _context.Grades.Where(g => g.StudentId == r.StudentId &&
+                                                                      g.CourseId == r.CourseId).ToList();
+
+                    if (dbGrades.Count > 0) {
+                        dbGrade = dbGrades[0];
+                    } else {
+                        dbGrade = null;
                     }
 
                     if (dbGrade != null)

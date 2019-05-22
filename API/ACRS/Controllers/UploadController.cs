@@ -47,14 +47,31 @@ namespace ACRS.Controllers
 
             foreach (var file in files)
             {
-                if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
+                string extension = null;
+
+                try
+                {
+                    extension = Path.GetExtension(file.FileName);
+                }
+                catch (Exception)
+                {
+                    totalErrors.Add(new UploadError()
+                    {
+                        FileName = file.FileName,
+                        Reason = "File name contains invalid characters",
+                        Row = null
+                    });
+                    continue;
+                }
+
+                if (file.Length > 0 && extension.Equals(".csv"))
                 {
                     List<CsvData> data = null;
                     List<UploadError> errors = new List<UploadError>();
 
                     if (file == null)
                     {
-                        errors.Add(new UploadError() { FileName = file.FileName, Reason = "File does not exists", Row = null });
+                        errors.Add(new UploadError() { FileName = file.FileName, Reason = "File does not exist", Row = null });
                         continue;
                     }
 
@@ -64,21 +81,22 @@ namespace ACRS.Controllers
                     }
                     catch (Exception)
                     {
-                        errors.Add(new UploadError() { FileName = file.Name, Reason = "File is not a csv file", Row = null });
+                        errors.Add(new UploadError() { FileName = file.Name, Reason = "Unable to parse this file", Row = null });
+                        continue;
                     }
 
                     if (data != null)
                     {
-                        errors = IsValidCsvFile(data, file.FileName);
-                    }
+                        List<UploadError> validationErrors = IsValidCsvFile(data, file.FileName);
 
-                    if (errors.Count == 0)
-                    {
-                        UpdateDatabase(data);
-                    }
-                    else
-                    {
-                        totalErrors.AddRange(errors);
+                        if (validationErrors.Count == 0)
+                        {
+                            UpdateDatabase(data);
+                        }
+                        else
+                        {
+                            totalErrors.AddRange(validationErrors);
+                        }
                     }
                 }
                 else
@@ -190,7 +208,8 @@ namespace ACRS.Controllers
                     }
                     catch (Exception)
                     {
-                        errors.Add(new UploadError() {
+                        errors.Add(new UploadError()
+                        {
                             FileName = fileName,
                             Reason = $"\"{r.RawGrade}\" is a not a valid grade value",
                             Row = i + 2

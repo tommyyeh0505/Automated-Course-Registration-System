@@ -185,7 +185,8 @@ namespace ACRS.Controllers
             {
                 if (prereqs.Contains(g.CourseId))
                 {
-                    var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == g.CourseId);
+                    // var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == g.CourseId);
+                    var c = courses.Where(s => s.CourseId == g.CourseId).FirstOrDefault();
 
                     if (g.FinalGrade >= c.PassingGrade)
                     {
@@ -241,7 +242,7 @@ namespace ACRS.Controllers
             {
                 if (prereqs.Contains(g.CourseId))
                 {
-                    var c = await _context.Courses.Include(e => e.Prerequisites).FirstOrDefaultAsync(s => s.CourseId == g.CourseId);
+                    var c = courses.Where(s => s.CourseId == g.CourseId).FirstOrDefault();
 
                     if (g.FinalGrade >= c.PassingGrade)
                     {

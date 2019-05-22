@@ -129,14 +129,16 @@ namespace ACRS.Controllers
                     }
                 }
 
+                data.Add(new List<string>(6));
+
                 if (!f.Equals(last))
                 {
-                    data.Add(new List<string>(6));
                     data.Add(headers);
                 }
             }
 
-            data = data.OrderBy(a => a[0]).ToList();
+
+            // data = data.OrderBy(a => a[0]).ToList();
 
             Stream excel = ExcelWriter.CreateAsStream(headers, data);
 
@@ -211,9 +213,6 @@ namespace ACRS.Controllers
                     entry.Term
                 });
             }
-
-            // Sort by waitlist id
-            data = data.OrderBy(a => a[0]).ToList();
 
             Stream excel = ExcelWriter.CreateAsStream(headers, data);
 

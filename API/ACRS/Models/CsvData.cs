@@ -20,11 +20,11 @@ namespace ACRS.Models
 
         public CsvData(CsvReader reader, IConfiguration configuration)
         {
-            CourseId = reader[configuration.GetValue<int>("CsvColumns:CourseId")];
-            CRN = reader[configuration.GetValue<int>("CsvColumns:CRN")];
-            Term = reader[configuration.GetValue<int>("CsvColumns:Term")];
-            StudentId = reader[configuration.GetValue<int>("CsvColumns:StudentId")];
-            StudentName = reader[configuration.GetValue<int>("CsvColumns:StudentName")];
+            CourseId = reader[configuration.GetValue<int>("CsvColumns:CourseId")].Trim();
+            CRN = reader[configuration.GetValue<int>("CsvColumns:CRN")].Trim();
+            Term = reader[configuration.GetValue<int>("CsvColumns:Term")].Trim();
+            StudentId = reader[configuration.GetValue<int>("CsvColumns:StudentId")].Trim();
+            StudentName = reader[configuration.GetValue<int>("CsvColumns:StudentName")].Trim();
             RawGrade = reader[configuration.GetValue<int>("CsvColumns:Grade")].Trim();
         }
     }

@@ -205,6 +205,7 @@ namespace ACRS.Controllers
                     try
                     {
                         int finalGrade = ParseGrade(r.RawGrade);
+                        r.FinalGrade = finalGrade;
                     }
                     catch (Exception)
                     {
@@ -345,19 +346,34 @@ namespace ACRS.Controllers
             };
         }
 
-        public static int ParseGrade(string grade)
+        private bool ContainsSpace(string str)
         {
-            int ret;
-            // If FinalGrade = -1, then row will be skipped
+            foreach (char c in str)
+            {
+                if (c == ' ')
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public int ParseGrade(string grade)
+        {
+            if (ContainsSpace(grade))
+            {
+                throw new Exception();
+            }
+
+            int ret = -1;
+
             if (grade.Equals("V", StringComparison.OrdinalIgnoreCase))
             {
                 ret = 0;
             }
-            else if (Regex.IsMatch(grade.Trim(), @"^\d{1,3}\S{1,2}")) // 40F, 10SL
+            else if (Regex.IsMatch(grade.Trim(), @"^\d{1,3}[F]$"))
             {
-                string gradestr = new string(grade.Trim().TakeWhile(char.IsDigit).ToArray());
-
-                ret = int.Parse(gradestr);
+                ret = int.Parse(new string(grade.Trim().TakeWhile(char.IsDigit).ToArray()));
             }
             else if (grade.Equals("W", StringComparison.OrdinalIgnoreCase))
             {
@@ -398,6 +414,10 @@ namespace ACRS.Controllers
             else
             {
                 ret = int.Parse(grade);
+            }
+
+            if (!(ret >= 0 && ret <= 100)) {
+                throw new Exception();
             }
 
             return ret;

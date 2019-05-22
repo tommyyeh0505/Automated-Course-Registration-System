@@ -303,7 +303,8 @@ namespace ACRS.Controllers
                         else if (uploadedFinalGrade < dbFinalGrade)
                         {
                             // Keep higher grade, but increase attenpts
-                            if (uploadedFinalGrade < course.PassingGrade) {
+                            if (uploadedFinalGrade < course.PassingGrade)
+                            {
                                 dbGrade.Attempts++;
                                 _context.SaveChanges();
                             }
@@ -418,11 +419,14 @@ namespace ACRS.Controllers
             else
             {
                 ret = int.Parse(grade);
+
+                if (!(ret >= 0 && ret <= 100))
+                {
+                    throw new Exception();
+                }
             }
 
-            if (!(ret >= 0 && ret <= 100)) {
-                throw new Exception();
-            }
+
 
             return ret;
         }

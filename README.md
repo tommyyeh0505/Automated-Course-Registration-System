@@ -28,16 +28,17 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-* [About the Project](#about-the-project)
-  * [Built With](#built-with)
-* [Contributors](#contributors)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
-* [API Endpoints](#api-endpoints)
+- [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Contributors](#contributors)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [API Endpoints](#api-endpoints)
 
 
 
@@ -119,7 +120,7 @@ Contributions are what make the open source community such an amazing place to b
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+5. Open a Pull Request with a description
 
 
 
@@ -141,7 +142,6 @@ Andy Tang - andytang43@gmail.com
 
 Mike Hoang - mikehoang.bcit@gmail.com
 
-Project Link: [ACRS](https://github.com/tommyyeh0505/Automated-Course-Registration-System)
 
 
 ## API Endpoints

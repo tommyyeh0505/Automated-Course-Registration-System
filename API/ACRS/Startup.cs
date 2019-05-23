@@ -106,7 +106,7 @@ namespace ACRS
             app.UseAuthentication();
             app.UseMvc();
 
-            DummyData.Initialize(app, userManager, roleManager).Wait();
+            // DummyData.Initialize(app, userManager, roleManager).Wait();
         }
     }
 }

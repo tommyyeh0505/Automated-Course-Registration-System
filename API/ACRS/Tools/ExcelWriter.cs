@@ -45,11 +45,15 @@ namespace ACRS.Tools
 
         private static void AddData(ExcelWorksheet worksheet, List<List<string>> data)
         {
+            var format = new ExcelTextFormat();
+            format.Delimiter = ',';
+            format.TextQualifier = '"';
+
             for (int i = 0; i < data.Count; i++)
             {
                 for (int j = 0; j < data[i].Count; j++)
                 {
-                    worksheet.Cells[i + 2, j + 1].LoadFromText(data[i][j]);
+                    worksheet.Cells[i + 2, j + 1].LoadFromText('"' + data[i][j] + '"', format);
                 }
             }
         }

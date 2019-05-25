@@ -64,10 +64,7 @@
           </mat-expansion-panel-header>
           <div *ngFor="let reasonMap of mapFile.value | keyvalue">
             <h3>Reason: {{reasonMap.key}}</h3>
-            <p>Row Numbers:&nbsp;<span *ngFor="let rowNumber of arrayGetN(100, reasonMap.value)">
-                {{rowNumber}},&nbsp;
-              </span><span *ngIf="reasonMap.value.length > 100">. . . . .,
-                {{reasonMap.value[reasonMap.value.length - 1]}}</span></p>
+            <p *ngIf="reasonMap.value.length !== 0">Row Numbers:&nbsp;{{getRowNumbersString(reasonMap.value)}}</p>
           </div>
         </mat-expansion-panel>
       </mat-accordion>

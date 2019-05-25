@@ -85,8 +85,8 @@ export class UploadComponent implements OnInit {
           this.errors.set('Other', new Map<string, Array<string>>());
         }
 
-        if (this.errors.get('Other').get('One or more files does not exist') == undefined) {
-          this.errors.get('Other').set('One or more files does not exist', new Array<string>());
+        if (this.errors.get('Other').get('File could not be read, ensure that 1) the file is a csv, 2) the file exists, 3) contains valid data, and 4) the database is running') == undefined) {
+          this.errors.get('Other').set('File could not be read, ensure that 1) the file is a csv, 2) the file exists, 3) contains valid data, and 4) the database is running', new Array<string>());
         }
 
         this.isUploading = false;
@@ -102,13 +102,13 @@ export class UploadComponent implements OnInit {
   }
 
   onDragOver() {
-    console.log('over drop area');
+    // console.log('over drop area');
     this.isOverDropArea = true;
   }
 
   onDragLeave() {
     this.isOverDropArea = false;
-    console.log('leave drop area');
+    // console.log('leave drop area');
   }
 
   arrayGetN(n: number, array: any[]) {
@@ -124,5 +124,19 @@ export class UploadComponent implements OnInit {
     }
 
     return arr;
+  }
+
+  getRowNumbersString(array: any[]) {
+    let str: string = "";
+    array = this.arrayGetN(100, array);
+
+    for (let i = 0; i < array.length; i++) {
+      str += array[i];
+      if (i != array.length - 1) {
+        str += ", ";
+      }
+    }
+
+    return str;
   }
 }

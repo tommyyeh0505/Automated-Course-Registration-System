@@ -21,7 +21,7 @@ namespace ACRS.Controllers
 {
     [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
-    [ApiController]    
+    [ApiController]
     public class UploadController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -47,13 +47,31 @@ namespace ACRS.Controllers
 
             foreach (var file in files)
             {
-                if (file.Length > 0 && Path.GetExtension(file.FileName).Equals(".csv"))
+                string extension = null;
+
+                try
+                {
+                    extension = Path.GetExtension(file.FileName);
+                }
+                catch (Exception)
+                {
+                    totalErrors.Add(new UploadError()
+                    {
+                        FileName = file.FileName,
+                        Reason = "File name contains invalid characters",
+                        Row = null
+                    });
+                    continue;
+                }
+
+                if (file.Length > 0 && extension.Equals(".csv"))
                 {
                     List<CsvData> data = null;
                     List<UploadError> errors = new List<UploadError>();
 
-                    if (file == null) {
-                        errors.Add(new UploadError() { FileName = file.FileName, Reason = "File does not exists", Row = null });
+                    if (file == null)
+                    {
+                        errors.Add(new UploadError() { FileName = file.FileName, Reason = "File does not exist", Row = null });
                         continue;
                     }
 
@@ -63,21 +81,22 @@ namespace ACRS.Controllers
                     }
                     catch (Exception)
                     {
-                        errors.Add(new UploadError() { FileName = file.Name, Reason = "File is not a csv file", Row = null });
+                        errors.Add(new UploadError() { FileName = file.Name, Reason = "Unable to parse this file", Row = null });
+                        continue;
                     }
 
                     if (data != null)
                     {
-                        errors = IsValidCsvFile(data, file.FileName);
-                    }
+                        List<UploadError> validationErrors = IsValidCsvFile(data, file.FileName);
 
-                    if (errors.Count == 0)
-                    {
-                        UpdateDatabase(data);
-                    }
-                    else
-                    {
-                        totalErrors.AddRange(errors);
+                        if (validationErrors.Count == 0)
+                        {
+                            UpdateDatabase(data);
+                        }
+                        else
+                        {
+                            totalErrors.AddRange(validationErrors);
+                        }
                     }
                 }
                 else
@@ -97,28 +116,35 @@ namespace ACRS.Controllers
             {
                 using (var streamReader = new StreamReader(stream))
                 {
-                    using (var csvReader = new CsvReader(streamReader))
+                    try
                     {
-                        csvReader.Configuration.IgnoreBlankLines = true;
-
-                        csvReader.Read();
-                        csvReader.ReadHeader();
-
-                        while (csvReader.Read())
+                        using (var csvReader = new CsvReader(streamReader))
                         {
-                            CsvData r = null;
+                            csvReader.Configuration.IgnoreBlankLines = true;
 
-                            try
-                            {
-                                r = new CsvData(csvReader, _configuration);
-                            }
-                            catch (Exception)
-                            {
-                                r = null;
-                            }
+                            csvReader.Read();
+                            csvReader.ReadHeader();
 
-                            data.Add(r);
+                            while (csvReader.Read())
+                            {
+                                CsvData r = null;
+
+                                try
+                                {
+                                    r = new CsvData(csvReader, _configuration);
+                                }
+                                catch (Exception)
+                                {
+                                    r = null;
+                                }
+
+                                data.Add(r);
+                            }
                         }
+                    }
+                    catch (Exception)
+                    {
+
                     }
                 }
             }
@@ -130,7 +156,6 @@ namespace ACRS.Controllers
         {
             List<UploadError> errors = new List<UploadError>();
 
-            // Row adds 2 to i due to offset of header, and row indices starting at 1 not 0
             for (int i = 0; i < data.Count; i++)
             {
                 CsvData r = data[i];
@@ -140,29 +165,71 @@ namespace ACRS.Controllers
                     errors.Add(new UploadError
                     {
                         FileName = fileName,
-                        Reason = "Parsing of row failed due to incorrect data format in column",
+                        Reason = "Unknown error in row",
                         Row = i + 2
                     });
                     continue;
                 }
 
-                if (AnyNullEmptyOrWhitespace(
-                      r.CRN,
-                      r.CourseId,
-                      r.Term,
-                      r.StudentName,
-                      r.StudentId))
+                if (AnyNullEmptyOrWhitespace(r.CRN))
                 {
-                    errors.Add(new UploadError
+                    errors.Add(CreateColumnEmptyError(fileName, "CRN", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.CourseId))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Course ID", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.Term))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Term", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.StudentName))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Student Name", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.StudentId))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Student ID", i + 2));
+                }
+
+                if (AnyNullEmptyOrWhitespace(r.RawGrade))
+                {
+                    errors.Add(CreateColumnEmptyError(fileName, "Grade", i + 2));
+                }
+                else
+                {
+                    try
                     {
-                        FileName = fileName,
-                        Reason = "Empty or invalid column",
-                        Row = i + 2
-                    });
+                        int finalGrade = ParseGrade(r.RawGrade);
+                        r.FinalGrade = finalGrade;
+                    }
+                    catch (Exception)
+                    {
+                        errors.Add(new UploadError()
+                        {
+                            FileName = fileName,
+                            Reason = $"\"{r.RawGrade}\" is a not a valid grade value",
+                            Row = i + 2
+                        });
+                    }
                 }
             }
 
             return errors;
+        }
+
+        private UploadError CreateColumnEmptyError(string fileName, string columnName, int row)
+        {
+            return new UploadError
+            {
+                FileName = fileName,
+                Reason = $"{columnName} is empty",
+                Row = row
+            };
         }
 
         private bool AnyNullEmptyOrWhitespace(params string[] strings)
@@ -170,8 +237,6 @@ namespace ACRS.Controllers
             return strings.Any(s => string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s));
         }
 
-        // MUST save context changes after any add delete, or anything, else EntityFramework will stack all requests
-        // since we don't have a composite key
         private void UpdateDatabase(List<CsvData> data)
         {
             foreach (CsvData r in data)
@@ -185,9 +250,6 @@ namespace ACRS.Controllers
                     }
 
                     Course course = _context.Courses.Find(r.CourseId);
-                    Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade, r.RawGrade);
-                    Grade dbGrade = _context.Grades.Where(g => g.StudentId == r.StudentId &&
-                                                                      g.CourseId == r.CourseId).SingleOrDefault();
 
                     if (course == null)
                     {
@@ -201,6 +263,21 @@ namespace ACRS.Controllers
                         _context.SaveChanges();
                     }
 
+                    Grade uploadedGrade = CreateGrade(r.StudentId, r.CRN, r.CourseId, r.Term, r.FinalGrade, r.RawGrade);
+                    Grade dbGrade = null;
+
+                    List<Grade> dbGrades = _context.Grades.Where(g => g.StudentId == r.StudentId &&
+                                                                      g.CourseId == r.CourseId).ToList();
+
+                    if (dbGrades.Count > 0)
+                    {
+                        dbGrade = dbGrades[0];
+                    }
+                    else
+                    {
+                        dbGrade = null;
+                    }
+
                     if (dbGrade != null)
                     {
                         double uploadedFinalGrade = uploadedGrade.FinalGrade;
@@ -210,7 +287,7 @@ namespace ACRS.Controllers
                         {
                             uploadedGrade.Attempts = dbGrade.Attempts;
 
-                            if (uploadedGrade.FinalGrade < course.PassingGrade)
+                            if (uploadedFinalGrade < course.PassingGrade)
                             {
                                 uploadedGrade.Attempts++;
                             }
@@ -225,7 +302,12 @@ namespace ACRS.Controllers
                         }
                         else if (uploadedFinalGrade < dbFinalGrade)
                         {
-                            // Keep higher grade
+                            // Keep higher grade, but increase attenpts
+                            if (uploadedFinalGrade < course.PassingGrade)
+                            {
+                                dbGrade.Attempts++;
+                                _context.SaveChanges();
+                            }
                         }
                         else
                         {
@@ -267,6 +349,86 @@ namespace ACRS.Controllers
                 FinalGrade = grade,
                 RawGrade = rawGrade
             };
+        }
+
+        private bool ContainsSpace(string str)
+        {
+            foreach (char c in str)
+            {
+                if (c == ' ')
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public int ParseGrade(string grade)
+        {
+            if (ContainsSpace(grade))
+            {
+                throw new Exception();
+            }
+
+            int ret = -1;
+
+            if (grade.Equals("V", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 0;
+            }
+            else if (Regex.IsMatch(grade.Trim(), @"^\d{1,3}[F]$"))
+            {
+                ret = int.Parse(new string(grade.Trim().TakeWhile(char.IsDigit).ToArray()));
+            }
+            else if (grade.Equals("W", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = -1;
+            }
+            else if (grade.Equals("ATT", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 100;
+            }
+            else if (grade.Equals("AUD", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 0;
+            }
+            else if (grade.Equals("RTD", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = -1;
+            }
+            else if (grade.Equals("LW", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = -1;
+            }
+            else if (grade.Equals("S", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 100;
+            }
+            else if (grade.Equals("U", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 0;
+            }
+            else if (grade.Equals("INC", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 0;
+            }
+            else if (grade.Equals("TCR", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = 100;
+            }
+            else
+            {
+                ret = int.Parse(grade);
+
+                if (!(ret >= 0 && ret <= 100))
+                {
+                    throw new Exception();
+                }
+            }
+
+
+
+            return ret;
         }
     }
 }

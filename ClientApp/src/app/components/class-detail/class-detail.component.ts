@@ -9,6 +9,8 @@ import { AddCourseComponent } from '../modals/course/add/add-course.component';
 import { first } from 'rxjs/operators';
 import { AddGradeComponent } from '../modals/grade/add/add-grade.component';
 import { EditGradeComponent } from '../modals/grade/edit/edit-grade.component';
+import { StudentService } from 'src/app/services/student.service';
+import { Student } from 'src/app/models/student';
 
 export interface GradeDialogData {
   grade: Grade;
@@ -23,6 +25,7 @@ export interface GradeDialogData {
 export class ClassDetailComponent implements OnInit {
   grades: Grade[];
   courses: Course[];
+  students: Student[];
   course: Course = new Course();
   courseId: string;
   crn: string;
@@ -30,13 +33,14 @@ export class ClassDetailComponent implements OnInit {
   courseCreated: boolean;
   newGrade: Grade;
   editGrade: Grade;
-  displayedColumns: string[] = ['studentId', 'finalGrade', 'rawGrade', 'attempts', 'viewStudent', 'edit'];
+  displayedColumns: string[] = ['studentId', 'studentName', 'finalGrade', 'rawGrade', 'attempts', 'viewStudent', 'edit'];
   dataSource: MatTableDataSource<Grade>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private courseService: CourseService,
+    private studentService: StudentService,
     public dialog: MatDialog,
     public snackbar: MatSnackBar,
     private gradeService: GradeService) { }
@@ -65,6 +69,21 @@ export class ClassDetailComponent implements OnInit {
 
   refresh() {
     this.getGradesByKey(this.courseId, this.crn, this.term);
+  }
+
+
+  getStudents() {
+    this.studentService.getStudents().subscribe((data: Student[]) => {
+      this.students = data;
+
+    })
+  }
+
+  getStudentNameByStudentID(studentId: string) {
+    if (this.students) {
+      return this.students.filter(s => s.studentId == studentId)[0].studentName;
+    }
+    return '';
   }
 
   getGradesByKey(courseId: string, crn: string, term: string) {
@@ -150,6 +169,7 @@ export class ClassDetailComponent implements OnInit {
     this.courseService.getCourses().subscribe((data: Course[]) => {
       this.courses = data;
 
+      this.getStudents();
     });
   }
 
@@ -204,7 +224,7 @@ export class ClassDetailComponent implements OnInit {
     this.newGrade.crn = this.crn;
     this.newGrade.term = this.term;
   }
-  
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

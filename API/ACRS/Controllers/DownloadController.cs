@@ -32,6 +32,7 @@ namespace ACRS.Controllers
         [HttpGet("waitlist/ineligible")]
         public async Task<ActionResult> DownWaitlistIneligableAsync()
         {
+            List<Student> students = _context.Students.ToList();
             List<Course> courses = _context.Courses.ToList();
             // Assume all waitlist distinct!
             List<Waitlist> waitlists = _context.Waitlists.ToList();
@@ -75,6 +76,7 @@ namespace ACRS.Controllers
             {
                 "Id",
                 "Student Id",
+                "Student Name",
                 "Course Id",
                 "CRN",
                 "Term",
@@ -83,39 +85,64 @@ namespace ACRS.Controllers
 
             List<List<string>> data = new List<List<string>>();
 
-            foreach (KeyValuePair<Waitlist, StudentEligibility> f in failedList)
-            {
-                Waitlist waitlist = f.Key;
-                StudentEligibility eligibility = f.Value;
 
-                List<string> row = new List<string>()
+
+            if (failedList.Count > 0)
+            {
+                KeyValuePair<Waitlist, StudentEligibility> last = failedList.Last();
+
+                foreach (KeyValuePair<Waitlist, StudentEligibility> f in failedList)
+                {
+                    Waitlist waitlist = f.Key;
+                    StudentEligibility eligibility = f.Value;
+
+                    string studentName = null;
+
+                    try
+                    {
+                        studentName = students.Where(s => s.StudentId == waitlist.StudentId).First().StudentName;
+                    }
+                    catch (Exception)
+                    {
+                        studentName = "";
+                    }
+
+                    List<string> row = new List<string>()
                 {
                     waitlist.WaitlistId.ToString(),
                     waitlist.StudentId,
+                    studentName,
                     waitlist.CourseId,
                     waitlist.CRN,
                     waitlist.Term,
                     eligibility.FailedPrereqs.Count > 0 ? eligibility.FailedPrereqs[0] : null
                 };
 
-                data.Add(row);
+                    data.Add(row);
 
-                if (eligibility.FailedPrereqs.Count > 1)
-                {
-                    foreach (string courseId in eligibility.FailedPrereqs.Skip(1))
+                    if (eligibility.FailedPrereqs.Count > 1)
                     {
-                        List<string> courseIdRow = new List<string>()
+                        foreach (string courseId in eligibility.FailedPrereqs.Skip(1))
                         {
-                            null, null, null, null, null, courseId
+                            List<string> courseIdRow = new List<string>()
+                        {
+                            null, null, null, null, null, null, courseId
                         };
 
-                        data.Add(courseIdRow);
+                            data.Add(courseIdRow);
+                        }
+                    }
+
+                    data.Add(new List<string>(6));
+
+                    if (!f.Equals(last))
+                    {
+                        data.Add(headers);
                     }
                 }
-
-                data.Add(new List<string>(6));
-                data.Add(headers);
             }
+
+            // data = data.OrderBy(a => a[0]).ToList();
 
             Stream excel = ExcelWriter.CreateAsStream(headers, data);
 
@@ -128,6 +155,7 @@ namespace ACRS.Controllers
         [HttpGet("waitlist/eligible")]
         public async Task<ActionResult> DownloadWaitlistEligableAsync()
         {
+            List<Student> students = _context.Students.ToList();
             List<Course> courses = _context.Courses.ToList();
             List<Waitlist> waitlists = _context.Waitlists.ToList();
             List<List<StudentEligibility>> allEligabilities = new List<List<StudentEligibility>>();
@@ -141,6 +169,7 @@ namespace ACRS.Controllers
             {
                 "Id",
                 "Student Id",
+                "Student Name",
                 "Course Id",
                 "CRN",
                 "Term"
@@ -167,18 +196,27 @@ namespace ACRS.Controllers
                     continue;
                 }
 
+                string studentName = null;
+
+                try
+                {
+                    studentName = students.Where(s => s.StudentId == entry.StudentId).First().StudentName;
+                }
+                catch (Exception)
+                {
+                    studentName = "";
+                }
+
                 data.Add(new List<string>
                 {
                     entry.WaitlistId.ToString(),
                     entry.StudentId,
+                    studentName,
                     entry.CourseId,
                     entry.CRN,
                     entry.Term
                 });
             }
-
-            // Sort by waitlist id
-            data = data.OrderBy(a => a[0]).ToList();
 
             Stream excel = ExcelWriter.CreateAsStream(headers, data);
 

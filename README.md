@@ -17,9 +17,9 @@
   <p align="center">
    Created by Team M.E.A.T
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href=https://github.com/tommyyeh0505/Automated-Course-Registration-System/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/tommyyeh0505/Automated-Course-Registration-System/issues">Request Feature</a>
   </p>
 </p>
 
